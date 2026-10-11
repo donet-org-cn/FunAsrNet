@@ -1,0 +1,6 @@
+assets/
+testdata/
+**/bin/
+**/obj/
+artifacts/
+results/

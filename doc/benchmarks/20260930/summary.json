@@ -1,0 +1,221 @@
+{
+  "date": "2026-09-30",
+  "productCommit": "1d046c175cd144dfd0c094bf670b2b9e1913434c",
+  "measuredCount": 92,
+  "excludedWarmupCount": 20,
+  "percentileMethod": "nearest rank: ceil(0.95 * n); all non-warmup samples retained",
+  "groups": [
+    {
+      "case": "asr-sip-repeated-pcma",
+      "engine": "cpp",
+      "count": 6,
+      "audioSeconds": 27.99975,
+      "medianSeconds": 6.076655986,
+      "p95Seconds": 6.285879923,
+      "minSeconds": 5.31138558,
+      "meanSeconds": 5.8881659913333335,
+      "maxSeconds": 6.285879923,
+      "medianRtf": 0.2170253657979089,
+      "temperatureBeforeMin": 59.153,
+      "temperatureBeforeMax": 59.153,
+      "temperatureAfterMax": 72.076,
+      "texts": [
+        "我想问我在滨海新区有房。我想问我在滨海新区有房。我想问我在滨海新区有房。我想问我在滨海新区有房。"
+      ],
+      "sources": [
+        "asr-sip-repeated-pcma-b-cpp.jsonl",
+        "asr-sip-repeated-pcma-c-cpp.jsonl"
+      ]
+    },
+    {
+      "case": "asr-sip-repeated-pcma",
+      "engine": "csharp-service",
+      "count": 6,
+      "audioSeconds": 27.99975,
+      "medianSeconds": 5.2410794,
+      "p95Seconds": 5.6623378,
+      "minSeconds": 4.9327151,
+      "meanSeconds": 5.29202125,
+      "maxSeconds": 5.6623378,
+      "medianRtf": 0.18718307842034304,
+      "temperatureBeforeMin": 59.153,
+      "temperatureBeforeMax": 60.076,
+      "temperatureAfterMax": 71.153,
+      "texts": [
+        "我想问我在滨海新区有房。我想问我在滨海新区有房。我想问我在滨海新区有房。我想问我在滨海新区有房。"
+      ],
+      "sources": [
+        "asr-sip-repeated-pcma-a-csharp.jsonl",
+        "asr-sip-repeated-pcma-d-csharp.jsonl"
+      ]
+    },
+    {
+      "case": "asr-sip-short-pcma",
+      "engine": "cpp",
+      "count": 10,
+      "audioSeconds": 5.9999375,
+      "medianSeconds": 1.1597859325,
+      "p95Seconds": 1.909866182,
+      "minSeconds": 1.011057074,
+      "meanSeconds": 1.3281472808,
+      "maxSeconds": 1.909866182,
+      "medianRtf": 0.19329966895488496,
+      "temperatureBeforeMin": 52.692,
+      "temperatureBeforeMax": 59.153,
+      "temperatureAfterMax": 62.846,
+      "texts": [
+        "我想问我在滨海新区有房。"
+      ],
+      "sources": [
+        "asr-sip-short-pcma-b-cpp.jsonl",
+        "asr-sip-short-pcma-c-cpp.jsonl"
+      ]
+    },
+    {
+      "case": "asr-sip-short-pcma",
+      "engine": "csharp-service",
+      "count": 10,
+      "audioSeconds": 5.9999375,
+      "medianSeconds": 1.13677075,
+      "p95Seconds": 1.2292224,
+      "minSeconds": 0.9981337,
+      "meanSeconds": 1.1245276499999999,
+      "maxSeconds": 1.2292224,
+      "medianRtf": 0.18946376524755465,
+      "temperatureBeforeMin": 52.692,
+      "temperatureBeforeMax": 59.153,
+      "temperatureAfterMax": 63.769,
+      "texts": [
+        "我想问我在滨海新区有房。"
+      ],
+      "sources": [
+        "asr-sip-short-pcma-a-csharp.jsonl",
+        "asr-sip-short-pcma-d-csharp.jsonl"
+      ]
+    },
+    {
+      "case": "asr-sip-zh-pcmu",
+      "engine": "cpp",
+      "count": 10,
+      "audioSeconds": 5.6159375,
+      "medianSeconds": 1.2800597585,
+      "p95Seconds": 2.658946563,
+      "minSeconds": 1.184302267,
+      "meanSeconds": 1.4327151814,
+      "maxSeconds": 2.658946563,
+      "medianRtf": 0.22793340533081075,
+      "temperatureBeforeMin": 57.307,
+      "temperatureBeforeMax": 59.153,
+      "temperatureAfterMax": 66.538,
+      "texts": [
+        "菜饭时间早上九点至下午五点。"
+      ],
+      "sources": [
+        "asr-sip-zh-pcmu-b-cpp.jsonl",
+        "asr-sip-zh-pcmu-c-cpp.jsonl"
+      ]
+    },
+    {
+      "case": "asr-sip-zh-pcmu",
+      "engine": "csharp-service",
+      "count": 10,
+      "audioSeconds": 5.6159375,
+      "medianSeconds": 1.2518799,
+      "p95Seconds": 1.3487263,
+      "minSeconds": 1.1229383,
+      "meanSeconds": 1.24667791,
+      "maxSeconds": 1.3487263,
+      "medianRtf": 0.22291556841578097,
+      "temperatureBeforeMin": 56.384,
+      "temperatureBeforeMax": 59.153,
+      "temperatureAfterMax": 67.461,
+      "texts": [
+        "菜饭时间早上九点至下午五点。"
+      ],
+      "sources": [
+        "asr-sip-zh-pcmu-a-csharp.jsonl",
+        "asr-sip-zh-pcmu-d-csharp.jsonl"
+      ]
+    },
+    {
+      "case": "tts-aishell3",
+      "engine": "csharp",
+      "count": 10,
+      "audioSeconds": 3.616,
+      "medianSeconds": 1.7955085,
+      "p95Seconds": 2.3145862,
+      "minSeconds": 1.4108737,
+      "meanSeconds": 1.8493544300000004,
+      "maxSeconds": 2.3145862,
+      "medianRtf": 0.4965454922566372,
+      "temperatureBeforeMin": 57.307,
+      "temperatureBeforeMax": 59.153,
+      "temperatureAfterMax": 63.769,
+      "texts": [],
+      "sources": [
+        "tts-aishell3-a-csharp.jsonl",
+        "tts-aishell3-d-csharp.jsonl"
+      ]
+    },
+    {
+      "case": "tts-aishell3",
+      "engine": "onnxruntime",
+      "count": 10,
+      "audioSeconds": 3.616,
+      "medianSeconds": 0.2784162035,
+      "p95Seconds": 0.405349271,
+      "minSeconds": 0.271499416,
+      "meanSeconds": 0.29050752459999996,
+      "maxSeconds": 0.405349271,
+      "medianRtf": 0.07699563149889381,
+      "temperatureBeforeMin": 57.307,
+      "temperatureBeforeMax": 59.153,
+      "temperatureAfterMax": 61.923,
+      "texts": [],
+      "sources": [
+        "tts-aishell3-b-onnxruntime.jsonl",
+        "tts-aishell3-c-onnxruntime.jsonl"
+      ]
+    },
+    {
+      "case": "tts-huayan",
+      "engine": "csharp",
+      "count": 10,
+      "audioSeconds": 3.1463038548752835,
+      "medianSeconds": 3.0489261,
+      "p95Seconds": 3.6695031,
+      "minSeconds": 2.4878606,
+      "meanSeconds": 2.97505308,
+      "maxSeconds": 3.6695031,
+      "medianRtf": 0.9690501110614622,
+      "temperatureBeforeMin": 58.23,
+      "temperatureBeforeMax": 59.153,
+      "temperatureAfterMax": 63.769,
+      "texts": [],
+      "sources": [
+        "tts-huayan-a-csharp.jsonl",
+        "tts-huayan-d-csharp.jsonl"
+      ]
+    },
+    {
+      "case": "tts-huayan",
+      "engine": "onnxruntime",
+      "count": 10,
+      "audioSeconds": 3.146303855,
+      "medianSeconds": 0.509944436,
+      "p95Seconds": 0.621626967,
+      "minSeconds": 0.470191083,
+      "meanSeconds": 0.5247204296,
+      "maxSeconds": 0.621626967,
+      "medianRtf": 0.16207730069987153,
+      "temperatureBeforeMin": 58.23,
+      "temperatureBeforeMax": 59.153,
+      "temperatureAfterMax": 63.769,
+      "texts": [],
+      "sources": [
+        "tts-huayan-b-onnxruntime.jsonl",
+        "tts-huayan-c-onnxruntime.jsonl"
+      ]
+    }
+  ]
+}

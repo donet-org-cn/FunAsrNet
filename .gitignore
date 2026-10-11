@@ -1,0 +1,15 @@
+**/bin/
+**/obj/
+.vs/
+.idea/
+/models/
+/artifacts/
+/results/
+*.user
+*.suo
+*.pfx
+*.pem
+*.key
+*.tar.gz
+*.log
+.DS_Store

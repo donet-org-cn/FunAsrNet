@@ -1,0 +1,302 @@
+[
+    {
+        "path":  "src/FunAsrNet/AssemblyInfo.cs",
+        "sha256":  "4c69183f961ac05aa95ad416c04bfba75a5a95199fbbd9c121304aa1e881edc6"
+    },
+    {
+        "path":  "src/FunAsrNet/AudioFile.cs",
+        "sha256":  "addd1684b3b5b5d22a7761620c555b9aca2756539ca1af3c62f1e8f1b6cba663"
+    },
+    {
+        "path":  "src/FunAsrNet/AudioFile.Streaming.cs",
+        "sha256":  "6a3b7ee5583be667ca24f1a64dfa6ac7318512f1d08ece0dccb65004a905cd7c"
+    },
+    {
+        "path":  "src/FunAsrNet/AudioKernels.cs",
+        "sha256":  "aa293c5a013d02c1ccca96e732c3c10d18c306a892e462f6fdccf2df02b6616e"
+    },
+    {
+        "path":  "src/FunAsrNet/BoundedInferencePool.cs",
+        "sha256":  "fec3944e54a8c1cfdc07117473af2351d7a81feaf865140eca85086b4524e27a"
+    },
+    {
+        "path":  "src/FunAsrNet/ByteBpe.cs",
+        "sha256":  "3beb044e374b89f178ecbd65cb45099858b577d48fea04fdd520e8351e98c083"
+    },
+    {
+        "path":  "src/FunAsrNet/CpuAffinity.cs",
+        "sha256":  "c360d9ca330bcc7ff84f907ebdffbacfc3afe483fecaa0c5e9478b96aba2250d"
+    },
+    {
+        "path":  "src/FunAsrNet/CpuKernelWorkers.cs",
+        "sha256":  "212fb3050c7f6392fdfc9e37ab97c8830ae311923b211b3b8b089a3a5c49eefb"
+    },
+    {
+        "path":  "src/FunAsrNet/FilterBank.cs",
+        "sha256":  "d7da3997a6861d3dd994d9d496002a3cedc8711551fd544e1a2f777ae3b590a4"
+    },
+    {
+        "path":  "src/FunAsrNet/FsmnVad.cs",
+        "sha256":  "711836a331fdc0065a2ccbef51bd11e675508423239b337dafbbdc113309af66"
+    },
+    {
+        "path":  "src/FunAsrNet/FunAsr.cs",
+        "sha256":  "9f2dff4c829f5c5618268b1f75f6100bbe3fb65ad434139579cc65fc6b61dc9d"
+    },
+    {
+        "path":  "src/FunAsrNet/FunEncoder.cs",
+        "sha256":  "32feb4059e90c21a2a6d4f977740a5b66c6eaf2da6e354c22d020c7d2f82e269"
+    },
+    {
+        "path":  "src/FunAsrNet/G711.cs",
+        "sha256":  "5a903d666ae66627930a1e1b6d3862f7a64898721b905f2e2017bd10edd74d69"
+    },
+    {
+        "path":  "src/FunAsrNet/Gguf.cs",
+        "sha256":  "eb5d2a7b6c0a60c26bac002386b6367d7b544f081d4627dbab20f1413ebc9902"
+    },
+    {
+        "path":  "src/FunAsrNet/IcefallFrontend.cs",
+        "sha256":  "2bc986fbb0914b8af9d25d55496032fab84ab7691e50ebfcf2529bbabfc6cf02"
+    },
+    {
+        "path":  "src/FunAsrNet/IFloatComputeBackend.cs",
+        "sha256":  "9a9955ac9aa36041d649679e2a477a644f97913076701693c051d1ef449d3fcb"
+    },
+    {
+        "path":  "src/FunAsrNet/IGroupedComputeBackend.cs",
+        "sha256":  "fda604b970c6fe952bd18c784916dfae8c3ec15101bb1251233e58e3089113b8"
+    },
+    {
+        "path":  "src/FunAsrNet/IQuantizedComputeBackend.cs",
+        "sha256":  "25e2af724ff0f7dd454ef48db8fce6b6a1e8e017eebf4fc284b7478190d38677"
+    },
+    {
+        "path":  "src/FunAsrNet/ManagedOnnx.cs",
+        "sha256":  "4ea9fea1c34246e60ff4dbed897182cce0f159ace569c79d092b4d4f86e009e4"
+    },
+    {
+        "path":  "src/FunAsrNet/MandarinTts.cs",
+        "sha256":  "c50445cfbe18f0dbd7f59865043e9f76a0897265837e78f6c6730329b5ff6d79"
+    },
+    {
+        "path":  "src/FunAsrNet/OnnxModel.cs",
+        "sha256":  "a6e909428087bf8d82053889e1aa08886b74049edfde0fd0634b2c0b776f8357"
+    },
+    {
+        "path":  "src/FunAsrNet/PhoneStream.cs",
+        "sha256":  "70ed1e217607db90b57fe53722cc92b89a303cb7f61ed349c31110080e125572"
+    },
+    {
+        "path":  "src/FunAsrNet/PolyphaseResampler.cs",
+        "sha256":  "b40b41c4c2cfd20405d1c5001e424819cf08c71d333bc463d904e21cf4a26c77"
+    },
+    {
+        "path":  "src/FunAsrNet/PooledAudioBuffer.cs",
+        "sha256":  "0145a69b2ca2a675db52ec438c7494d05edf4179467115dd2495a750339709af"
+    },
+    {
+        "path":  "src/FunAsrNet/QwenDecoder.cs",
+        "sha256":  "b677849df7c15f23b8c8fcb3dc23241f40610c07a80c9345e63391ff05ce76c5"
+    },
+    {
+        "path":  "src/FunAsrNet/TensorArithmetic.cs",
+        "sha256":  "c453c536eac5173781df84c904eb438e70e017ccb9180604d430c116d877653d"
+    },
+    {
+        "path":  "src/FunAsrNet/TensorConvolution.cs",
+        "sha256":  "87428c10d3412a9d11afa8dd5b5ef20ab40987652d291ace533211e18e57cb01"
+    },
+    {
+        "path":  "src/FunAsrNet/TensorConvolution.Direct.cs",
+        "sha256":  "8e790320f3d30db8f11136762f20e8467a53eb194d7d56b7b12e747a74a04226"
+    },
+    {
+        "path":  "src/FunAsrNet/TensorMath.Attention.cs",
+        "sha256":  "89affa390a2a2d1309b8e034df5570e6c0e459c2ac0a73420fcc98177f35f278"
+    },
+    {
+        "path":  "src/FunAsrNet/TensorMath.BlockAttention.cs",
+        "sha256":  "eeec7cbd1506d933527c14913cb16d6371f89e54e768cbf8d4b62b49bf3343cc"
+    },
+    {
+        "path":  "src/FunAsrNet/TensorMath.cs",
+        "sha256":  "0e441e6e904a25572c88a7f14c4d516a59b1f6fb2dd307e13d53b311b3df47dc"
+    },
+    {
+        "path":  "src/FunAsrNet/TensorMath.Elementwise.cs",
+        "sha256":  "8b373e19289bd16d80e721b12d939a19704115e1b5cb66b3209a5e6065135a1c"
+    },
+    {
+        "path":  "src/FunAsrNet/TensorMath.Half.cs",
+        "sha256":  "4a3a66f0f3c740a7c70c54b9b2385bae5974a52bba0bb68436fbc8f7c2bb2494"
+    },
+    {
+        "path":  "src/FunAsrNet/TensorMath.Interleaved.cs",
+        "sha256":  "d10bfca111bc998a3c509618127bf808e64dc000ec365a1687c34015e650e6ca"
+    },
+    {
+        "path":  "src/FunAsrNet/TensorMath.InterleavedFloat.cs",
+        "sha256":  "9ea22594c058cf0c5943cc4075f977c6cfe67a48a596dd97ca1da40cb988df5c"
+    },
+    {
+        "path":  "src/FunAsrNet/TensorMath.Pack8.cs",
+        "sha256":  "0f4e550ce4b20a568a54274937b1e96e106e9151ad895fb7a94bcc9de34bbbd1"
+    },
+    {
+        "path":  "src/FunAsrNet/TensorMath.Packed.cs",
+        "sha256":  "bd7a6e99fbddf3d954c49772a766a89cbc45430ee5a412146082033a812d7949"
+    },
+    {
+        "path":  "src/FunAsrNet/TensorMath.Quantize.cs",
+        "sha256":  "e7d308db6580be2b632f49760f3230cdf360019e8e9f6d867a6b89b448abf446"
+    },
+    {
+        "path":  "src/FunAsrNet/TensorOps.cs",
+        "sha256":  "bf7c98c4940f0f116ab8365f98c58d9079f9a3c01b3967f6cb54e0057fb74672"
+    },
+    {
+        "path":  "src/FunAsrNet/TensorTile.cs",
+        "sha256":  "414fbe49d661f5e293aaa6a9fda745f6bf82bda5ae27e4b77198529f28e351bb"
+    },
+    {
+        "path":  "src/FunAsrNet/TensorWorkspace.cs",
+        "sha256":  "556541f5e4158258973bfffeaaf72a76a5a72ff41f4d8f8ccf09f88f4d32f57f"
+    },
+    {
+        "path":  "src/FunAsrNet/Weight.Interleaved.cs",
+        "sha256":  "18cffbd1a3ce4905131cd12121666454f5e0c8df465c73d5481b56a9dc650205"
+    },
+    {
+        "path":  "src/FunAsrNet.Cli/Program.cs",
+        "sha256":  "06dee4f954dc0e9fcb522101b96d23705315368bfd0afca49ae7d5a347fcbf07"
+    },
+    {
+        "path":  "src/FunAsrNet.Probe/Program.cs",
+        "sha256":  "790456471f3f40149180a9b5d29b94c4f0822a909dd58bd23bd0b2896ef0d4b6"
+    },
+    {
+        "path":  "src/FunAsrNet.Server/AsrEndpoints.cs",
+        "sha256":  "b77bcbb609115ae356cd85a58ae0840fa938a2e918cf3614243ad41330918774"
+    },
+    {
+        "path":  "src/FunAsrNet.Server/AudioResponse.cs",
+        "sha256":  "fccea9ec56db2052b2d5d65a8e4a5399ed819d08fda017a2ca2747b3ae28549a"
+    },
+    {
+        "path":  "src/FunAsrNet.Server/DemoTls.cs",
+        "sha256":  "6206c2637a364d0d6f582305b0737d04787b776153c2f3a75262ebdd66eec9af"
+    },
+    {
+        "path":  "src/FunAsrNet.Server/Program.cs",
+        "sha256":  "3414b2a00da853befce00820bd6ef36b9a960c228ad0c74b22336b1b13dcdbfc"
+    },
+    {
+        "path":  "src/FunAsrNet.Server/SpeechOptions.cs",
+        "sha256":  "e32ffc7330e335142601a2b39222ca2eab66924c9cc32473a29d90c65a8cdac9"
+    },
+    {
+        "path":  "src/FunAsrNet.Server/SpeechRuntime.cs",
+        "sha256":  "5e633f5736ba185a0db25fc38fe81f9f14ba7befff9ec21e48181545dbfa369f"
+    },
+    {
+        "path":  "src/FunAsrNet.Server/TtsEndpoints.cs",
+        "sha256":  "febdd149cb9cbf88013a9e1a73340c91a7a46a1a6099b250ae6a93d736b153d6"
+    },
+    {
+        "path":  "src/FunAsrNet.Server/TtsRequest.cs",
+        "sha256":  "cd975050abbfb635ba4e506b4ab0e979d3d3981c4cf8a6a0cb5786260e2e735a"
+    },
+    {
+        "path":  "src/FunAsrNet.Server/TtsVoiceInfo.cs",
+        "sha256":  "25f7aeb632c8a52a7daf20aca162bf7d9b97bc76ce08245061717345eb8db1df"
+    },
+    {
+        "path":  "src/FunAsrNet.Vulkan/NativeExtensions.cs",
+        "sha256":  "3f4f57793894a56cafd17e2fb88e873a677d92a3f59dec5edee4bfb87c659914"
+    },
+    {
+        "path":  "src/FunAsrNet.Vulkan/QuantizedShader.Binary.cs",
+        "sha256":  "d22545e0aa713c3b984654998b809d39980bd2a69860124571c4b750a9966378"
+    },
+    {
+        "path":  "src/FunAsrNet.Vulkan/QuantizedShader.cs",
+        "sha256":  "5703ff96e62175ebdae3ceb5d65d716732b90e885f5f681d1e01caf174fee7ac"
+    },
+    {
+        "path":  "src/FunAsrNet.Vulkan/SpeechShader.Binary.cs",
+        "sha256":  "b157203e4d464cc9861b53adff912644e325e7c54037230aa126eea98c484248"
+    },
+    {
+        "path":  "src/FunAsrNet.Vulkan/SpeechShader.cs",
+        "sha256":  "fad161165260d14bba9c38d152f6cde1d4764792d543a653d1323a19bb345c70"
+    },
+    {
+        "path":  "src/FunAsrNet.Vulkan/VulkanFloatBackend.cs",
+        "sha256":  "a3e482008830e4c3db7feb229b1f6d4a37dfbd489aa13a4b47de0aeba2227f13"
+    },
+    {
+        "path":  "src/FunAsrNet.Vulkan/VulkanGroupedBackend.cs",
+        "sha256":  "e53f58285352befb70bb7bca2eb73f99e2ec30e1da7f4da687cc1584c39b7818"
+    },
+    {
+        "path":  "src/FunAsrNet.Vulkan/VulkanQuantizedBackend.cs",
+        "sha256":  "0682a08145336d831331710d02805ad32305db1b2e134b9f4258f088c1a47f7e"
+    },
+    {
+        "path":  "src/FunAsrNet.Vulkan/Vendor/Vk.cs",
+        "sha256":  "f70d45c7931c148761ce5060a5e156e3230bf05688aff2038a026652a2269726"
+    },
+    {
+        "path":  "src/FunAsrNet.Vulkan/Vendor/VkDevice.cs",
+        "sha256":  "b3f6022eae69836bd5aaa99b17c2d4e93ff10a69a37436b5dd51270726953aec"
+    },
+    {
+        "path":  "tests/FunAsrNet.Checks/ConcurrencyChecks.cs",
+        "sha256":  "d8f8a42c103aa5d05b398bc72e3d91aac47603f81c77a35429ed2d5b0eeb20be"
+    },
+    {
+        "path":  "tests/FunAsrNet.Checks/FragmentedReadStream.cs",
+        "sha256":  "1bc87c01db4d11d7c0b0aff69389666b12d2aca4d8ba6654272241d67ff55136"
+    },
+    {
+        "path":  "tests/FunAsrNet.Checks/Program.cs",
+        "sha256":  "5c8395e88e6f3210673998e825feae02a65aae95fedfa0f25d79cb7a2c4b83f1"
+    },
+    {
+        "path":  "tests/FunAsrNet.DemoChecks/ConcurrentDemoChecks.cs",
+        "sha256":  "61e2b6d6d999b59544ae66184dbaa9bba6b7c33f253cfb97a0443c4865bf8d13"
+    },
+    {
+        "path":  "tests/FunAsrNet.DemoChecks/MultivoiceDemoChecks.cs",
+        "sha256":  "acdb7816be67f7f78b45f8220aaca61757891d9c934536e722a7033aa9f96129"
+    },
+    {
+        "path":  "tests/FunAsrNet.DemoChecks/Program.cs",
+        "sha256":  "3f7e77c8c4dd364135397e29087564270df253777db23e5dc2bc8fcbb35406f9"
+    },
+    {
+        "path":  "tests/FunAsrNet.VoiceChecks/Program.cs",
+        "sha256":  "20d07d504ee0a3d408193afab003b2b683699d34c6bbd3118f6a0f4d201d7eb4"
+    },
+    {
+        "path":  "tools/FunAsrNet.Benchmarks/Program.cs",
+        "sha256":  "ccb17546c5b7fdce45a96a5fb673fa8f8ffd6ca808e5b3ac28213881c4e7844b"
+    },
+    {
+        "path":  "tools/FunAsrNet.Benchmarks/RknnProbe.cs",
+        "sha256":  "33ad7943c0fbcb2bbe6f26116b014edf57f5c4e0489896e22762b339aab66e73"
+    },
+    {
+        "path":  "tools/FunAsrNet.Benchmarks/VulkanProbe.cs",
+        "sha256":  "3d6a1611dbe75d3de74f7da0feabdce4a0c275484059f509b31a68b167ceac23"
+    },
+    {
+        "path":  "tools/FunAsrNet.CodeStyle/Program.cs",
+        "sha256":  "2fb2fa8b0102d0cb8b8593d0e167117d60f22e7d2f5debbb4b3c3f26dc5fcd29"
+    },
+    {
+        "path":  "tools/FunAsrNet.NativeReference/Program.cs",
+        "sha256":  "4232aaffe3ec15e734dd62b56ad9bd9fa3fd63b7473595c4c687b7dbfda7f71d"
+    }
+]

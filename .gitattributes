@@ -1,0 +1,11 @@
+* text=auto eol=lf
+doc/benchmarks/20261010-vulkan-local/*.jsonl -text whitespace=cr-at-eol
+*.wav binary
+*.bin binary
+*.f32 binary
+*.pcm binary
+*.pcma binary
+*.pcmu binary
+doc/benchmarks/**/*.jsonl -text whitespace=cr-at-eol
+doc/benchmarks/**/*.json -text whitespace=cr-at-eol
+doc/benchmarks/**/*.txt -text whitespace=cr-at-eol

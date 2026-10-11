@@ -1,0 +1,7 @@
+{"kind":"load","engine":"onnxruntime-cpu","version":"1.23.2","seconds":0.5358325}
+{"kind":"tts","engine":"onnxruntime-cpu","iteration":0,"warmup":true,"seconds":0.0801962,"samples":28928,"audioSeconds":3.616,"peakRssBytes":136298496}
+{"kind":"tts","engine":"onnxruntime-cpu","iteration":1,"warmup":false,"seconds":0.0487419,"samples":28928,"audioSeconds":3.616,"peakRssBytes":159920128}
+{"kind":"tts","engine":"onnxruntime-cpu","iteration":2,"warmup":false,"seconds":0.0448811,"samples":28928,"audioSeconds":3.616,"peakRssBytes":159928320}
+{"kind":"tts","engine":"onnxruntime-cpu","iteration":3,"warmup":false,"seconds":0.0572159,"samples":28928,"audioSeconds":3.616,"peakRssBytes":159932416}
+{"kind":"tts","engine":"onnxruntime-cpu","iteration":4,"warmup":false,"seconds":0.0433978,"samples":28928,"audioSeconds":3.616,"peakRssBytes":159940608}
+{"kind":"tts","engine":"onnxruntime-cpu","iteration":5,"warmup":false,"seconds":0.0443355,"samples":28928,"audioSeconds":3.616,"peakRssBytes":159948800}

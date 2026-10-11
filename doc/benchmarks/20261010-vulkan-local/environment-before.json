@@ -1,0 +1,23 @@
+{
+    "date":  "2026-10-10T17:45:10.5209656+08:00",
+    "cpu":  [
+                {
+                    "Name":  "12th Gen Intel(R) Core(TM) i7-12700",
+                    "NumberOfCores":  12,
+                    "NumberOfLogicalProcessors":  20
+                }
+            ],
+    "os":  [
+               {
+                   "Caption":  "Microsoft Windows 11 专业工作站版",
+                   "Version":  "10.0.28000",
+                   "TotalVisibleMemorySize":  33289652,
+                   "FreePhysicalMemory":  8461548
+               }
+           ],
+    "gpu":  "NVIDIA GeForce RTX 3060, 12288 MiB, 610.88, 2 %, 42, 40.16 W",
+    "threads":  4,
+    "cpuAffinity":  "0x55",
+    "runtime":  "10.0.401",
+    "precision":  "same encoder F16, decoder Q8_0; TTS FP32"
+}

@@ -1,0 +1,20 @@
+{
+  "funAsr": {
+    "commit": "0339018ba74a7defa3b6b6a96718d17b816be77b",
+    "url": "https://codeload.github.com/QwenAudio/Fun-ASR/tar.gz/0339018ba74a7defa3b6b6a96718d17b816be77b",
+    "bytes": 1862638,
+    "sha256": "c6ffb715b3f72e51b8fd8859bbb8d3ed4cae60c22b6d6d21bac12f6dcbe80e6c"
+  },
+  "llamaCpp": {
+    "commit": "8086439a4cea94c71a5dfb8fe4ad1546aebd640f",
+    "url": "https://codeload.github.com/ggml-org/llama.cpp/tar.gz/8086439a4cea94c71a5dfb8fe4ad1546aebd640f",
+    "bytes": 34930261,
+    "sha256": "1984103666eb25bd45110a40cba22b9d4286116f26e51bbc76f6f41dc86bc7b5"
+  },
+  "onnxRuntime": {
+    "version": "1.23.2",
+    "url": "https://github.com/microsoft/onnxruntime/releases/download/v1.23.2/onnxruntime-linux-aarch64-1.23.2.tgz",
+    "bytes": 7254068,
+    "sha256": "7c63c73560ed76b1fac6cff8204ffe34fe180e70d6582b5332ec094810241e5c"
+  }
+}

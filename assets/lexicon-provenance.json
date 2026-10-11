@@ -1,0 +1,7 @@
+{
+  "source": "piper-phonemize 1.1.0 espeak cmn voice",
+  "generation": "Offline development only; every CJK U+3400..U+9FFF character, Latin letters and a small pronunciation phrase list",
+  "runtime": "C# longest-match dictionary frontend; no native phonemizer",
+  "limitations": "Phrase coverage and pronunciation of uncommon names require application-specific validation; numbers use telephone-style digit reading",
+  "date": "2026-09-30"
+}

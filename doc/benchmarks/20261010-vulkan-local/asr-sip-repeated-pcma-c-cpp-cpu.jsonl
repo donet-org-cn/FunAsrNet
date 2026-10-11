@@ -1,0 +1,4 @@
+{"kind":"load","engine":"cpp-cpu","seconds":0.6037455}
+{"kind":"asr","engine":"cpp-cpu","iteration":0,"warmup":true,"seconds":3.2744166,"audioSeconds":27.99975,"Text":"我想问我在滨海新区有房。我想问我在滨海新区有房。我想问我在滨海新区有房。我想问我在滨海新区有房。"}
+{"kind":"asr","engine":"cpp-cpu","iteration":1,"warmup":false,"seconds":3.0604699,"audioSeconds":27.99975,"Text":"我想问我在滨海新区有房。我想问我在滨海新区有房。我想问我在滨海新区有房。我想问我在滨海新区有房。"}
+{"kind":"asr","engine":"cpp-cpu","iteration":2,"warmup":false,"seconds":2.8799116,"audioSeconds":27.99975,"Text":"我想问我在滨海新区有房。我想问我在滨海新区有房。我想问我在滨海新区有房。我想问我在滨海新区有房。"}

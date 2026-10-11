@@ -1,0 +1,25 @@
+name: build-and-check
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  managed:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - run: dotnet build FunAsrNet.sln -c Release
+      - run: dotnet run --project tests/FunAsrNet.Checks -c Release --no-build
+      - run: dotnet run --project tools/FunAsrNet.CodeStyle -c Release --no-build -- .
+      - run: dotnet format whitespace FunAsrNet.sln --verify-no-changes --no-restore

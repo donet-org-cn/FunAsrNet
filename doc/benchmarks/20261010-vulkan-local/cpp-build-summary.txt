@@ -1,0 +1,4 @@
+cmake : CMAKE_BUILD_TYPE=Release
+    + CategoryInfo          : NotSpecified: (CMAKE_BUILD_TYPE=Release:String) [], RemoteException
+-- Adding CPU backend variant ggml-cpu: /arch:AVX2 GGML_AVX2;GGML_FMA;GGML_F16C
+-- ggml commit:  8086439a4cea94c71a5dfb8fe4ad1546aebd640f

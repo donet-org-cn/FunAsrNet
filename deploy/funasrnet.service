@@ -1,0 +1,23 @@
+[Unit]
+Description=FunAsrNet .NET 10 ASR and TTS
+After=network.target
+
+[Service]
+Type=simple
+DynamicUser=yes
+WorkingDirectory=/opt/funasrnet/app
+ExecStart=/usr/bin/dotnet /opt/funasrnet/app/FunAsrNet.Server.dll --models /opt/funasrnet/models --lexicon /opt/funasrnet/assets/mandarin-lexicon.json --urls http://0.0.0.0:18080
+StateDirectory=funasrnet
+StateDirectoryMode=0700
+Environment=HOME=/var/lib/funasrnet
+Environment=DOTNET_NOLOGO=1
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectHome=yes
+ProtectSystem=strict
+TimeoutStopSec=60
+
+[Install]
+WantedBy=multi-user.target

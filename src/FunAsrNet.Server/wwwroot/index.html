@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>FunASR.NET · 语音实验室</title>
+    <link rel="stylesheet" href="/app.css" />
+  </head>
+  <body>
+    <div class="shell">
+      <header>
+        <a class="brand" href="/" aria-label="FunASR.NET 首页"
+          ><span class="logo">QC</span
+          ><span>FunASR.NET<small>语音实验室</small></span></a
+        >
+        <div id="health" class="status" role="status">正在连接设备…</div>
+      </header>
+      <main>
+        <div class="intro">
+          <div>
+            <p class="eyebrow">FUNASR.NET / LOCAL SPEECH</p>
+            <h1>让声音，成为文字。<br /><span>让文字，拥有声音。</span></h1>
+            <p class="lede">普通话语音识别与合成，在你的设备上完成。</p>
+          </div>
+          <div class="chip-list">
+            <span>.NET 10 · C#</span><span>F16 + Q8 · SIMD</span
+            ><span>本地推理</span>
+          </div>
+        </div>
+        <nav class="tabs" aria-label="选择示例">
+          <button class="tab selected" data-panel="live" aria-current="page">
+            01 <b>实时转写</b></button
+          ><button class="tab" data-panel="upload">02 <b>WAV 转写</b></button
+          ><button class="tab" data-panel="tts">03 <b>语音合成</b></button>
+        </nav>
+        <section id="live" class="panel">
+          <div class="panel-head">
+            <div>
+              <h2>边说，边看结果</h2>
+              <p>允许麦克风后开始说普通话，停顿时自动生成完整句子。</p>
+            </div>
+            <span class="tag">LIVE ASR</span>
+          </div>
+          <div id="secure-note" class="notice" hidden>
+            <strong>麦克风需要安全连接</strong>
+            <p>
+              局域网 HTTP 可以体验样例、上传和合成。录音请使用
+              HTTPS，首次访问需确认本设备的自签名证书。
+            </p>
+            <a id="https-link" class="button secondary" hidden href="#"
+              >打开 HTTPS 录音页 ↗</a
+            >
+            <details>
+              <summary>也可通过 SSH 使用 localhost（无需证书）</summary>
+              <p>在电脑终端运行并保持窗口打开：</p>
+              <code id="tunnel-command"
+                >ssh -N -L 18080:127.0.0.1:18080
+                &lt;用户名&gt;@&lt;服务器地址&gt;</code
+              >
+              <p>
+                然后访问
+                <a href="http://localhost:18080">http://localhost:18080</a>。
+              </p>
+            </details>
+          </div>
+          <div class="actions">
+            <button id="mic-start" class="button primary">● 开始录音</button
+            ><button id="sample-start" class="button secondary">
+              ▷ 样例模拟实时输入</button
+            ><button id="live-stop" class="button danger" disabled>
+              停止并完成转写
+            </button>
+          </div>
+          <div class="live-strip">
+            <span class="pulse" id="live-dot"></span
+            ><span id="live-status" role="status">准备就绪</span
+            ><span id="live-clock">00:00</span
+            ><meter
+              id="level"
+              min="0"
+              max="1"
+              value="0"
+              aria-label="麦克风音量"
+            ></meter>
+          </div>
+          <div class="transcript" aria-label="实时转写结果">
+            <p id="live-placeholder" class="placeholder">
+              转写结果会出现在这里
+            </p>
+            <div id="live-final"></div>
+            <p id="live-partial" class="partial" aria-live="polite"></p>
+          </div>
+          <div class="result-footer">
+            <span id="live-metrics">预览文本可能修订，完整句子会保留。</span
+            ><button class="text-button" id="live-copy">复制结果</button>
+          </div>
+          <p class="hint">
+            样例按 20 ms
+            音频帧发送，模拟实时输入，不会调用麦克风。服务支持多路独立会话，并按句段排队识别。
+          </p>
+        </section>
+        <section id="upload" class="panel" hidden>
+          <div class="panel-head">
+            <div>
+              <h2>把录音交给它</h2>
+              <p>上传 WAV，获得完整文本与本次识别速度。</p>
+            </div>
+            <span class="tag">FILE ASR</span>
+          </div>
+          <label class="file-zone" for="wav-file"
+            ><span class="file-icon">↥</span><strong>选择 WAV 录音</strong
+            ><span id="file-name">最长 60 秒 · 最大 32 MB</span
+            ><input
+              id="wav-file"
+              type="file"
+              accept=".wav,audio/wav,audio/x-wav"
+          /></label>
+          <p class="hint">
+            支持 PCM16、Float32、G.711 A-law / μ-law，8–96 kHz，1–8 声道。<a
+              href="/sample.wav"
+              download="普通话样例.wav"
+              >下载普通话样例</a
+            >
+          </p>
+          <div class="actions">
+            <button id="wav-submit" class="button primary" disabled>
+              开始转写</button
+            ><span id="wav-status" role="status">选择文件后开始</span>
+          </div>
+          <div class="transcript compact">
+            <p id="wav-text" class="placeholder" aria-live="polite">
+              文件的转写结果会出现在这里
+            </p>
+          </div>
+          <div class="result-footer">
+            <span id="wav-metrics">RTF = 识别耗时 ÷ 音频时长，越小越快。</span
+            ><button id="wav-copy" class="text-button">复制结果</button>
+          </div>
+        </section>
+        <section id="tts" class="panel" hidden>
+          <div class="panel-head">
+            <div>
+              <h2>写一句，让它说出来</h2>
+              <p>输入普通话文本，生成可播放、可下载的 WAV 音频。</p>
+            </div>
+            <span class="tag">TEXT TO SPEECH</span>
+          </div>
+          <label for="tts-text" class="field-label"
+            >朗读文本 <span id="char-count">0 / 200</span></label
+          ><textarea id="tts-text" maxlength="200" rows="4">
+您好，欢迎致电，请问有什么可以帮您？</textarea
+          >
+          <div class="controls">
+            <label
+              >语速
+              <select id="tts-speed">
+                <option value="0.8">0.8× 舒缓</option>
+                <option value="1" selected>1.0× 标准</option>
+                <option value="1.2">1.2× 较快</option>
+                <option value="1.5">1.5× 快速</option>
+              </select></label
+            ><label
+              >采样率
+              <select id="tts-rate">
+                <option value="22050">22,050 Hz · 播放</option>
+                <option value="16000">16,000 Hz</option>
+                <option value="8000">8,000 Hz · 电话</option>
+              </select></label
+            >
+          </div>
+          <div class="controls">
+            <label
+              >音色库
+              <select id="tts-voice">
+                <option value="huayan-medium">正在加载音色…</option>
+              </select></label
+            ><label
+              >音量
+              <input
+                id="tts-volume"
+                type="number"
+                value="1"
+                min="0"
+                max="2"
+                step="0.1"
+            /></label>
+          </div>
+          <p id="tts-voice-info" class="hint" role="status"></p>
+          <fieldset class="speaker-picker">
+            <legend>选择发音人</legend>
+            <div class="speaker-search">
+              <label for="tts-speaker-search">搜索名称或编号</label>
+              <input
+                id="tts-speaker-search"
+                type="search"
+                placeholder="例如：50，或语料编号"
+                aria-controls="tts-speaker"
+                autocomplete="off"
+                disabled
+              />
+              <span id="tts-speaker-count" role="status">正在加载…</span>
+            </div>
+            <div id="tts-speaker" class="speaker-list"></div>
+            <p id="tts-speaker-empty" class="hint" hidden>
+              没有匹配的发音人，请修改搜索条件。当前选择保持不变。
+            </p>
+            <p id="tts-speaker-selected" class="speaker-selected" role="status">
+              等待加载发音人
+            </p>
+            <div class="actions">
+              <button id="tts-speaker-prev" class="button secondary" disabled>
+                ← 上一位
+              </button>
+              <button id="tts-speaker-next" class="button secondary" disabled>
+                下一位 →
+              </button>
+              <span class="hint">点击列表选择，再生成语音试听。</span>
+            </div>
+          </fieldset>
+          <details class="advanced">
+            <summary>高级合成参数</summary>
+            <div class="controls">
+              <label
+                >音色随机度
+                <input
+                  id="tts-noise"
+                  type="number"
+                  value="0.667"
+                  min="0"
+                  max="2"
+                  step="0.001" /></label
+              ><label
+                >时长随机度
+                <input
+                  id="tts-duration-noise"
+                  type="number"
+                  value="0.8"
+                  min="0"
+                  max="2"
+                  step="0.01" /></label
+              ><label
+                >随机种子
+                <input
+                  id="tts-seed"
+                  type="number"
+                  value="1"
+                  min="0"
+                  max="2147483647"
+                  step="1"
+              /></label>
+            </div>
+            <p class="hint">
+              发音人列表来自实际安装的音色库。随机度影响合成变化，相同文本、种子和参数可重复生成。暂不支持独立音高或情绪控制。
+            </p>
+          </details>
+          <div class="actions">
+            <button id="tts-submit" class="button primary">生成语音</button
+            ><span id="tts-status" role="status">准备就绪</span>
+          </div>
+          <div class="audio-result">
+            <audio
+              id="tts-player"
+              controls
+              preload="metadata"
+              aria-label="合成语音"
+            ></audio
+            ><a
+              id="tts-download"
+              class="button secondary"
+              download="funasrnet.wav"
+              hidden
+              >↓ 下载 WAV</a
+            >
+          </div>
+          <p id="tts-metrics" class="hint">
+            生成的语音会显示在这里。推荐输入简体中文和常用标点。
+          </p>
+        </section>
+        <div class="footnotes">
+          <span>音频仅在当前局域网设备处理，示例不保存上传录音。</span
+          ><a href="/health" target="_blank" rel="noopener">查看服务状态 ↗</a>
+        </div>
+      </main>
+      <footer>FunASR.NET <span>ASR / TTS · Powered by C#</span></footer>
+    </div>
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>
