@@ -1,5 +1,7 @@
 # 性能比较与证据范围
 
+2026-10-12 另已完成同一 RTX 3060 上的原生 GPU 对比：TTS 的 C# Vulkan 比 ORT CUDA 慢 9.63–14.55 倍；ASR 的 C++ 原计算图 CUDA 适配也更快。当前 C# GPU 路径没有速度优势，不能用历史 GPU/CPU 表格代替 GPU/GPU 结论。适配范围、精度差异和原始数据见 [原生 GPU 对比](gpu-native-comparison-20261012.md)。
+
 2026-10-12 新的纯 C# TTS CPU 优化已完成两端同机复测：Windows x64 两种模型均提速约 3.07 倍；RK3588 相对旧托管部署，Huayan 提速 1.74 倍、AISHELL3 提速 1.55 倍。仍比各自环境的 ORT CPU 慢约 2.83–3.18 倍。条件、正确性、命令与原始数据见 [Windows TTS CPU 优化](tts-cpu-optimization.md) 和 [ARM64 更新与实测](rk3588-update-20261012.md)。下文保留历史记录，不将新旧实验混算。
 
 README 的历史表格来自真实历史测量。首次公开版没有把这些结果重新标记为新名称下的全套实测，也没有只留下有利数据。两个环境和代码快照不同，不能将时间拼成一次实验。
@@ -29,6 +31,7 @@ Windows ASR 计完整 Transcribe/解码调用：特征、编码、解码、复�
 - [Windows summary.json](benchmarks/20261010-vulkan-local/summary.json)、逐轮 JSONL、CPU/GPU/原生波形校验、GPU 数值检查、环境快照与 C++ 编译特性。
 - [2026-10-12 TTS CPU summary.json](benchmarks/20261012-tts-cpu/summary.json)、优化前/后与 ORT 的 60 次正式测量、输入 ID 清单和波形校验。
 - [2026-10-12 RK3588 summary.json](benchmarks/20261012-rk3588-cpu/summary.json)、旧托管部署/新版本与 ORT 的 60 次正式测量、温度/频率和波形校验。
+- [2026-10-12 原生 GPU summary.json](benchmarks/20261012-gpu-native/summary.json)、同卡 GPU 对比的 105 次正式测量、CUDA 节点剖析和转写/波形校验。
 - 每个记录目录的 `SHA256SUMS.txt` 对应本仓库证据；已确认逐字节与历史来源相同，保留原 CRLF。原始数据中的历史引擎标签不重命名。
 
 未复制私人部署/健康快照、内部 Git 地址、证书或含个人工作路径的构建日志。Windows 证据保留系统 Vulkan 加载器路径，便于确认真实驱动；它不是通用安装说明。

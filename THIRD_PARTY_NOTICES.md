@@ -20,4 +20,6 @@ AISHELL3 多发音人模型来自 k2-fsa/sherpa-onnx 官方 tts-models 发布的
 
 着色器开发时使用 Khronos glslang 16.6.0；编译器只用于生成 SPIR-V，不作为运行时依赖。GPU 程序来源及字节码嵌入 C#。正式可选 GPU 后端只加载系统 Vulkan 驱动，不随代码嵌入原生 CPU 二进制。
 
-`tools/FunAsrNet.NativeReference` 是隔离的开发对照工具，通过 Microsoft.ML.OnnxRuntime 1.23.2 调用原生 CPU 算子以复测 VITS。它不是核心库或 Web 服务的依赖，也没有替换默认纯 C# 推理。Fun-ASR C++ 对照仅在临时目录构建，测量后删除源码和二进制。
+`tools/FunAsrNet.NativeReference` 是隔离的开发对照工具，通过 Microsoft.ML.OnnxRuntime 1.23.2 调用原生 CPU 算子以复测 VITS。`tools/FunAsrNet.NativeGpuReference` 独立引用官方 Microsoft.ML.OnnxRuntime.Gpu.Windows 1.23.2，复测 CUDA GPU 路径；ONNX Runtime 为 MIT，CUDA/cuDNN 运行库遵循 NVIDIA 的许可。本仓库不重新分发 NVIDIA 运行库。
+
+两种原生对照工具均不是核心库或 Web 服务的依赖，没有替换默认纯 C# 推理。C++ GPU 基准使用上述固定 Fun-ASR（Apache-2.0）与 llama.cpp/ggml（MIT），保留原计算图，设备/参数适配与计时包装由 C# 生成器产生。原生源码、构建物与模型仅放在被 Git 忽略的开发目录，不提交，也不作为产品依赖；结果、来源散列和适配边界见 doc/gpu-native-comparison-20261012.md。

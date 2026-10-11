@@ -1,0 +1,303 @@
+{
+  "date": "2026-10-12",
+  "hardware": "Intel i7-12700 / RTX 3060 12 GiB / Windows x64",
+  "driver": "610.88",
+  "runtime": "10.0.12",
+  "threads": 4,
+  "affinity": "0x55",
+  "ortVersion": "1.23.2",
+  "ortProvider": "CUDAExecutionProvider",
+  "ortTf32": false,
+  "funAsrCommit": "0339018ba74a7defa3b6b6a96718d17b816be77b",
+  "llamaCommit": "8086439a4cea94c71a5dfb8fe4ad1546aebd640f",
+  "llamaSourceArchiveSha256": "1984103666eb25bd45110a40cba22b9d4286116f26e51bbc76f6f41dc86bc7b5",
+  "groups": [
+    {
+      "kind": "tts",
+      "model": "huayan",
+      "variant": "vulkan",
+      "count": 10,
+      "medianSeconds": 0.29591310000000004,
+      "p95Seconds": 0.3528219,
+      "minimumSeconds": 0.2629689,
+      "maximumSeconds": 0.3528219,
+      "samples": 69376,
+      "audioSeconds": 3.1463038548752835
+    },
+    {
+      "kind": "tts",
+      "model": "huayan",
+      "variant": "cuda",
+      "count": 10,
+      "medianSeconds": 0.020341199999999997,
+      "p95Seconds": 0.0249982,
+      "minimumSeconds": 0.0196538,
+      "maximumSeconds": 0.0249982,
+      "samples": 69376,
+      "audioSeconds": 3.1463038548752835
+    },
+    {
+      "kind": "tts",
+      "model": "aishell3",
+      "variant": "vulkan",
+      "count": 10,
+      "medianSeconds": 0.17444995000000002,
+      "p95Seconds": 0.2965857,
+      "minimumSeconds": 0.1387868,
+      "maximumSeconds": 0.2965857,
+      "samples": 28928,
+      "audioSeconds": 3.616
+    },
+    {
+      "kind": "tts",
+      "model": "aishell3",
+      "variant": "cuda",
+      "count": 10,
+      "medianSeconds": 0.018113200000000003,
+      "p95Seconds": 0.0186852,
+      "minimumSeconds": 0.016948,
+      "maximumSeconds": 0.0186852,
+      "samples": 28928,
+      "audioSeconds": 3.616
+    },
+    {
+      "kind": "asr",
+      "sample": "sip-short-pcma",
+      "variant": "vulkan",
+      "count": 10,
+      "medianSeconds": 0.56409455,
+      "p95Seconds": 0.7193769,
+      "minimumSeconds": 0.5254786,
+      "maximumSeconds": 0.7193769,
+      "audioSeconds": 5.9999375,
+      "texts": [
+        "我想问我在滨海新区有房。"
+      ],
+      "encoderGpuNodes": 0,
+      "maxTokens": 128
+    },
+    {
+      "kind": "asr",
+      "sample": "sip-short-pcma",
+      "variant": "cuda",
+      "count": 10,
+      "medianSeconds": 0.096141,
+      "p95Seconds": 0.103692,
+      "minimumSeconds": 0.093147,
+      "maximumSeconds": 0.103692,
+      "audioSeconds": 5.9999375,
+      "texts": [
+        "我想问我在滨海新区有房"
+      ],
+      "encoderGpuNodes": 6588,
+      "maxTokens": 128
+    },
+    {
+      "kind": "asr",
+      "sample": "sip-short-pcma",
+      "variant": "cuda-hybrid",
+      "count": 5,
+      "medianSeconds": 0.312395,
+      "p95Seconds": 0.31783,
+      "minimumSeconds": 0.300709,
+      "maximumSeconds": 0.31783,
+      "audioSeconds": 5.9999375,
+      "texts": [
+        "我想问我在滨海新区有房"
+      ],
+      "encoderGpuNodes": 0,
+      "maxTokens": 128
+    },
+    {
+      "kind": "asr",
+      "sample": "sip-zh-pcmu",
+      "variant": "vulkan",
+      "count": 10,
+      "medianSeconds": 0.712909,
+      "p95Seconds": 0.8968822,
+      "minimumSeconds": 0.6213814,
+      "maximumSeconds": 0.8968822,
+      "audioSeconds": 5.6159375,
+      "texts": [
+        "菜饭时间早上九点至下午五点。"
+      ],
+      "encoderGpuNodes": 0,
+      "maxTokens": 128
+    },
+    {
+      "kind": "asr",
+      "sample": "sip-zh-pcmu",
+      "variant": "cuda",
+      "count": 10,
+      "medianSeconds": 0.109323,
+      "p95Seconds": 0.134542,
+      "minimumSeconds": 0.103174,
+      "maximumSeconds": 0.134542,
+      "audioSeconds": 5.6159375,
+      "texts": [
+        "菜饭时间早上九点至下午五点。"
+      ],
+      "encoderGpuNodes": 6588,
+      "maxTokens": 128
+    },
+    {
+      "kind": "asr",
+      "sample": "sip-zh-pcmu",
+      "variant": "cuda-hybrid",
+      "count": 5,
+      "medianSeconds": 0.307834,
+      "p95Seconds": 0.324628,
+      "minimumSeconds": 0.306174,
+      "maximumSeconds": 0.324628,
+      "audioSeconds": 5.6159375,
+      "texts": [
+        "菜饭时间早上九点至下午五点。"
+      ],
+      "encoderGpuNodes": 0,
+      "maxTokens": 128
+    },
+    {
+      "kind": "asr",
+      "sample": "sip-repeated-pcma",
+      "variant": "vulkan",
+      "count": 6,
+      "medianSeconds": 2.47398695,
+      "p95Seconds": 2.7512683,
+      "minimumSeconds": 2.4301843,
+      "maximumSeconds": 2.7512683,
+      "audioSeconds": 27.99975,
+      "texts": [
+        "我想问我在滨海新区有房。我想问我在滨海新区有房。我想问我在滨海新区有房。我想问我在滨海新区有房。"
+      ],
+      "encoderGpuNodes": 0,
+      "maxTokens": 128
+    },
+    {
+      "kind": "asr",
+      "sample": "sip-repeated-pcma",
+      "variant": "cuda",
+      "count": 6,
+      "medianSeconds": 0.254278,
+      "p95Seconds": 0.264335,
+      "minimumSeconds": 0.246999,
+      "maximumSeconds": 0.264335,
+      "audioSeconds": 27.99975,
+      "texts": [
+        "我想问我在滨海新区有房。我想问我在滨海新区有房。我想问我在滨海新区有房。我想问我在滨海新区有房。"
+      ],
+      "encoderGpuNodes": 6588,
+      "maxTokens": 128
+    },
+    {
+      "kind": "asr",
+      "sample": "sip-repeated-pcma",
+      "variant": "cuda-hybrid",
+      "count": 3,
+      "medianSeconds": 1.484972,
+      "p95Seconds": 1.49763,
+      "minimumSeconds": 1.481667,
+      "maximumSeconds": 1.49763,
+      "audioSeconds": 27.99975,
+      "texts": [
+        "我想问我在滨海新区有房。我想问我在滨海新区有房。我想问我在滨海新区有房。我想问我在滨海新区有房。"
+      ],
+      "encoderGpuNodes": 0,
+      "maxTokens": 128
+    }
+  ],
+  "ttsParity": {
+    "huayan": {
+      "samples": 69376,
+      "maxAbsoluteError": 2.2549182176589966e-05,
+      "rmse": 1.1815397638761071e-06,
+      "passed": true
+    },
+    "aishell3": {
+      "samples": 28928,
+      "maxAbsoluteError": 2.3476779460906982e-05,
+      "rmse": 1.5510980135445263e-06,
+      "passed": true
+    }
+  },
+  "ortGpuProof": {
+    "huayan": {
+      "diagnosticRuns": 2,
+      "nodeEventCounts": {
+        "CUDAExecutionProvider": 3796,
+        "CPUExecutionProvider": 1332
+      },
+      "profileSha256": "7035bf97d471e11bb59f286e74c1567128e563cba81d9b6bc321e5df0f2ae6b4"
+    },
+    "aishell3": {
+      "diagnosticRuns": 2,
+      "nodeEventCounts": {
+        "CUDAExecutionProvider": 4000,
+        "CPUExecutionProvider": 766
+      },
+      "profileSha256": "571521086bfd03cdca13cb9fe552f9dac3d0f0b2e3e0d24686f66196bbe4960b"
+    }
+  },
+  "asrPromptCache": false,
+  "asrTextChecks": {
+    "sip-short-pcma": {
+      "exactMatch": false,
+      "alphanumericContentMatch": true,
+      "vulkanTexts": [
+        "我想问我在滨海新区有房。"
+      ],
+      "cudaTexts": [
+        "我想问我在滨海新区有房"
+      ]
+    },
+    "sip-zh-pcmu": {
+      "exactMatch": true,
+      "alphanumericContentMatch": true,
+      "vulkanTexts": [
+        "菜饭时间早上九点至下午五点。"
+      ],
+      "cudaTexts": [
+        "菜饭时间早上九点至下午五点。"
+      ]
+    },
+    "sip-repeated-pcma": {
+      "exactMatch": true,
+      "alphanumericContentMatch": true,
+      "vulkanTexts": [
+        "我想问我在滨海新区有房。我想问我在滨海新区有房。我想问我在滨海新区有房。我想问我在滨海新区有房。"
+      ],
+      "cudaTexts": [
+        "我想问我在滨海新区有房。我想问我在滨海新区有房。我想问我在滨海新区有房。我想问我在滨海新区有房。"
+      ]
+    }
+  },
+  "asrAdaptation": {
+    "upstreamAlgorithmUnchanged": true,
+    "upstreamWindowsDefaultsCpu": true,
+    "decoderCudaLayerSetting": 99,
+    "cpuThreads": 4,
+    "gpuDevice": 0,
+    "fullEncoderCudaRequiresDeviceAndBufferAdapter": true,
+    "cudaMatmulPrecision": "upstream default; F16 activation/accumulation paths may differ from Vulkan FP32",
+    "sourceSha256": "e2a472fae252b553df9c4b5389cf826a113e248c55140e943e8177a94c7988ff",
+    "adapterSha256": "aec4a786b89bfc24e6c43609656c47871bc92beac229c07172f98a6db0d6a061",
+    "wrapperSha256": "e59278cad94501b4d5396ba8f6ab7f272dc4125dad91a340246c6301ebc61b78",
+    "executableSha256": "012893ed99030b62088b289bb114bda495e66db3d12548c29d8bda50a4df315f",
+    "cudaToolkit": "12.6.20",
+    "msvc": "19.44.35207",
+    "cudaArchitecture": "86"
+  },
+  "measured": 105,
+  "warmup": 23,
+  "inputSha256": {
+    "sip-repeated-pcma.f32": "839f53e709e87ed6c74b645c5e2f871fd4af68e84b4b09698372f2d065c5b048",
+    "sip-short-pcma.f32": "8ebc139144c67bba23110e445db36b0cb9da70eeef32e5e8ad0d9dda06ce2322",
+    "sip-zh-pcmu.f32": "fb705a8368d62b25bfec86b28b897e94c61173ca5ba6c0490b5556e078471432"
+  },
+  "modelSha256": {
+    "encoder": "f92f91d01a24fbed6c863495b2ee8c6a6788144a02858b75743f0946668de8a2",
+    "decoder": "819f385dc0e035dccc3d9e7edaf6b7b044b8ba7ace63cbcbf84c7e397eecbf27",
+    "huayan": "04234ec24907e9efa7e153669e07d4e0cf6d260adc005323aa929386dae53f86",
+    "aishell3": "5511d651b7840c0a93a6bbfd4afd070a2c7f39ca1ec3ff2ecd73191519bbb852"
+  },
+  "cudaLogPathRedaction": "Local model/source prefixes replaced by models and llama-source; line endings/trailing spaces normalized; numeric records unchanged."
+}
