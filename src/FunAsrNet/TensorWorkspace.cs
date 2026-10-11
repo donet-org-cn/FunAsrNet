@@ -1,9 +1,9 @@
 namespace FunAsrNet;
-// 精确长度数组保持张量形状约束；只有同步 ASR 作用域创建的临时张量
+// 精确长度数组保持张量形状约束；只有同步推理作用域创建的临时张量
 // 可以归还工作区，模型权重、KV 缓存和调用方输入始终不属于此池。
 // 跟踪观察者收到独立快照，避免复用数组导致历史数据变化。
 /// <summary>
-/// 复用单次同步 ASR 范围内的临时张量；不接管模型、KV 缓存或调用方输入。
+/// 复用单次同步推理范围内的临时张量；不接管模型、KV 缓存或调用方输入。
 /// </summary>
 /// <param name="capacityBytes">允许工作区保留的缓冲区总字节数上限。</param>
 internal sealed class TensorWorkspace(long capacityBytes = 64L * 1024 * 1024)
@@ -97,8 +97,12 @@ internal sealed class TensorWorkspace(long capacityBytes = 64L * 1024 * 1024)
         }
     }
 
+    /// <summary>把返回给调用方的数组移出回收集合，后续推理不会覆盖该结果。</summary>
+    /// <param name="array">当前作用域可能拥有的结果数组，不接管外部存储。</param>
+    internal static void Detach(float[] array) => _current?._active.Remove(array);
+
     /// <summary>
-    /// 把需要跨作用域返回的数组移出回收集合。
+    /// 将已结束生命期的数组保留在有界缓存中。
     /// </summary>
     /// <param name="array">当前作用域拥有的临时数组。</param>
     private void Keep(float[] array)

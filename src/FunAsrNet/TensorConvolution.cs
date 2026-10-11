@@ -57,6 +57,7 @@ public static partial class TensorOps
             float[] input = b.Rank == 2 ? a.Data : a.Data.AsSpan(ao, m * k).ToArray();
             var result = math.Linear(input, frames, new Weight("MatMul", [k, n]) { Values = weights });
             result.CopyTo(y.Data, batch * m * n);
+            TensorWorkspace.Release(result);
         }
 
         if (bv)
@@ -133,12 +134,19 @@ public static partial class TensorOps
             return y;
         }
 
+        if (math.Simd && System.Runtime.Intrinsics.X86.Avx2.IsSupported && System.Runtime.Intrinsics.X86.Fma.IsSupported
+            && stride == 1 && outLength >= 4096 && Environment.GetEnvironmentVariable("FUNASRNET_LEGACY_CONV") != "1")
+        {
+            DirectConv1DAvx(x, w, bias, y, groups, dilation, pads[0], math);
+            return y;
+        }
+
         for (int batch = 0; batch < batches; ++batch)
         {
             for (int group = 0; group < groups; ++group)
             {
                 int width = inGroup * kernel;
-                var columns = new float[outLength * width];
+                var columns = TensorWorkspace.Allocate(outLength * width, clear: true);
                 math.For(
                     (outLength + 31) / 32,
                     block =>
@@ -167,6 +175,7 @@ public static partial class TensorOps
                     Values = groups == 1 ? bias.Data : bias.Data.AsSpan(group * outGroup, outGroup).ToArray()
                 };
                 var result = math.Linear(columns, outLength, weight, b);
+                TensorWorkspace.Release(columns);
                 for (int c = 0; c < outGroup; ++c)
                 {
                     for (int t = 0; t < outLength; ++t)
@@ -174,6 +183,7 @@ public static partial class TensorOps
                         y.Data[(batch * outputs + group * outGroup + c) * outLength + t] = result[t * outGroup + c];
                     }
                 }
+                TensorWorkspace.Release(result);
             }
         }
 
@@ -219,7 +229,7 @@ public static partial class TensorOps
         };
         for (int b = 0; b < batches; ++b)
         {
-            var input = new float[length * inputs];
+            var input = TensorWorkspace.Allocate(length * inputs);
             for (int t = 0; t < length; ++t)
             {
                 for (int i = 0; i < inputs; ++i)
@@ -229,6 +239,7 @@ public static partial class TensorOps
             }
 
             var result = math.Linear(input, length, weight);
+            TensorWorkspace.Release(input);
             math.For(
                 outputs,
                 channel =>
@@ -247,6 +258,7 @@ public static partial class TensorOps
                         }
                     }
                 });
+            TensorWorkspace.Release(result);
         }
 
         return y;

@@ -94,7 +94,9 @@ internal sealed class CpuKernelWorkers
                     continue;
                 }
 
-                Volatile.Write(ref _sleeping[worker], 1);
+                // 发布休眠意图与随后检查任务序号之间需要完整的存储/加载屏障。
+                // 仅使用 release/acquire 时，ARM64 可能让双方都读到旧值而漏掉唤醒。
+                Interlocked.Exchange(ref _sleeping[worker], 1);
                 if (Volatile.Read(ref _sequence) == seen)
                 {
                     _wake[worker].WaitOne();
@@ -137,7 +139,8 @@ internal sealed class CpuKernelWorkers
             _count = count;
             _error = null;
             _remaining = _wake.Length;
-            Volatile.Write(ref _sequence, unchecked(_sequence + 1));
+            // 完整屏障保证任务发布先于休眠标记检查，与工作线程的握手形成配对。
+            Interlocked.Increment(ref _sequence);
             for (int i = 0; i < _wake.Length; ++i)
             {
                 if (Volatile.Read(ref _sleeping[i]) != 0)

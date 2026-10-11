@@ -1,0 +1,161 @@
+{
+  "date": "2026-10-12",
+  "hardware": "Intel Core i7-12700 / Windows x64",
+  "sdk": "10.0.401",
+  "runtime": "10.0.12",
+  "ortVersion": "1.23.2",
+  "threads": 4,
+  "affinity": "0x55",
+  "baselineCommit": "fcfb20af9599383e03d19835dd083acfbe1b850a",
+  "after": "working tree CPU optimization",
+  "order": [
+    "before-a",
+    "after-b",
+    "ort-c",
+    "ort-d",
+    "after-e",
+    "before-f"
+  ],
+  "measured": 60,
+  "warmup": 12,
+  "percentileMethod": "nearest rank",
+  "groups": [
+    {
+      "model": "huayan",
+      "variant": "before",
+      "count": 10,
+      "medianSeconds": 0.97517105,
+      "p95Seconds": 1.0484106,
+      "minimumSeconds": 0.8976178,
+      "maximumSeconds": 1.0484106,
+      "audioSeconds": 3.1463038548752835,
+      "samples": 69376,
+      "peakRssBytes": 918339584
+    },
+    {
+      "model": "huayan",
+      "variant": "after",
+      "count": 10,
+      "medianSeconds": 0.31701485,
+      "p95Seconds": 0.4217177,
+      "minimumSeconds": 0.2976538,
+      "maximumSeconds": 0.4217177,
+      "audioSeconds": 3.1463038548752835,
+      "samples": 69376,
+      "peakRssBytes": 929226752
+    },
+    {
+      "model": "huayan",
+      "variant": "ort",
+      "count": 10,
+      "medianSeconds": 0.1016206,
+      "p95Seconds": 0.1073172,
+      "minimumSeconds": 0.0992022,
+      "maximumSeconds": 0.1073172,
+      "audioSeconds": 3.1463038548752835,
+      "samples": 69376,
+      "peakRssBytes": 249856000
+    },
+    {
+      "model": "aishell3",
+      "variant": "before",
+      "count": 10,
+      "medianSeconds": 0.4071256,
+      "p95Seconds": 0.4910482,
+      "minimumSeconds": 0.3631166,
+      "maximumSeconds": 0.4910482,
+      "audioSeconds": 3.616,
+      "samples": 28928,
+      "peakRssBytes": 308490240
+    },
+    {
+      "model": "aishell3",
+      "variant": "after",
+      "count": 10,
+      "medianSeconds": 0.13247425000000002,
+      "p95Seconds": 0.1531526,
+      "minimumSeconds": 0.1260613,
+      "maximumSeconds": 0.1531526,
+      "audioSeconds": 3.616,
+      "samples": 28928,
+      "peakRssBytes": 201023488
+    },
+    {
+      "model": "aishell3",
+      "variant": "ort",
+      "count": 10,
+      "medianSeconds": 0.0428308,
+      "p95Seconds": 0.0453645,
+      "minimumSeconds": 0.0422341,
+      "maximumSeconds": 0.0453645,
+      "audioSeconds": 3.616,
+      "samples": 28928,
+      "peakRssBytes": 161067008
+    }
+  ],
+  "parity": {
+    "huayan": {
+      "ort-d": {
+        "samples": 69376,
+        "maxAbsoluteError": 1.685693860054016e-05,
+        "rmse": 9.26006352464139e-07,
+        "passed": true,
+        "referenceSha256": "b9363b1c8461b068b7fb51dcd3b08a1ae55e13f5e042dd8dfbb407eb0aeebc86",
+        "actualSha256": "0baefc1bb53021d2cf4656c2011582e06df2e5e459fbe9a11252242ae0e9ec5a"
+      },
+      "before-f": {
+        "samples": 69376,
+        "maxAbsoluteError": 1.8090009689331055e-05,
+        "rmse": 7.080881656037736e-07,
+        "passed": true,
+        "referenceSha256": "b2119325a0a2ddece162b197232d4ad51b3cc4f124086059ce9582bb477894d1",
+        "actualSha256": "0baefc1bb53021d2cf4656c2011582e06df2e5e459fbe9a11252242ae0e9ec5a"
+      }
+    },
+    "aishell3": {
+      "ort-d": {
+        "samples": 28928,
+        "maxAbsoluteError": 3.303401172161102e-05,
+        "rmse": 1.8276243926592733e-06,
+        "passed": true,
+        "referenceSha256": "24c7f168c08655065311a99f8e3e32d35ff86125186d20ec31d59391c8041ac4",
+        "actualSha256": "d2fb9da758c21720cde0499216085e81f6dfa349b0e633e007006ffffae007f2"
+      },
+      "before-f": {
+        "samples": 28928,
+        "maxAbsoluteError": 1.9470229744911194e-05,
+        "rmse": 1.3030579295433585e-06,
+        "passed": true,
+        "referenceSha256": "ddd0d2d42d06aa38aad9323d56c7f137946caa941a53329fad4e858e897e7949",
+        "actualSha256": "d2fb9da758c21720cde0499216085e81f6dfa349b0e633e007006ffffae007f2"
+      }
+    }
+  },
+  "modelSha256": {
+    "huayan": "04234ec24907e9efa7e153669e07d4e0cf6d260adc005323aa929386dae53f86",
+    "aishell3": "5511d651b7840c0a93a6bbfd4afd070a2c7f39ca1ec3ff2ecd73191519bbb852"
+  },
+  "validation": {
+    "numericChecks": 685701,
+    "gpuChecks": 134474,
+    "releaseBuild": true,
+    "whitespaceCheck": true,
+    "chineseStyleCheck": true,
+    "gpuWaveformParity": {
+      "huayan": {
+        "samples": 69376,
+        "maxAbsoluteError": 1.8477439880371094e-05,
+        "rmse": 9.46773131154478e-07,
+        "passed": true
+      },
+      "aishell3": {
+        "samples": 28928,
+        "maxAbsoluteError": 1.9574537873268127e-05,
+        "rmse": 1.0872076320584128e-06,
+        "passed": true
+      }
+    },
+    "localDemoChecks": true
+  },
+  "afterSha256": "e2fac0a0e9033fcfb5f348644f7b361257f04f971a574e0a0fd22cd1207c7351"
+}

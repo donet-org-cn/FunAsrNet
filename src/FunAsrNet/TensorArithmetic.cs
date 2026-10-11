@@ -5,7 +5,7 @@ namespace FunAsrNet;
 /// <summary>保留 FP32 和广播语义的连续逐元素向量算子。</summary>
 public static partial class TensorOps
 {
-    /// <summary>向量化加减乘除，复杂广播和整数除法继续使用通用实现。</summary>
+    /// <summary>按连续末维分块向量化加减乘除，整数除法保留截断语义。</summary>
     /// <param name="a">左操作数，只读且保持原始存储精度。</param>
     /// <param name="b">右操作数，只读；可与左侧形状相同或广播。</param>
     /// <param name="operation">运算名称，仅接受 Add、Sub、Mul、Div。</param>
@@ -34,25 +34,22 @@ public static partial class TensorOps
             return y;
         }
 
-        // NCL 通道常量广播：每个时间块只查询一次通道值，不对每个采样点做除余索引。
-        bool leftFull = a.Shape.SequenceEqual(shape);
-        Tensor full = leftFull ? a : b, channel = leftFull ? b : a;
-        int[] channelShape = Enumerable.Repeat(1, 3 - Math.Min(3, channel.Rank)).Concat(channel.Shape).ToArray();
-        if (shape.Length == 3 && full.Shape.SequenceEqual(shape) && channelShape.Length == 3
-            && channelShape[0] == 1 && channelShape[1] == shape[1] && channelShape[2] == 1)
+        // 时间掩码和通道常量都按行广播，只在每行开始计算一次外层坐标。
+        // 最后一维的访问步长只能为零或一，可直接使用连续向量内核。
+        var result = Tensor.Zeros(shape, a.Integer && b.Integer);
+        if (result.Count != 0)
         {
-            var y = Tensor.Zeros(shape, a.Integer && b.Integer);
-            for (int block = 0; block < shape[0] * shape[1]; block++)
+            int width = shape[^1];
+            int[] outer = shape[..^1], sa = BroadcastStrides(a, shape.Length), sb = BroadcastStrides(b, shape.Length);
+            int leftWidth = sa[^1] == 0 ? 1 : width, rightWidth = sb[^1] == 0 ? 1 : width;
+            for (int block = 0; block < result.Count / width; block++)
             {
-                var values = full.Data.AsSpan(block * shape[2], shape[2]);
-                var value = channel.Data.AsSpan(block % shape[1], 1);
-                ArithmeticBlock(leftFull ? values : value, leftFull ? value : values, y.Data.AsSpan(block * shape[2], shape[2]), operation, scalar);
+                var left = a.Data.AsSpan(Offset(block, outer, sa), leftWidth);
+                var right = b.Data.AsSpan(Offset(block, outer, sb), rightWidth);
+                ArithmeticBlock(left, right, result.Data.AsSpan(block * width, width), operation, scalar);
             }
-
-            return y;
         }
-
-        return Binary(a, b, scalar, a.Integer && b.Integer);
+        return result;
     }
 
     /// <summary>计算连续块，长度为一的操作数按标量广播。</summary>
@@ -64,6 +61,23 @@ public static partial class TensorOps
     private static void ArithmeticBlock(ReadOnlySpan<float> left, ReadOnlySpan<float> right, Span<float> output, string operation, Func<float, float, float> scalar)
     {
         int index = 0;
+        if (Vector256.IsHardwareAccelerated)
+        {
+            for (; index <= output.Length - 8; index += 8)
+            {
+                var a = left.Length == 1 ? Vector256.Create(left[0]) : Vector256.LoadUnsafe(ref System.Runtime.InteropServices.MemoryMarshal.GetReference(left), (nuint)index);
+                var b = right.Length == 1 ? Vector256.Create(right[0]) : Vector256.LoadUnsafe(ref System.Runtime.InteropServices.MemoryMarshal.GetReference(right), (nuint)index);
+                var value = operation switch
+                {
+                    "Add" => a + b,
+                    "Sub" => a - b,
+                    "Mul" => a * b,
+                    "Div" => a / b,
+                    _ => throw new InvalidOperationException("未验证的逐元素运算。")
+                };
+                value.StoreUnsafe(ref System.Runtime.InteropServices.MemoryMarshal.GetReference(output), (nuint)index);
+            }
+        }
         for (; index <= output.Length - 4; index += 4)
         {
             var a = left.Length == 1 ? Vector128.Create(left[0]) : Vector128.LoadUnsafe(ref System.Runtime.InteropServices.MemoryMarshal.GetReference(left), (nuint)index);

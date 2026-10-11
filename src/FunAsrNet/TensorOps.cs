@@ -285,6 +285,29 @@ public static partial class TensorOps
         var source = Strides(x.Shape);
         var strides = permutation.Select(i => source[i]).ToArray();
         var y = Tensor.Zeros(shape, x.Integer);
+        if (x.Rank >= 2 && permutation.Take(x.Rank - 2).SequenceEqual(Enumerable.Range(0, x.Rank - 2))
+            && permutation[^2] == x.Rank - 1 && permutation[^1] == x.Rank - 2)
+        {
+            int rows = x.Shape[^2], columns = x.Shape[^1], batches = Tensor.Size(x.Shape[..^2]);
+            for (int batch = 0; batch < batches; batch++)
+            {
+                int offset = batch * rows * columns;
+                for (int rowBlock = 0; rowBlock < rows; rowBlock += 32)
+                {
+                    for (int columnBlock = 0; columnBlock < columns; columnBlock += 32)
+                    {
+                        for (int column = columnBlock; column < Math.Min(columns, columnBlock + 32); column++)
+                        {
+                            for (int row = rowBlock; row < Math.Min(rows, rowBlock + 32); row++)
+                            {
+                                y.Data[offset + column * rows + row] = x.Data[offset + row * columns + column];
+                            }
+                        }
+                    }
+                }
+            }
+            return y;
+        }
         for (int i = 0; i < y.Count; ++i)
         {
             y.Data[i] = x.Data[Offset(i, shape, strides)];
@@ -467,6 +490,20 @@ public static partial class TensorOps
         var original = Strides(x.Shape);
         int initial = begin.Zip(original, (a, b) => a * b).Sum();
         var strides = original.Zip(increment, (a, b) => a * b).ToArray();
+        int inner = 1, first = shape.Length;
+        while (first > 0 && strides[first - 1] == inner)
+        {
+            inner *= shape[--first];
+        }
+        if (inner > 1)
+        {
+            int[] outerShape = shape[..first], outerStrides = strides[..first];
+            for (int block = 0; block < y.Count / inner; block++)
+            {
+                x.Data.AsSpan(initial + Offset(block, outerShape, outerStrides), inner).CopyTo(y.Data.AsSpan(block * inner, inner));
+            }
+            return y;
+        }
         for (int i = 0; i < y.Count; ++i)
         {
             y.Data[i] = x.Data[initial + Offset(i, shape, strides)];
@@ -513,6 +550,26 @@ public static partial class TensorOps
         var shape = x.Shape.Select((n, i) => checked(n + pads[i] + pads[i + x.Rank])).ToArray();
         var y = Tensor.Zeros(shape, x.Integer);
         var strides = Strides(x.Shape);
+        // 只填充最后一维时，按整行复制；同时处理负填充造成的裁剪。
+        if (x.Rank > 0 && Enumerable.Range(0, x.Rank - 1).All(axis => pads[axis] == 0 && pads[axis + x.Rank] == 0))
+        {
+            if (BitConverter.SingleToInt32Bits(value) != 0)
+            {
+                Array.Fill(y.Data, value);
+            }
+            int width = x.Shape[^1], outputWidth = shape[^1], left = pads[x.Rank - 1];
+            int sourceStart = Math.Max(0, -left), destinationStart = Math.Max(0, left);
+            int count = Math.Max(0, Math.Min(width - sourceStart, outputWidth - destinationStart));
+            if (count > 0)
+            {
+                int rows = Tensor.Size(x.Shape[..^1]);
+                for (int row = 0; row < rows; row++)
+                {
+                    x.Data.AsSpan(row * width + sourceStart, count).CopyTo(y.Data.AsSpan(row * outputWidth + destinationStart, count));
+                }
+            }
+            return y;
+        }
         for (int i = 0; i < y.Count; ++i)
         {
             int n = i, at = 0;
@@ -549,6 +606,26 @@ public static partial class TensorOps
         var set = (axes ?? Enumerable.Range(0, x.Rank).ToArray()).Select(a => Axis(a, x.Rank)).ToHashSet();
         var keptShape = x.Shape.Select((n, i) => set.Contains(i) ? 1 : n).ToArray();
         var y = Tensor.Zeros(keptShape, x.Integer);
+        if (set.Count == 1)
+        {
+            int axis = set.Single(), width = x.Shape[axis];
+            int inner = Tensor.Size(x.Shape[(axis + 1)..]), outer = Tensor.Size(x.Shape[..axis]);
+            // 逐轴累加的先后顺序与通用实现一致，只消除每个元素的多维除余索引。
+            for (int block = 0; block < outer; block++)
+            {
+                for (int index = 0; index < inner; index++)
+                {
+                    float sum = op == "ReduceMax" ? float.NegativeInfinity : 0;
+                    for (int item = 0; item < width; item++)
+                    {
+                        float value = x.Data[(block * width + item) * inner + index];
+                        sum = op == "ReduceMax" ? Math.Max(sum, value) : sum + value;
+                    }
+                    y.Data[block * inner + index] = op == "ReduceMean" ? sum / width : sum;
+                }
+            }
+            return keep ? y : y.View(x.Shape.Where((_, i) => i != axis).ToArray());
+        }
         var strides = Strides(keptShape);
         for (int d = 0; d < x.Rank; ++d)
         {

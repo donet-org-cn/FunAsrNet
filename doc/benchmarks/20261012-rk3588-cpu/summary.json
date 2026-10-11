@@ -1,0 +1,285 @@
+{
+  "platform": "RK3588 / Ubuntu 20.04.5 / Linux ARM64",
+  "runtime": "10.0.10",
+  "threads": 4,
+  "affinity": [
+    4,
+    5,
+    6,
+    7
+  ],
+  "before": {
+    "temperature": 49.0,
+    "memory": {
+      "MemTotal": 8109588,
+      "MemAvailable": 4554556,
+      "SwapTotal": 8388604,
+      "SwapFree": 5526780
+    },
+    "swapCounters": {
+      "pswpin": 271086,
+      "pswpout": 760564
+    }
+  },
+  "deployedBeforeSha256": "b4ecc9c5dc4ef4dce3d24b3cabe1dc89494c910384df5986d9fffad2974e38e1",
+  "afterSha256": "e2fac0a0e9033fcfb5f348644f7b361257f04f971a574e0a0fd22cd1207c7351",
+  "modelSha256": {
+    "huayan": "04234ec24907e9efa7e153669e07d4e0cf6d260adc005323aa929386dae53f86",
+    "aishell3": "5511d651b7840c0a93a6bbfd4afd070a2c7f39ca1ec3ff2ecd73191519bbb852"
+  },
+  "inputSha256": {
+    "huayan": "feb05cdbb64fdf8045f0c08e42701ee5e24a72f7feee73c2858abce65f760569",
+    "aishell3": "66ac60d96f74dd848d71580982ac6dd0227ce53ec80fac3afca25cfa2dc012ee"
+  },
+  "order": [
+    "before-a",
+    "after-b",
+    "ort-c",
+    "ort-d",
+    "after-e",
+    "before-f"
+  ],
+  "after": {
+    "temperature": 57.307,
+    "memory": {
+      "MemTotal": 8109588,
+      "MemAvailable": 4570292,
+      "SwapTotal": 8388604,
+      "SwapFree": 5526780
+    },
+    "swapCounters": {
+      "pswpin": 271086,
+      "pswpout": 760564
+    }
+  },
+  "date": "2026-10-12",
+  "measured": 60,
+  "warmup": 12,
+  "percentileMethod": "nearest rank",
+  "groups": [
+    {
+      "model": "huayan",
+      "variant": "before",
+      "count": 10,
+      "medianSeconds": 2.14179475,
+      "p95Seconds": 2.4309145,
+      "minimumSeconds": 1.8932498,
+      "maximumSeconds": 2.4309145,
+      "samples": 69376,
+      "audioSeconds": 3.1463038548752835,
+      "peakRssBytes": 784138240,
+      "temperatureBeforeRange": [
+        51.769,
+        59.153
+      ],
+      "temperatureAfterMaximum": 60.076
+    },
+    {
+      "model": "huayan",
+      "variant": "after",
+      "count": 10,
+      "medianSeconds": 1.2340217,
+      "p95Seconds": 1.6657583,
+      "minimumSeconds": 1.1671119,
+      "maximumSeconds": 1.6657583,
+      "samples": 69376,
+      "audioSeconds": 3.1463038548752835,
+      "peakRssBytes": 811614208,
+      "temperatureBeforeRange": [
+        54.538,
+        59.153
+      ],
+      "temperatureAfterMaximum": 60.076
+    },
+    {
+      "model": "huayan",
+      "variant": "ort",
+      "count": 10,
+      "medianSeconds": 0.43679665,
+      "p95Seconds": 0.5718385,
+      "minimumSeconds": 0.3676984,
+      "maximumSeconds": 0.5718385,
+      "samples": 69376,
+      "audioSeconds": 3.1463038548752835,
+      "peakRssBytes": 253755392,
+      "temperatureBeforeRange": [
+        55.461,
+        59.153
+      ],
+      "temperatureAfterMaximum": 59.153
+    },
+    {
+      "model": "aishell3",
+      "variant": "before",
+      "count": 10,
+      "medianSeconds": 1.14853175,
+      "p95Seconds": 1.464248,
+      "minimumSeconds": 0.9756288,
+      "maximumSeconds": 1.464248,
+      "samples": 28928,
+      "audioSeconds": 3.616,
+      "peakRssBytes": 342388736,
+      "temperatureBeforeRange": [
+        55.461,
+        59.153
+      ],
+      "temperatureAfterMaximum": 61
+    },
+    {
+      "model": "aishell3",
+      "variant": "after",
+      "count": 10,
+      "medianSeconds": 0.7422253000000001,
+      "p95Seconds": 0.8617668,
+      "minimumSeconds": 0.7060168,
+      "maximumSeconds": 0.8617668,
+      "samples": 28928,
+      "audioSeconds": 3.616,
+      "peakRssBytes": 584130560,
+      "temperatureBeforeRange": [
+        55.461,
+        59.153
+      ],
+      "temperatureAfterMaximum": 61
+    },
+    {
+      "model": "aishell3",
+      "variant": "ort",
+      "count": 10,
+      "medianSeconds": 0.2335473,
+      "p95Seconds": 0.3311269,
+      "minimumSeconds": 0.1688028,
+      "maximumSeconds": 0.3311269,
+      "samples": 28928,
+      "audioSeconds": 3.616,
+      "peakRssBytes": 170250240,
+      "temperatureBeforeRange": [
+        55.461,
+        59.153
+      ],
+      "temperatureAfterMaximum": 60.076
+    }
+  ],
+  "parity": {
+    "huayan": {
+      "ort-d": {
+        "samples": 69376,
+        "maxAbsoluteError": 7.554888725280762e-06,
+        "rmse": 4.533936927099839e-07,
+        "cosine": 0.9999999999870584,
+        "passed": true
+      },
+      "before-f": {
+        "samples": 69376,
+        "maxAbsoluteError": 0,
+        "rmse": 0,
+        "cosine": 1,
+        "passed": true
+      }
+    },
+    "aishell3": {
+      "ort-d": {
+        "samples": 28928,
+        "maxAbsoluteError": 2.9888935387134552e-05,
+        "rmse": 1.9440334608017097e-06,
+        "cosine": 0.9999999911618133,
+        "passed": true
+      },
+      "before-f": {
+        "samples": 28928,
+        "maxAbsoluteError": 0,
+        "rmse": 0,
+        "cosine": 1,
+        "passed": true
+      }
+    }
+  },
+  "validation": {
+    "armNumericChecks": 685701,
+    "wakeupStressCheck": true,
+    "remoteHttpDemoChecks": true,
+    "remoteHttpsDemoChecks": true,
+    "certificateReused": true,
+    "serviceProduct": "FunAsrNet",
+    "serviceReady": true,
+    "asrServiceMeasured": 18,
+    "asrServiceWarmup": 6
+  },
+  "asrServiceGroups": [
+    {
+      "sample": "sip-short-pcma",
+      "variant": "before",
+      "count": 3,
+      "medianSeconds": 1.0408039,
+      "p95Seconds": 1.1975872,
+      "audioSeconds": 5.9999375,
+      "texts": [
+        "我想问我在滨海新区有房。"
+      ]
+    },
+    {
+      "sample": "sip-short-pcma",
+      "variant": "after",
+      "count": 3,
+      "medianSeconds": 1.011537,
+      "p95Seconds": 1.2124452,
+      "audioSeconds": 5.9999375,
+      "texts": [
+        "我想问我在滨海新区有房。"
+      ]
+    },
+    {
+      "sample": "sip-zh-pcmu",
+      "variant": "before",
+      "count": 3,
+      "medianSeconds": 1.2085068,
+      "p95Seconds": 1.219837,
+      "audioSeconds": 5.6159375,
+      "texts": [
+        "菜饭时间早上九点至下午五点。"
+      ]
+    },
+    {
+      "sample": "sip-zh-pcmu",
+      "variant": "after",
+      "count": 3,
+      "medianSeconds": 1.194255,
+      "p95Seconds": 1.1986172,
+      "audioSeconds": 5.6159375,
+      "texts": [
+        "菜饭时间早上九点至下午五点。"
+      ]
+    },
+    {
+      "sample": "sip-repeated-pcma",
+      "variant": "before",
+      "count": 3,
+      "medianSeconds": 8.2369957,
+      "p95Seconds": 10.0838648,
+      "audioSeconds": 27.99975,
+      "texts": [
+        "我想问我在滨海新区有房。我想问我在滨海新区有房。我想问我在滨海新区有房。我想问我在滨海新区有房。"
+      ]
+    },
+    {
+      "sample": "sip-repeated-pcma",
+      "variant": "after",
+      "count": 3,
+      "medianSeconds": 5.1688483,
+      "p95Seconds": 5.2788414,
+      "audioSeconds": 27.99975,
+      "texts": [
+        "我想问我在滨海新区有房。我想问我在滨海新区有房。我想问我在滨海新区有房。我想问我在滨海新区有房。"
+      ]
+    }
+  ],
+  "deployment": {
+    "service": "rkspeech-dotnet.service",
+    "coreSha256": "e2fac0a0e9033fcfb5f348644f7b361257f04f971a574e0a0fd22cd1207c7351",
+    "modelFilesUnchanged": true,
+    "existingCertificateRetained": true,
+    "httpPort": 18080,
+    "httpsPort": 18443,
+    "backupRetained": true
+  }
+}

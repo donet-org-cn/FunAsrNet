@@ -8,9 +8,10 @@ public sealed class ManagedOnnx
     private readonly OnnxModel _model;
     private readonly TensorMath _math;
     private readonly Dictionary<string, int> _uses = [];
+    private readonly TensorWorkspace _workspace = new();
     private Random _random = new(1);
     /// <summary>
-    /// 可选的中间张量观察回调，仅供验证使用；开启后会产生额外快照分配。
+    /// 可选的中间张量观察回调，仅供验证使用；开启后禁用临时数组复用以保留历史值。
     /// </summary>
     public Action<int, OnnxNode, Tensor[]>? Trace
     {
@@ -24,6 +25,9 @@ public sealed class ManagedOnnx
     {
         get; set;
     }
+
+    /// <summary>是否复用临时张量，默认启用；跟踪回调开启时自动禁用以保留观察结果。</summary>
+    public bool ReuseBuffers { get; set; } = Environment.GetEnvironmentVariable("FUNASRNET_REUSE_TTS_BUFFERS") != "0";
 
     /// <summary>可选计算后端，须在执行前配置；后端资源由调用方管理。</summary>
     public IFloatComputeBackend? FloatBackend
@@ -66,12 +70,19 @@ public sealed class ManagedOnnx
     /// <returns>调用成功时返回的结果；失败通过异常报告。</returns>
     public Dictionary<string, Tensor> Run(Dictionary<string, Tensor> inputs, int seed = 1)
     {
+        using var affinity = _math.PinCaller();
+        using var scope = _workspace.Enter(ReuseBuffers && Trace is null);
         _random = new Random(seed);
         var values = new Dictionary<string, Tensor>(_model.Constants);
+        var references = new Dictionary<float[], int>(ReferenceEqualityComparer.Instance);
         var remaining = new Dictionary<string, int>(_uses);
         foreach (var item in inputs)
         {
             values[item.Key] = item.Value;
+        }
+        foreach (var tensor in values.Values)
+        {
+            references[tensor.Data] = references.GetValueOrDefault(tensor.Data) + 1;
         }
 
         for (int i = 0; i < _model.Nodes.Count; ++i)
@@ -99,6 +110,7 @@ public sealed class ManagedOnnx
             for (int j = 0; j < output.Length; ++j)
             {
                 values[node.Outputs[j]] = output[j];
+                references[output[j].Data] = references.GetValueOrDefault(output[j].Data) + 1;
             }
 
             Trace?.Invoke(i, node, output);
@@ -106,12 +118,24 @@ public sealed class ManagedOnnx
             {
                 if (input.Length != 0 && --remaining[input] == 0 && !_model.Constants.ContainsKey(input))
                 {
+                    // Reshape、Identity、Split 等视图可能仍引用同一数组，最后一个命名视图结束后才能回收。
+                    float[] array = values[input].Data;
                     values.Remove(input);
+                    if (--references[array] == 0)
+                    {
+                        references.Remove(array);
+                        TensorWorkspace.Release(array);
+                    }
                 }
             }
         }
 
-        return _model.Outputs.ToDictionary(n => n, n => values[n]);
+        var result = _model.Outputs.ToDictionary(n => n, n => values[n]);
+        foreach (var tensor in result.Values)
+        {
+            TensorWorkspace.Detach(tensor.Data);
+        }
+        return result;
     }
 
     /// <summary>

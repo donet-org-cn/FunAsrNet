@@ -848,6 +848,9 @@ for (int i = 0; i < 10000; i++)
 long allocatedDecode = GC.GetAllocatedBytesForCurrentThread() - beforeDecode;
 Check(allocatedDecode == 0, $"Caller-buffer PCM decoder: {allocatedDecode} allocated bytes in 10000 frames");
 await ConcurrencyChecks.RunAsync(Check);
+await KernelWorkerChecks.RunAsync(Check);
+OnnxBufferChecks.Run(Check);
+TensorOptimizationChecks.Run(Check);
 var matrix = new Tensor([1, 2, 3, 4, 5, 6], [2, 3]);
 Check(TensorOps.Transpose(matrix).Data.SequenceEqual(new float[] { 1, 4, 2, 5, 3, 6 }), "Transpose known matrix");
 Check(TensorOps.Gather(matrix, new Tensor([-1, 0], [2], true), 1).Data.SequenceEqual(new float[] { 3, 1, 6, 4 }), "Gather negative index");
@@ -881,7 +884,7 @@ foreach (string operation in new[] { "Add", "Sub", "Mul", "Div" })
         _ => (left, right) => left / right
     };
     var full = new Tensor(Enumerable.Range(1, 30).Select(value => value / 7f).ToArray(), [2, 3, 5]);
-    foreach (var other in new[] { full, new Tensor([0.75f], []), new Tensor([1.5f, 2.5f, 3.5f], [1, 3, 1]), new Tensor([1, 2, 3, 4, 5], [1, 1, 5]) })
+    foreach (var other in new[] { full, new Tensor([0.75f], []), new Tensor([1.5f, 2.5f, 3.5f], [1, 3, 1]), new Tensor([1, 2, 3, 4, 5], [1, 1, 5]), new Tensor(Enumerable.Range(1, 10).Select(value => (float)value).ToArray(), [2, 1, 5]) })
     {
         foreach (bool reversed in new[] { false, true })
         {
@@ -904,7 +907,7 @@ for (int index = 0; index < leakyInput.Length; index++)
     Check(float.IsNaN(expected) ? float.IsNaN(leaky.Data[index]) : BitConverter.SingleToInt32Bits(expected) == BitConverter.SingleToInt32Bits(leaky.Data[index]), "LeakyRelu signed zero, nonfinite and SIMD tail");
 }
 
-foreach (int length in new[] { 257, 519 })
+foreach (int length in new[] { 257, 519, 4097 })
 {
     foreach (int kernel in new[] { 1, 3, 4, 7 })
     {

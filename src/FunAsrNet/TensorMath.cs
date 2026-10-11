@@ -16,13 +16,13 @@ public sealed partial class TensorMath(int threads = 4, bool simd = true)
     {
         MaxDegreeOfParallelism = Math.Max(1, threads)
     };
-    private readonly CpuKernelWorkers? _workers = threads > 1 && (AdvSimd.Arm64.IsSupported || Environment.GetEnvironmentVariable("FUNASRNET_SPIN_WORKERS") == "1") && Environment.GetEnvironmentVariable("FUNASRNET_SPIN_WORKERS") != "0" ? CpuKernelWorkers.Get(threads) : null;
+    private readonly CpuKernelWorkers? _workers = threads > 1 && (AdvSimd.Arm64.IsSupported || System.Runtime.Intrinsics.X86.Avx2.IsSupported || Environment.GetEnvironmentVariable("FUNASRNET_SPIN_WORKERS") == "1") && Environment.GetEnvironmentVariable("FUNASRNET_SPIN_WORKERS") != "0" ? CpuKernelWorkers.Get(threads) : null;
     /// <summary>
     /// 当前计算实例是否允许使用硬件 SIMD 路径。
     /// </summary>
     public bool Simd { get; } = simd;
     /// <summary>
-    /// 是否启用打包与交错布局的专用矩阵内核。
+    /// 是否启用行主序权重的 ARM 专用打包内核；交错权重和 AVX2 路径按布局与硬件选择。
     /// </summary>
     public bool Optimized { get; set; } = Environment.GetEnvironmentVariable("FUNASRNET_LEGACY_KERNELS") != "1";
 
@@ -58,7 +58,7 @@ public sealed partial class TensorMath(int threads = 4, bool simd = true)
                 body(i);
             }
         }
-        else if (_workers is not null && Optimized)
+        else if (_workers is not null)
         {
             _workers.For(count, body);
         }
@@ -102,6 +102,12 @@ public sealed partial class TensorMath(int threads = 4, bool simd = true)
         else if (w.QuantizedInterleaved)
         {
             InterleavedQuantizedLinear(input, frames, w, bias, output);
+        }
+        else if (Simd && System.Runtime.Intrinsics.X86.Avx2.IsSupported && System.Runtime.Intrinsics.X86.Fma.IsSupported
+            && w.Values is not null && frames >= 16 && n >= 16 && m >= 4
+            && Environment.GetEnvironmentVariable("FUNASRNET_LEGACY_KERNELS") != "1")
+        {
+            PackedFloatLinearAvx(input, frames, w, bias, output);
         }
         else if (Optimized && Simd && AdvSimd.Arm64.IsSupported && w.Values is not null && frames >= 16 && n >= 128 && m >= 4)
         {

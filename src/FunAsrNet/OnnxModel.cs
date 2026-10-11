@@ -54,7 +54,7 @@ public sealed class Tensor(float[] data, int[] shape, bool integer = false)
     /// <param name="shape">按行主序排列的目标维度数组。</param>
     /// <param name="integer">是否将张量视为模型的整数形状或索引数据。</param>
     /// <returns>具有输出形状的结果张量。</returns>
-    public static Tensor Zeros(int[] shape, bool integer = false) => new(new float[Size(shape)], shape, integer);
+    public static Tensor Zeros(int[] shape, bool integer = false) => new(TensorWorkspace.Allocate(Size(shape), clear: true), shape, integer);
     /// <summary>
     /// 将张量元素或节点整数属性转换为整数数组。
     /// </summary>

@@ -13,7 +13,7 @@ Console.OutputEncoding = Encoding.UTF8;
 var jsonOptions = new JsonSerializerOptions { Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping };
 if (args.Length < 1)
 {
-    throw new ArgumentException("用法：prepare 模型目录 词典 样例目录 输出目录 | asr 模型目录 PCM文件 次数 [--vulkan] | http-asr 服务地址 WAV文件 次数 | tts 模型目录 ID文件 huayan或aishell3 次数 输出文件 [--profile] [--vulkan] | compare 参考波形 实际波形 | gpu-info | gpu-check | vulkan | npu；Windows 可添加 --affinity 0x55。");
+    throw new ArgumentException("用法：prepare 模型目录 词典 样例目录 输出目录 | prepare-tts 模型目录 词典 huayan或aishell3 文本 ID文件 | asr 模型目录 PCM文件 次数 [--vulkan] | http-asr 服务地址 WAV文件 次数 | tts 模型目录 ID文件 huayan或aishell3 次数 输出文件 [--threads 4] [--profile] [--vulkan] | compare 参考波形 实际波形 | gpu-info | gpu-check | vulkan | npu；Windows 可添加 --affinity 0x55。");
 }
 
 if (OperatingSystem.IsWindows() && Array.IndexOf(args, "--affinity") is int affinityIndex and >= 0)
@@ -256,6 +256,42 @@ if (args[0] == "npu")
     return;
 }
 
+if (args[0] == "prepare-tts")
+{
+    bool aishell = args[3] == "aishell3";
+    int[] encoded;
+    if (aishell)
+    {
+        var model = new OnnxModel(Path.Combine(args[1], "aishell3/model.onnx"));
+        encoded = new IcefallFrontend(args[2], Path.Combine(args[1], "aishell3/tokens.txt"), model.Metadata).Encode(args[4]);
+    }
+    else if (args[3] == "huayan")
+    {
+        encoded = new MandarinFrontend(args[2], Path.Combine(args[1], "zh_CN-huayan-medium.onnx.json")).Encode(args[4]);
+    }
+    else
+    {
+        throw new ArgumentException("TTS 模型须为 huayan 或 aishell3。");
+    }
+    long[] ids = encoded.Select(id => (long)id).ToArray();
+    byte[] bytes = MemoryMarshal.AsBytes(ids.AsSpan()).ToArray();
+    Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(args[5]))!);
+    File.WriteAllBytes(args[5], bytes);
+    Emit(new
+    {
+        kind = "tts-input",
+        name = args[3],
+        text = args[4],
+        ids,
+        sha256 = Convert.ToHexString(SHA256.HashData(bytes)),
+        noise = 0,
+        durationNoise = 0,
+        speed = 1,
+        speakerId = aishell ? 50 : 0
+    });
+    return;
+}
+
 if (args[0] == "prepare")
 {
     string models = args[1], lexicon = args[2], samples = args[3], output = args[4];
@@ -425,11 +461,17 @@ if (args[0] == "tts")
 {
     bool aishell = args[3] == "aishell3";
     int repeats = int.Parse(args[4], CultureInfo.InvariantCulture);
+    int threadsIndex = Array.IndexOf(args, "--threads");
+    int threads = threadsIndex < 0 ? 4 : int.Parse(args[threadsIndex + 1], CultureInfo.InvariantCulture);
+    if (threads < 1)
+    {
+        throw new ArgumentOutOfRangeException(nameof(threads), "线程数须为正数。");
+    }
     long[] ids = MemoryMarshal.Cast<byte, long>(File.ReadAllBytes(args[2])).ToArray();
     var watch = Stopwatch.StartNew();
     var model = new OnnxModel(Path.Combine(args[1], aishell ? "aishell3/model.onnx" : "zh_CN-huayan-medium.onnx"));
     using var gpu = args.Contains("--vulkan") ? new VulkanFloatBackend() : null;
-    var engine = new ManagedOnnx(model, new TensorMath(4) { Optimized = false, FloatBackend = gpu });
+    var engine = new ManagedOnnx(model, new TensorMath(threads) { Optimized = false, FloatBackend = gpu });
     Dictionary<string, double> profile = [];
     if (args.Contains("--profile"))
     {
@@ -461,17 +503,21 @@ if (args[0] == "tts")
         kind = "load",
         engine = gpu is null ? "csharp-cpu" : "csharp-vulkan",
         seconds = watch.Elapsed.TotalSeconds,
-        runtime = Environment.Version.ToString()
+        runtime = Environment.Version.ToString(),
+        threads,
+        reuseBuffers = engine.ReuseBuffers
     });
     for (int iteration = 0; iteration <= repeats; iteration++)
     {
         double cooldownSeconds = await CoolAsync();
         double? before = Temperature();
         int[] frequencyBefore = Frequencies();
+        long allocatedBefore = GC.GetTotalAllocatedBytes(true);
         watch.Restart();
         profile.Clear();
         float[] audio = engine.Run(inputs, 1).Values.First().Data;
         double seconds = watch.Elapsed.TotalSeconds;
+        long allocatedBytes = GC.GetTotalAllocatedBytes(true) - allocatedBefore;
         Emit(new
         {
             kind = "tts",
@@ -479,6 +525,8 @@ if (args[0] == "tts")
             iteration,
             warmup = iteration == 0,
             seconds,
+            threads,
+            allocatedBytes,
             samples = audio.Length,
             audioSeconds = audio.Length / (aishell ? 8000.0 : 22050.0),
             temperatureBefore = before,
