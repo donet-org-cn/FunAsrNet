@@ -1,0 +1,27 @@
+  正在确定要还原的项目…
+  已还原 <repo>\src\FunAsrNet.Probe\FunAsrNet.Probe.csproj (用时 85 毫秒)。
+  已还原 <repo>\tests\FunAsrNet.Checks\FunAsrNet.Checks.csproj (用时 95 毫秒)。
+  已还原 <repo>\tests\FunAsrNet.DemoChecks\FunAsrNet.DemoChecks.csproj (用时 95 毫秒)。
+  已还原 <repo>\src\FunAsrNet.Vulkan\FunAsrNet.Vulkan.csproj (用时 95 毫秒)。
+  已还原 <repo>\src\FunAsrNet.Server\FunAsrNet.Server.csproj (用时 95 毫秒)。
+  已还原 <repo>\src\FunAsrNet\FunAsrNet.csproj (用时 85 毫秒)。
+  已还原 <repo>\tests\FunAsrNet.VoiceChecks\FunAsrNet.VoiceChecks.csproj (用时 95 毫秒)。
+  已还原 <repo>\tools\FunAsrNet.Benchmarks\FunAsrNet.Benchmarks.csproj (用时 95 毫秒)。
+  已还原 <repo>\src\FunAsrNet.Cli\FunAsrNet.Cli.csproj (用时 95 毫秒)。
+  已还原 <repo>\tools\FunAsrNet.CodeStyle\FunAsrNet.CodeStyle.csproj (用时 85 毫秒)。
+  FunAsrNet.Probe -> <repo>\src\FunAsrNet.Probe\bin\Release\net10.0\FunAsrNet.Probe.dll
+  FunAsrNet.CodeStyle -> <repo>\tools\FunAsrNet.CodeStyle\bin\Release\net10.0\FunAsrNet.CodeStyle.dll
+  FunAsrNet -> <repo>\src\FunAsrNet\bin\Release\net10.0\FunAsrNet.dll
+  FunAsrNet.DemoChecks -> <repo>\tests\FunAsrNet.DemoChecks\bin\Release\net10.0\FunAsrNet.DemoChecks.dll
+  FunAsrNet.VoiceChecks -> <repo>\tests\FunAsrNet.VoiceChecks\bin\Release\net10.0\FunAsrNet.VoiceChecks.dll
+  FunAsrNet.Vulkan -> <repo>\src\FunAsrNet.Vulkan\bin\Release\net10.0\FunAsrNet.Vulkan.dll
+  FunAsrNet.Cli -> <repo>\src\FunAsrNet.Cli\bin\Release\net10.0\FunAsrNet.Cli.dll
+  FunAsrNet.Checks -> <repo>\tests\FunAsrNet.Checks\bin\Release\net10.0\FunAsrNet.Checks.dll
+  FunAsrNet.Server -> <repo>\src\FunAsrNet.Server\bin\Release\net10.0\FunAsrNet.Server.dll
+  FunAsrNet.Benchmarks -> <repo>\tools\FunAsrNet.Benchmarks\bin\Release\net10.0\FunAsrNet.Benchmarks.dll
+
+已成功生成。
+    0 个警告
+    0 个错误
+
+已用时间 00:00:04.87

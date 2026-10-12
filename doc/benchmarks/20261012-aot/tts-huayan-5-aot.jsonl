@@ -1,0 +1,8 @@
+{"kind":"configuration","engine":"aot","runtime":"10.0.12","dynamicCodeSupported":false,"serverGc":false,"avx2":true,"fma":true,"avxVnni":true,"threads":4}
+{"kind":"load","seconds":0.0807334,"reuseBuffers":true}
+{"kind":"tts","iteration":0,"warmup":true,"seconds":0.1506024,"allocatedBytes":120836024,"peakRssBytes":199827456,"samples":69376,"audioSeconds":3.1463038548752835,"waveSha256":"6B021C3836D6D9E045CA98B06D4CFC5F154B01E0C0ABAD8B086BFBBB80A9302B"}
+{"kind":"tts","iteration":1,"warmup":false,"seconds":0.1517518,"allocatedBytes":89656816,"peakRssBytes":269832192,"samples":69376,"audioSeconds":3.1463038548752835,"waveSha256":"6B021C3836D6D9E045CA98B06D4CFC5F154B01E0C0ABAD8B086BFBBB80A9302B"}
+{"kind":"tts","iteration":2,"warmup":false,"seconds":0.1459412,"allocatedBytes":84196040,"peakRssBytes":282501120,"samples":69376,"audioSeconds":3.1463038548752835,"waveSha256":"6B021C3836D6D9E045CA98B06D4CFC5F154B01E0C0ABAD8B086BFBBB80A9302B"}
+{"kind":"tts","iteration":3,"warmup":false,"seconds":0.1514063,"allocatedBytes":84203056,"peakRssBytes":338886656,"samples":69376,"audioSeconds":3.1463038548752835,"waveSha256":"6B021C3836D6D9E045CA98B06D4CFC5F154B01E0C0ABAD8B086BFBBB80A9302B"}
+{"kind":"tts","iteration":4,"warmup":false,"seconds":0.1519938,"allocatedBytes":84166720,"peakRssBytes":351354880,"samples":69376,"audioSeconds":3.1463038548752835,"waveSha256":"6B021C3836D6D9E045CA98B06D4CFC5F154B01E0C0ABAD8B086BFBBB80A9302B"}
+{"kind":"tts","iteration":5,"warmup":false,"seconds":0.1548341,"allocatedBytes":84158608,"peakRssBytes":351363072,"samples":69376,"audioSeconds":3.1463038548752835,"waveSha256":"6B021C3836D6D9E045CA98B06D4CFC5F154B01E0C0ABAD8B086BFBBB80A9302B"}

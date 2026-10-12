@@ -1,0 +1,486 @@
+{
+  "startup-00-jit": {
+    "observed": [
+      {
+        "kind": "configuration",
+        "iteration": null,
+        "seconds": 0.055592000018805265
+      }
+    ],
+    "records": [
+      {
+        "kind": "configuration",
+        "engine": "jit",
+        "runtime": "10.0.12",
+        "dynamicCodeSupported": true,
+        "serverGc": false,
+        "avx2": true,
+        "fma": true,
+        "avxVnni": true,
+        "threads": 4
+      }
+    ]
+  },
+  "startup-01-aot": {
+    "observed": [
+      {
+        "kind": "configuration",
+        "iteration": null,
+        "seconds": 0.011041400022804737
+      }
+    ],
+    "records": [
+      {
+        "kind": "configuration",
+        "engine": "aot",
+        "runtime": "10.0.12",
+        "dynamicCodeSupported": false,
+        "serverGc": false,
+        "avx2": true,
+        "fma": true,
+        "avxVnni": true,
+        "threads": 4
+      }
+    ]
+  },
+  "startup-02-aot": {
+    "observed": [
+      {
+        "kind": "configuration",
+        "iteration": null,
+        "seconds": 0.0089783999719657
+      }
+    ],
+    "records": [
+      {
+        "kind": "configuration",
+        "engine": "aot",
+        "runtime": "10.0.12",
+        "dynamicCodeSupported": false,
+        "serverGc": false,
+        "avx2": true,
+        "fma": true,
+        "avxVnni": true,
+        "threads": 4
+      }
+    ]
+  },
+  "startup-03-jit": {
+    "observed": [
+      {
+        "kind": "configuration",
+        "iteration": null,
+        "seconds": 0.0530684000113979
+      }
+    ],
+    "records": [
+      {
+        "kind": "configuration",
+        "engine": "jit",
+        "runtime": "10.0.12",
+        "dynamicCodeSupported": true,
+        "serverGc": false,
+        "avx2": true,
+        "fma": true,
+        "avxVnni": true,
+        "threads": 4
+      }
+    ]
+  },
+  "startup-04-jit": {
+    "observed": [
+      {
+        "kind": "configuration",
+        "iteration": null,
+        "seconds": 0.05099359998712316
+      }
+    ],
+    "records": [
+      {
+        "kind": "configuration",
+        "engine": "jit",
+        "runtime": "10.0.12",
+        "dynamicCodeSupported": true,
+        "serverGc": false,
+        "avx2": true,
+        "fma": true,
+        "avxVnni": true,
+        "threads": 4
+      }
+    ]
+  },
+  "startup-05-aot": {
+    "observed": [
+      {
+        "kind": "configuration",
+        "iteration": null,
+        "seconds": 0.009149199991952628
+      }
+    ],
+    "records": [
+      {
+        "kind": "configuration",
+        "engine": "aot",
+        "runtime": "10.0.12",
+        "dynamicCodeSupported": false,
+        "serverGc": false,
+        "avx2": true,
+        "fma": true,
+        "avxVnni": true,
+        "threads": 4
+      }
+    ]
+  },
+  "startup-06-aot": {
+    "observed": [
+      {
+        "kind": "configuration",
+        "iteration": null,
+        "seconds": 0.008472900022752583
+      }
+    ],
+    "records": [
+      {
+        "kind": "configuration",
+        "engine": "aot",
+        "runtime": "10.0.12",
+        "dynamicCodeSupported": false,
+        "serverGc": false,
+        "avx2": true,
+        "fma": true,
+        "avxVnni": true,
+        "threads": 4
+      }
+    ]
+  },
+  "startup-07-jit": {
+    "observed": [
+      {
+        "kind": "configuration",
+        "iteration": null,
+        "seconds": 0.05232919997069985
+      }
+    ],
+    "records": [
+      {
+        "kind": "configuration",
+        "engine": "jit",
+        "runtime": "10.0.12",
+        "dynamicCodeSupported": true,
+        "serverGc": false,
+        "avx2": true,
+        "fma": true,
+        "avxVnni": true,
+        "threads": 4
+      }
+    ]
+  },
+  "startup-08-jit": {
+    "observed": [
+      {
+        "kind": "configuration",
+        "iteration": null,
+        "seconds": 0.05137449997710064
+      }
+    ],
+    "records": [
+      {
+        "kind": "configuration",
+        "engine": "jit",
+        "runtime": "10.0.12",
+        "dynamicCodeSupported": true,
+        "serverGc": false,
+        "avx2": true,
+        "fma": true,
+        "avxVnni": true,
+        "threads": 4
+      }
+    ]
+  },
+  "startup-09-aot": {
+    "observed": [
+      {
+        "kind": "configuration",
+        "iteration": null,
+        "seconds": 0.009360499971080571
+      }
+    ],
+    "records": [
+      {
+        "kind": "configuration",
+        "engine": "aot",
+        "runtime": "10.0.12",
+        "dynamicCodeSupported": false,
+        "serverGc": false,
+        "avx2": true,
+        "fma": true,
+        "avxVnni": true,
+        "threads": 4
+      }
+    ]
+  },
+  "startup-10-aot": {
+    "observed": [
+      {
+        "kind": "configuration",
+        "iteration": null,
+        "seconds": 0.008351999975275248
+      }
+    ],
+    "records": [
+      {
+        "kind": "configuration",
+        "engine": "aot",
+        "runtime": "10.0.12",
+        "dynamicCodeSupported": false,
+        "serverGc": false,
+        "avx2": true,
+        "fma": true,
+        "avxVnni": true,
+        "threads": 4
+      }
+    ]
+  },
+  "startup-11-jit": {
+    "observed": [
+      {
+        "kind": "configuration",
+        "iteration": null,
+        "seconds": 0.05011539999395609
+      }
+    ],
+    "records": [
+      {
+        "kind": "configuration",
+        "engine": "jit",
+        "runtime": "10.0.12",
+        "dynamicCodeSupported": true,
+        "serverGc": false,
+        "avx2": true,
+        "fma": true,
+        "avxVnni": true,
+        "threads": 4
+      }
+    ]
+  },
+  "startup-12-jit": {
+    "observed": [
+      {
+        "kind": "configuration",
+        "iteration": null,
+        "seconds": 0.0498100999975577
+      }
+    ],
+    "records": [
+      {
+        "kind": "configuration",
+        "engine": "jit",
+        "runtime": "10.0.12",
+        "dynamicCodeSupported": true,
+        "serverGc": false,
+        "avx2": true,
+        "fma": true,
+        "avxVnni": true,
+        "threads": 4
+      }
+    ]
+  },
+  "startup-13-aot": {
+    "observed": [
+      {
+        "kind": "configuration",
+        "iteration": null,
+        "seconds": 0.008825200027786195
+      }
+    ],
+    "records": [
+      {
+        "kind": "configuration",
+        "engine": "aot",
+        "runtime": "10.0.12",
+        "dynamicCodeSupported": false,
+        "serverGc": false,
+        "avx2": true,
+        "fma": true,
+        "avxVnni": true,
+        "threads": 4
+      }
+    ]
+  },
+  "startup-14-aot": {
+    "observed": [
+      {
+        "kind": "configuration",
+        "iteration": null,
+        "seconds": 0.00826889998279512
+      }
+    ],
+    "records": [
+      {
+        "kind": "configuration",
+        "engine": "aot",
+        "runtime": "10.0.12",
+        "dynamicCodeSupported": false,
+        "serverGc": false,
+        "avx2": true,
+        "fma": true,
+        "avxVnni": true,
+        "threads": 4
+      }
+    ]
+  },
+  "startup-15-jit": {
+    "observed": [
+      {
+        "kind": "configuration",
+        "iteration": null,
+        "seconds": 0.051410799962468445
+      }
+    ],
+    "records": [
+      {
+        "kind": "configuration",
+        "engine": "jit",
+        "runtime": "10.0.12",
+        "dynamicCodeSupported": true,
+        "serverGc": false,
+        "avx2": true,
+        "fma": true,
+        "avxVnni": true,
+        "threads": 4
+      }
+    ]
+  },
+  "startup-16-jit": {
+    "observed": [
+      {
+        "kind": "configuration",
+        "iteration": null,
+        "seconds": 0.050684999965596944
+      }
+    ],
+    "records": [
+      {
+        "kind": "configuration",
+        "engine": "jit",
+        "runtime": "10.0.12",
+        "dynamicCodeSupported": true,
+        "serverGc": false,
+        "avx2": true,
+        "fma": true,
+        "avxVnni": true,
+        "threads": 4
+      }
+    ]
+  },
+  "startup-17-aot": {
+    "observed": [
+      {
+        "kind": "configuration",
+        "iteration": null,
+        "seconds": 0.008856000029481947
+      }
+    ],
+    "records": [
+      {
+        "kind": "configuration",
+        "engine": "aot",
+        "runtime": "10.0.12",
+        "dynamicCodeSupported": false,
+        "serverGc": false,
+        "avx2": true,
+        "fma": true,
+        "avxVnni": true,
+        "threads": 4
+      }
+    ]
+  },
+  "startup-18-aot": {
+    "observed": [
+      {
+        "kind": "configuration",
+        "iteration": null,
+        "seconds": 0.015337100019678473
+      }
+    ],
+    "records": [
+      {
+        "kind": "configuration",
+        "engine": "aot",
+        "runtime": "10.0.12",
+        "dynamicCodeSupported": false,
+        "serverGc": false,
+        "avx2": true,
+        "fma": true,
+        "avxVnni": true,
+        "threads": 4
+      }
+    ]
+  },
+  "startup-19-jit": {
+    "observed": [
+      {
+        "kind": "configuration",
+        "iteration": null,
+        "seconds": 0.05799480003770441
+      }
+    ],
+    "records": [
+      {
+        "kind": "configuration",
+        "engine": "jit",
+        "runtime": "10.0.12",
+        "dynamicCodeSupported": true,
+        "serverGc": false,
+        "avx2": true,
+        "fma": true,
+        "avxVnni": true,
+        "threads": 4
+      }
+    ]
+  },
+  "startup-prime-aot": {
+    "observed": [
+      {
+        "kind": "configuration",
+        "iteration": null,
+        "seconds": 0.01170920004369691
+      }
+    ],
+    "records": [
+      {
+        "kind": "configuration",
+        "engine": "aot",
+        "runtime": "10.0.12",
+        "dynamicCodeSupported": false,
+        "serverGc": false,
+        "avx2": true,
+        "fma": true,
+        "avxVnni": true,
+        "threads": 4
+      }
+    ]
+  },
+  "startup-prime-jit": {
+    "observed": [
+      {
+        "kind": "configuration",
+        "iteration": null,
+        "seconds": 0.060159799992106855
+      }
+    ],
+    "records": [
+      {
+        "kind": "configuration",
+        "engine": "jit",
+        "runtime": "10.0.12",
+        "dynamicCodeSupported": true,
+        "serverGc": false,
+        "avx2": true,
+        "fma": true,
+        "avxVnni": true,
+        "threads": 4
+      }
+    ]
+  }
+}

@@ -1,0 +1,8 @@
+{"kind":"configuration","engine":"jit","runtime":"10.0.12","dynamicCodeSupported":true,"serverGc":false,"avx2":true,"fma":true,"avxVnni":true,"threads":4}
+{"kind":"load","seconds":0.0896202,"reuseBuffers":true}
+{"kind":"tts","iteration":0,"warmup":true,"seconds":0.2713994,"allocatedBytes":120649792,"peakRssBytes":226484224,"samples":69376,"audioSeconds":3.1463038548752835,"waveSha256":"6B021C3836D6D9E045CA98B06D4CFC5F154B01E0C0ABAD8B086BFBBB80A9302B"}
+{"kind":"tts","iteration":1,"warmup":false,"seconds":0.3790408,"allocatedBytes":89469760,"peakRssBytes":300343296,"samples":69376,"audioSeconds":3.1463038548752835,"waveSha256":"6B021C3836D6D9E045CA98B06D4CFC5F154B01E0C0ABAD8B086BFBBB80A9302B"}
+{"kind":"tts","iteration":2,"warmup":false,"seconds":0.1827299,"allocatedBytes":84009104,"peakRssBytes":311513088,"samples":69376,"audioSeconds":3.1463038548752835,"waveSha256":"6B021C3836D6D9E045CA98B06D4CFC5F154B01E0C0ABAD8B086BFBBB80A9302B"}
+{"kind":"tts","iteration":3,"warmup":false,"seconds":0.1728343,"allocatedBytes":84016208,"peakRssBytes":356929536,"samples":69376,"audioSeconds":3.1463038548752835,"waveSha256":"6B021C3836D6D9E045CA98B06D4CFC5F154B01E0C0ABAD8B086BFBBB80A9302B"}
+{"kind":"tts","iteration":4,"warmup":false,"seconds":0.1475757,"allocatedBytes":83979784,"peakRssBytes":356929536,"samples":69376,"audioSeconds":3.1463038548752835,"waveSha256":"6B021C3836D6D9E045CA98B06D4CFC5F154B01E0C0ABAD8B086BFBBB80A9302B"}
+{"kind":"tts","iteration":5,"warmup":false,"seconds":0.1671839,"allocatedBytes":83971656,"peakRssBytes":356929536,"samples":69376,"audioSeconds":3.1463038548752835,"waveSha256":"6B021C3836D6D9E045CA98B06D4CFC5F154B01E0C0ABAD8B086BFBBB80A9302B"}

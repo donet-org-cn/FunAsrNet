@@ -1,0 +1,8 @@
+{"kind":"configuration","engine":"aot","runtime":"10.0.12","dynamicCodeSupported":false,"serverGc":false,"avx2":true,"fma":true,"avxVnni":true,"threads":4}
+{"kind":"load","seconds":0.0379891,"reuseBuffers":true}
+{"kind":"tts","iteration":0,"warmup":true,"seconds":0.0745629,"allocatedBytes":49374600,"peakRssBytes":97656832,"samples":28928,"audioSeconds":3.616,"waveSha256":"F378DBB3ABAD6FA55F4200BA7B44F8BA48782BB629A733284E0FAFD79A2259FA"}
+{"kind":"tts","iteration":1,"warmup":false,"seconds":0.0780948,"allocatedBytes":8624144,"peakRssBytes":104480768,"samples":28928,"audioSeconds":3.616,"waveSha256":"F378DBB3ABAD6FA55F4200BA7B44F8BA48782BB629A733284E0FAFD79A2259FA"}
+{"kind":"tts","iteration":2,"warmup":false,"seconds":0.0728757,"allocatedBytes":8624816,"peakRssBytes":117010432,"samples":28928,"audioSeconds":3.616,"waveSha256":"F378DBB3ABAD6FA55F4200BA7B44F8BA48782BB629A733284E0FAFD79A2259FA"}
+{"kind":"tts","iteration":3,"warmup":false,"seconds":0.0650745,"allocatedBytes":8624144,"peakRssBytes":121327616,"samples":28928,"audioSeconds":3.616,"waveSha256":"F378DBB3ABAD6FA55F4200BA7B44F8BA48782BB629A733284E0FAFD79A2259FA"}
+{"kind":"tts","iteration":4,"warmup":false,"seconds":0.0671268,"allocatedBytes":8624144,"peakRssBytes":125784064,"samples":28928,"audioSeconds":3.616,"waveSha256":"F378DBB3ABAD6FA55F4200BA7B44F8BA48782BB629A733284E0FAFD79A2259FA"}
+{"kind":"tts","iteration":5,"warmup":false,"seconds":0.0651353,"allocatedBytes":8624144,"peakRssBytes":130285568,"samples":28928,"audioSeconds":3.616,"waveSha256":"F378DBB3ABAD6FA55F4200BA7B44F8BA48782BB629A733284E0FAFD79A2259FA"}

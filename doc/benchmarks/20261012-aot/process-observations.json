@@ -1,0 +1,1502 @@
+{
+  "tts-huayan-0-current": [
+    {
+      "kind": "load",
+      "iteration": null,
+      "seconds": 0.21040149999316782
+    },
+    {
+      "kind": "tts",
+      "iteration": 0,
+      "seconds": 0.5329388999962248
+    },
+    {
+      "kind": "tts",
+      "iteration": 1,
+      "seconds": 0.7017654000082985
+    },
+    {
+      "kind": "tts",
+      "iteration": 2,
+      "seconds": 0.8636068000341766
+    },
+    {
+      "kind": "tts",
+      "iteration": 3,
+      "seconds": 1.0410810000030324
+    },
+    {
+      "kind": "tts",
+      "iteration": 4,
+      "seconds": 1.207044400041923
+    },
+    {
+      "kind": "tts",
+      "iteration": 5,
+      "seconds": 1.3621707999845967
+    }
+  ],
+  "tts-huayan-1-jit": [
+    {
+      "kind": "configuration",
+      "iteration": null,
+      "seconds": 0.056150500022340566
+    },
+    {
+      "kind": "load",
+      "iteration": null,
+      "seconds": 0.16585190000478178
+    },
+    {
+      "kind": "tts",
+      "iteration": 0,
+      "seconds": 0.47758070001145825
+    },
+    {
+      "kind": "tts",
+      "iteration": 1,
+      "seconds": 0.6449168000253849
+    },
+    {
+      "kind": "tts",
+      "iteration": 2,
+      "seconds": 0.8079242000239901
+    },
+    {
+      "kind": "tts",
+      "iteration": 3,
+      "seconds": 0.9714457000372931
+    },
+    {
+      "kind": "tts",
+      "iteration": 4,
+      "seconds": 1.1284169999998994
+    },
+    {
+      "kind": "tts",
+      "iteration": 5,
+      "seconds": 1.2901590000255965
+    }
+  ],
+  "tts-huayan-2-aot": [
+    {
+      "kind": "configuration",
+      "iteration": null,
+      "seconds": 0.013039100042078644
+    },
+    {
+      "kind": "load",
+      "iteration": null,
+      "seconds": 0.0798314000130631
+    },
+    {
+      "kind": "tts",
+      "iteration": 0,
+      "seconds": 0.2552327000303194
+    },
+    {
+      "kind": "tts",
+      "iteration": 1,
+      "seconds": 0.43377820000750944
+    },
+    {
+      "kind": "tts",
+      "iteration": 2,
+      "seconds": 0.6011151000275277
+    },
+    {
+      "kind": "tts",
+      "iteration": 3,
+      "seconds": 0.7678262999979779
+    },
+    {
+      "kind": "tts",
+      "iteration": 4,
+      "seconds": 0.9302676999941468
+    },
+    {
+      "kind": "tts",
+      "iteration": 5,
+      "seconds": 1.113491400028579
+    }
+  ],
+  "tts-huayan-3-native": [
+    {
+      "kind": "load",
+      "iteration": null,
+      "seconds": 0.951698100019712
+    },
+    {
+      "kind": "tts",
+      "iteration": 0,
+      "seconds": 1.1059921000269242
+    },
+    {
+      "kind": "tts",
+      "iteration": 1,
+      "seconds": 1.2156316000036895
+    },
+    {
+      "kind": "tts",
+      "iteration": 2,
+      "seconds": 1.3202971999999136
+    },
+    {
+      "kind": "tts",
+      "iteration": 3,
+      "seconds": 1.4280077000148594
+    },
+    {
+      "kind": "tts",
+      "iteration": 4,
+      "seconds": 1.5352090999949723
+    },
+    {
+      "kind": "tts",
+      "iteration": 5,
+      "seconds": 1.6426533000194468
+    }
+  ],
+  "tts-huayan-4-native": [
+    {
+      "kind": "load",
+      "iteration": null,
+      "seconds": 0.9367385999648832
+    },
+    {
+      "kind": "tts",
+      "iteration": 0,
+      "seconds": 1.1099830999737605
+    },
+    {
+      "kind": "tts",
+      "iteration": 1,
+      "seconds": 1.2259931999724358
+    },
+    {
+      "kind": "tts",
+      "iteration": 2,
+      "seconds": 1.3400922999717295
+    },
+    {
+      "kind": "tts",
+      "iteration": 3,
+      "seconds": 1.4479656999465078
+    },
+    {
+      "kind": "tts",
+      "iteration": 4,
+      "seconds": 1.5537500999635085
+    },
+    {
+      "kind": "tts",
+      "iteration": 5,
+      "seconds": 1.6578098999452777
+    }
+  ],
+  "tts-huayan-5-aot": [
+    {
+      "kind": "configuration",
+      "iteration": null,
+      "seconds": 0.011087500024586916
+    },
+    {
+      "kind": "load",
+      "iteration": null,
+      "seconds": 0.09195850003743544
+    },
+    {
+      "kind": "tts",
+      "iteration": 0,
+      "seconds": 0.24881100002676249
+    },
+    {
+      "kind": "tts",
+      "iteration": 1,
+      "seconds": 0.40618270001141354
+    },
+    {
+      "kind": "tts",
+      "iteration": 2,
+      "seconds": 0.5571732000098564
+    },
+    {
+      "kind": "tts",
+      "iteration": 3,
+      "seconds": 0.7135674000019208
+    },
+    {
+      "kind": "tts",
+      "iteration": 4,
+      "seconds": 0.8706056000082754
+    },
+    {
+      "kind": "tts",
+      "iteration": 5,
+      "seconds": 1.0309926000190899
+    }
+  ],
+  "tts-huayan-6-jit": [
+    {
+      "kind": "configuration",
+      "iteration": null,
+      "seconds": 0.05780889996094629
+    },
+    {
+      "kind": "load",
+      "iteration": null,
+      "seconds": 0.15386359998956323
+    },
+    {
+      "kind": "tts",
+      "iteration": 0,
+      "seconds": 0.4355062999529764
+    },
+    {
+      "kind": "tts",
+      "iteration": 1,
+      "seconds": 0.8325836999574676
+    },
+    {
+      "kind": "tts",
+      "iteration": 2,
+      "seconds": 1.0235280999913812
+    },
+    {
+      "kind": "tts",
+      "iteration": 3,
+      "seconds": 1.2030320999911055
+    },
+    {
+      "kind": "tts",
+      "iteration": 4,
+      "seconds": 1.3558683999581262
+    },
+    {
+      "kind": "tts",
+      "iteration": 5,
+      "seconds": 1.5304786000051536
+    }
+  ],
+  "tts-huayan-7-current": [
+    {
+      "kind": "load",
+      "iteration": null,
+      "seconds": 0.19028370000887662
+    },
+    {
+      "kind": "tts",
+      "iteration": 0,
+      "seconds": 0.4959071999765001
+    },
+    {
+      "kind": "tts",
+      "iteration": 1,
+      "seconds": 0.6582654999801889
+    },
+    {
+      "kind": "tts",
+      "iteration": 2,
+      "seconds": 0.8360937000252306
+    },
+    {
+      "kind": "tts",
+      "iteration": 3,
+      "seconds": 0.9935463999863714
+    },
+    {
+      "kind": "tts",
+      "iteration": 4,
+      "seconds": 1.1508999000070617
+    },
+    {
+      "kind": "tts",
+      "iteration": 5,
+      "seconds": 1.3010281000169925
+    }
+  ],
+  "tts-aishell3-0-current": [
+    {
+      "kind": "load",
+      "iteration": null,
+      "seconds": 0.1648826000164263
+    },
+    {
+      "kind": "tts",
+      "iteration": 0,
+      "seconds": 0.3825959000387229
+    },
+    {
+      "kind": "tts",
+      "iteration": 1,
+      "seconds": 0.4582702000043355
+    },
+    {
+      "kind": "tts",
+      "iteration": 2,
+      "seconds": 0.5438617000472732
+    },
+    {
+      "kind": "tts",
+      "iteration": 3,
+      "seconds": 0.6212819000356831
+    },
+    {
+      "kind": "tts",
+      "iteration": 4,
+      "seconds": 0.694475100026466
+    },
+    {
+      "kind": "tts",
+      "iteration": 5,
+      "seconds": 0.7738250000402331
+    }
+  ],
+  "tts-aishell3-1-jit": [
+    {
+      "kind": "configuration",
+      "iteration": null,
+      "seconds": 0.05638660001568496
+    },
+    {
+      "kind": "load",
+      "iteration": null,
+      "seconds": 0.1295564000029117
+    },
+    {
+      "kind": "tts",
+      "iteration": 0,
+      "seconds": 0.3414451999706216
+    },
+    {
+      "kind": "tts",
+      "iteration": 1,
+      "seconds": 0.41677559999516234
+    },
+    {
+      "kind": "tts",
+      "iteration": 2,
+      "seconds": 0.5022477000020444
+    },
+    {
+      "kind": "tts",
+      "iteration": 3,
+      "seconds": 0.578528499987442
+    },
+    {
+      "kind": "tts",
+      "iteration": 4,
+      "seconds": 0.6576913999742828
+    },
+    {
+      "kind": "tts",
+      "iteration": 5,
+      "seconds": 0.7336293999687769
+    }
+  ],
+  "tts-aishell3-2-aot": [
+    {
+      "kind": "configuration",
+      "iteration": null,
+      "seconds": 0.011640299984719604
+    },
+    {
+      "kind": "load",
+      "iteration": null,
+      "seconds": 0.04973329999484122
+    },
+    {
+      "kind": "tts",
+      "iteration": 0,
+      "seconds": 0.1342354000080377
+    },
+    {
+      "kind": "tts",
+      "iteration": 1,
+      "seconds": 0.21882800001185387
+    },
+    {
+      "kind": "tts",
+      "iteration": 2,
+      "seconds": 0.29712479998124763
+    },
+    {
+      "kind": "tts",
+      "iteration": 3,
+      "seconds": 0.3673954000114463
+    },
+    {
+      "kind": "tts",
+      "iteration": 4,
+      "seconds": 0.4392245000344701
+    },
+    {
+      "kind": "tts",
+      "iteration": 5,
+      "seconds": 0.509627100022044
+    }
+  ],
+  "tts-aishell3-3-native": [
+    {
+      "kind": "load",
+      "iteration": null,
+      "seconds": 0.6570742999901995
+    },
+    {
+      "kind": "tts",
+      "iteration": 0,
+      "seconds": 0.7567719999933615
+    },
+    {
+      "kind": "tts",
+      "iteration": 1,
+      "seconds": 0.826152199995704
+    },
+    {
+      "kind": "tts",
+      "iteration": 2,
+      "seconds": 0.87895220000064
+    },
+    {
+      "kind": "tts",
+      "iteration": 3,
+      "seconds": 0.9295901000150479
+    },
+    {
+      "kind": "tts",
+      "iteration": 4,
+      "seconds": 0.9846573999966495
+    },
+    {
+      "kind": "tts",
+      "iteration": 5,
+      "seconds": 1.0544955999939702
+    }
+  ],
+  "tts-aishell3-4-native": [
+    {
+      "kind": "load",
+      "iteration": null,
+      "seconds": 0.6513184999930672
+    },
+    {
+      "kind": "tts",
+      "iteration": 0,
+      "seconds": 0.7373784999945201
+    },
+    {
+      "kind": "tts",
+      "iteration": 1,
+      "seconds": 0.7888406999991275
+    },
+    {
+      "kind": "tts",
+      "iteration": 2,
+      "seconds": 0.8373060999438167
+    },
+    {
+      "kind": "tts",
+      "iteration": 3,
+      "seconds": 0.8854199999477714
+    },
+    {
+      "kind": "tts",
+      "iteration": 4,
+      "seconds": 0.9328776999609545
+    },
+    {
+      "kind": "tts",
+      "iteration": 5,
+      "seconds": 0.9805310999508947
+    }
+  ],
+  "tts-aishell3-5-aot": [
+    {
+      "kind": "configuration",
+      "iteration": null,
+      "seconds": 0.012204699974972755
+    },
+    {
+      "kind": "load",
+      "iteration": null,
+      "seconds": 0.04749969998374581
+    },
+    {
+      "kind": "tts",
+      "iteration": 0,
+      "seconds": 0.12727579998318106
+    },
+    {
+      "kind": "tts",
+      "iteration": 1,
+      "seconds": 0.1985937999561429
+    },
+    {
+      "kind": "tts",
+      "iteration": 2,
+      "seconds": 0.2788243999821134
+    },
+    {
+      "kind": "tts",
+      "iteration": 3,
+      "seconds": 0.3483460999559611
+    },
+    {
+      "kind": "tts",
+      "iteration": 4,
+      "seconds": 0.4186286999611184
+    },
+    {
+      "kind": "tts",
+      "iteration": 5,
+      "seconds": 0.4910793000017293
+    }
+  ],
+  "tts-aishell3-6-jit": [
+    {
+      "kind": "configuration",
+      "iteration": null,
+      "seconds": 0.05755850003333762
+    },
+    {
+      "kind": "load",
+      "iteration": null,
+      "seconds": 0.1263524999958463
+    },
+    {
+      "kind": "tts",
+      "iteration": 0,
+      "seconds": 0.33011109998915344
+    },
+    {
+      "kind": "tts",
+      "iteration": 1,
+      "seconds": 0.4090060000307858
+    },
+    {
+      "kind": "tts",
+      "iteration": 2,
+      "seconds": 0.49560419999761507
+    },
+    {
+      "kind": "tts",
+      "iteration": 3,
+      "seconds": 0.5738655999884941
+    },
+    {
+      "kind": "tts",
+      "iteration": 4,
+      "seconds": 0.6485591999953613
+    },
+    {
+      "kind": "tts",
+      "iteration": 5,
+      "seconds": 0.7245773000176996
+    }
+  ],
+  "tts-aishell3-7-current": [
+    {
+      "kind": "load",
+      "iteration": null,
+      "seconds": 0.16680740000447258
+    },
+    {
+      "kind": "tts",
+      "iteration": 0,
+      "seconds": 0.3721030000015162
+    },
+    {
+      "kind": "tts",
+      "iteration": 1,
+      "seconds": 0.521160600008443
+    },
+    {
+      "kind": "tts",
+      "iteration": 2,
+      "seconds": 0.6109689000295475
+    },
+    {
+      "kind": "tts",
+      "iteration": 3,
+      "seconds": 0.6886080999975093
+    },
+    {
+      "kind": "tts",
+      "iteration": 4,
+      "seconds": 0.7640952999936417
+    },
+    {
+      "kind": "tts",
+      "iteration": 5,
+      "seconds": 0.8393899000366218
+    }
+  ],
+  "asr-sip-short-pcma-0-current": [
+    {
+      "kind": "load",
+      "iteration": null,
+      "seconds": 3.754680800018832
+    },
+    {
+      "kind": "asr",
+      "iteration": 0,
+      "seconds": 5.031043099996168
+    },
+    {
+      "kind": "asr",
+      "iteration": 1,
+      "seconds": 6.386599000019487
+    },
+    {
+      "kind": "asr",
+      "iteration": 2,
+      "seconds": 7.5389573000138626
+    },
+    {
+      "kind": "asr",
+      "iteration": 3,
+      "seconds": 8.492139300040435
+    },
+    {
+      "kind": "asr",
+      "iteration": 4,
+      "seconds": 9.468865000002552
+    },
+    {
+      "kind": "asr",
+      "iteration": 5,
+      "seconds": 10.56852249999065
+    }
+  ],
+  "asr-sip-short-pcma-1-jit": [
+    {
+      "kind": "configuration",
+      "iteration": null,
+      "seconds": 0.07958499999949709
+    },
+    {
+      "kind": "load",
+      "iteration": null,
+      "seconds": 4.147755199985113
+    },
+    {
+      "kind": "asr",
+      "iteration": 0,
+      "seconds": 5.264720699982718
+    },
+    {
+      "kind": "asr",
+      "iteration": 1,
+      "seconds": 6.209674699988682
+    },
+    {
+      "kind": "asr",
+      "iteration": 2,
+      "seconds": 7.121044099971186
+    },
+    {
+      "kind": "asr",
+      "iteration": 3,
+      "seconds": 8.03750969999237
+    },
+    {
+      "kind": "asr",
+      "iteration": 4,
+      "seconds": 8.947664699982852
+    },
+    {
+      "kind": "asr",
+      "iteration": 5,
+      "seconds": 9.867113899963442
+    }
+  ],
+  "asr-sip-short-pcma-2-aot": [
+    {
+      "kind": "configuration",
+      "iteration": null,
+      "seconds": 0.016175199998542666
+    },
+    {
+      "kind": "load",
+      "iteration": null,
+      "seconds": 1.4057173000182956
+    },
+    {
+      "kind": "asr",
+      "iteration": 0,
+      "seconds": 2.339453099993989
+    },
+    {
+      "kind": "asr",
+      "iteration": 1,
+      "seconds": 3.255395899992436
+    },
+    {
+      "kind": "asr",
+      "iteration": 2,
+      "seconds": 4.19488199998159
+    },
+    {
+      "kind": "asr",
+      "iteration": 3,
+      "seconds": 5.102403800003231
+    },
+    {
+      "kind": "asr",
+      "iteration": 4,
+      "seconds": 6.076994800008833
+    },
+    {
+      "kind": "asr",
+      "iteration": 5,
+      "seconds": 7.103025200020056
+    }
+  ],
+  "asr-sip-short-pcma-3-native": [
+    {
+      "kind": "load",
+      "iteration": null,
+      "seconds": 1.397932399995625
+    },
+    {
+      "kind": "asr",
+      "iteration": 0,
+      "seconds": 1.3980136000318453
+    },
+    {
+      "kind": "asr",
+      "iteration": 1,
+      "seconds": 2.208788500051014
+    },
+    {
+      "kind": "asr",
+      "iteration": 2,
+      "seconds": 2.9904579000431113
+    },
+    {
+      "kind": "asr",
+      "iteration": 3,
+      "seconds": 3.7329745000461116
+    },
+    {
+      "kind": "asr",
+      "iteration": 4,
+      "seconds": 4.472035800048616
+    },
+    {
+      "kind": "asr",
+      "iteration": 5,
+      "seconds": 5.192782300000545
+    }
+  ],
+  "asr-sip-short-pcma-4-native": [
+    {
+      "kind": "load",
+      "iteration": null,
+      "seconds": 1.5475873000104912
+    },
+    {
+      "kind": "asr",
+      "iteration": 0,
+      "seconds": 1.5476583000272512
+    },
+    {
+      "kind": "asr",
+      "iteration": 1,
+      "seconds": 2.3668150000157766
+    },
+    {
+      "kind": "asr",
+      "iteration": 2,
+      "seconds": 3.099842900002841
+    },
+    {
+      "kind": "asr",
+      "iteration": 3,
+      "seconds": 3.8179649999947287
+    },
+    {
+      "kind": "asr",
+      "iteration": 4,
+      "seconds": 4.5346567000378855
+    },
+    {
+      "kind": "asr",
+      "iteration": 5,
+      "seconds": 5.2601596000022255
+    }
+  ],
+  "asr-sip-short-pcma-5-aot": [
+    {
+      "kind": "configuration",
+      "iteration": null,
+      "seconds": 0.009343499958049506
+    },
+    {
+      "kind": "load",
+      "iteration": null,
+      "seconds": 1.247652999998536
+    },
+    {
+      "kind": "asr",
+      "iteration": 0,
+      "seconds": 2.16686389996903
+    },
+    {
+      "kind": "asr",
+      "iteration": 1,
+      "seconds": 3.085911499976646
+    },
+    {
+      "kind": "asr",
+      "iteration": 2,
+      "seconds": 3.975167499971576
+    },
+    {
+      "kind": "asr",
+      "iteration": 3,
+      "seconds": 4.912848500011023
+    },
+    {
+      "kind": "asr",
+      "iteration": 4,
+      "seconds": 5.826737699972
+    },
+    {
+      "kind": "asr",
+      "iteration": 5,
+      "seconds": 6.7090188000001945
+    }
+  ],
+  "asr-sip-short-pcma-6-jit": [
+    {
+      "kind": "configuration",
+      "iteration": null,
+      "seconds": 0.05395000003045425
+    },
+    {
+      "kind": "load",
+      "iteration": null,
+      "seconds": 3.480831900029443
+    },
+    {
+      "kind": "asr",
+      "iteration": 0,
+      "seconds": 4.506301900022663
+    },
+    {
+      "kind": "asr",
+      "iteration": 1,
+      "seconds": 5.428066899999976
+    },
+    {
+      "kind": "asr",
+      "iteration": 2,
+      "seconds": 6.319583199976478
+    },
+    {
+      "kind": "asr",
+      "iteration": 3,
+      "seconds": 7.233554699982051
+    },
+    {
+      "kind": "asr",
+      "iteration": 4,
+      "seconds": 8.125305199995637
+    },
+    {
+      "kind": "asr",
+      "iteration": 5,
+      "seconds": 9.00927939999383
+    }
+  ],
+  "asr-sip-short-pcma-7-current": [
+    {
+      "kind": "load",
+      "iteration": null,
+      "seconds": 3.5367181000183336
+    },
+    {
+      "kind": "asr",
+      "iteration": 0,
+      "seconds": 4.543231200019363
+    },
+    {
+      "kind": "asr",
+      "iteration": 1,
+      "seconds": 5.420485300011933
+    },
+    {
+      "kind": "asr",
+      "iteration": 2,
+      "seconds": 6.308284100028686
+    },
+    {
+      "kind": "asr",
+      "iteration": 3,
+      "seconds": 7.183363799995277
+    },
+    {
+      "kind": "asr",
+      "iteration": 4,
+      "seconds": 8.166081700008363
+    },
+    {
+      "kind": "asr",
+      "iteration": 5,
+      "seconds": 9.210374300018884
+    }
+  ],
+  "asr-sip-zh-pcmu-0-current": [
+    {
+      "kind": "load",
+      "iteration": null,
+      "seconds": 3.5016052999999374
+    },
+    {
+      "kind": "asr",
+      "iteration": 0,
+      "seconds": 4.611543899984099
+    },
+    {
+      "kind": "asr",
+      "iteration": 1,
+      "seconds": 5.668279999983497
+    },
+    {
+      "kind": "asr",
+      "iteration": 2,
+      "seconds": 6.685582700010855
+    },
+    {
+      "kind": "asr",
+      "iteration": 3,
+      "seconds": 7.655863099964336
+    },
+    {
+      "kind": "asr",
+      "iteration": 4,
+      "seconds": 8.622827399987727
+    },
+    {
+      "kind": "asr",
+      "iteration": 5,
+      "seconds": 9.586582299962174
+    }
+  ],
+  "asr-sip-zh-pcmu-1-jit": [
+    {
+      "kind": "configuration",
+      "iteration": null,
+      "seconds": 0.09059939999133348
+    },
+    {
+      "kind": "load",
+      "iteration": null,
+      "seconds": 3.632099299982656
+    },
+    {
+      "kind": "asr",
+      "iteration": 0,
+      "seconds": 4.789462300017476
+    },
+    {
+      "kind": "asr",
+      "iteration": 1,
+      "seconds": 5.795197800034657
+    },
+    {
+      "kind": "asr",
+      "iteration": 2,
+      "seconds": 6.771156700036954
+    },
+    {
+      "kind": "asr",
+      "iteration": 3,
+      "seconds": 7.734766800014768
+    },
+    {
+      "kind": "asr",
+      "iteration": 4,
+      "seconds": 8.734284900012426
+    },
+    {
+      "kind": "asr",
+      "iteration": 5,
+      "seconds": 9.742012000002433
+    }
+  ],
+  "asr-sip-zh-pcmu-2-aot": [
+    {
+      "kind": "configuration",
+      "iteration": null,
+      "seconds": 0.014038700028322637
+    },
+    {
+      "kind": "load",
+      "iteration": null,
+      "seconds": 1.3136651000240818
+    },
+    {
+      "kind": "asr",
+      "iteration": 0,
+      "seconds": 2.300748899986502
+    },
+    {
+      "kind": "asr",
+      "iteration": 1,
+      "seconds": 3.2583524999790825
+    },
+    {
+      "kind": "asr",
+      "iteration": 2,
+      "seconds": 4.248705699981656
+    },
+    {
+      "kind": "asr",
+      "iteration": 3,
+      "seconds": 5.2382524000131525
+    },
+    {
+      "kind": "asr",
+      "iteration": 4,
+      "seconds": 6.20651769998949
+    },
+    {
+      "kind": "asr",
+      "iteration": 5,
+      "seconds": 7.174496499996167
+    }
+  ],
+  "asr-sip-zh-pcmu-3-native": [
+    {
+      "kind": "load",
+      "iteration": null,
+      "seconds": 1.4580810000188649
+    },
+    {
+      "kind": "asr",
+      "iteration": 0,
+      "seconds": 1.458211700024549
+    },
+    {
+      "kind": "asr",
+      "iteration": 1,
+      "seconds": 2.295238499995321
+    },
+    {
+      "kind": "asr",
+      "iteration": 2,
+      "seconds": 3.1240365999983624
+    },
+    {
+      "kind": "asr",
+      "iteration": 3,
+      "seconds": 3.9608995000016876
+    },
+    {
+      "kind": "asr",
+      "iteration": 4,
+      "seconds": 4.783789100009017
+    },
+    {
+      "kind": "asr",
+      "iteration": 5,
+      "seconds": 5.5983567999792285
+    }
+  ],
+  "asr-sip-zh-pcmu-4-native": [
+    {
+      "kind": "load",
+      "iteration": null,
+      "seconds": 1.6049494000035338
+    },
+    {
+      "kind": "asr",
+      "iteration": 0,
+      "seconds": 1.6050223999773152
+    },
+    {
+      "kind": "asr",
+      "iteration": 1,
+      "seconds": 2.44866130000446
+    },
+    {
+      "kind": "asr",
+      "iteration": 2,
+      "seconds": 3.286118999996688
+    },
+    {
+      "kind": "asr",
+      "iteration": 3,
+      "seconds": 4.134263399988413
+    },
+    {
+      "kind": "asr",
+      "iteration": 4,
+      "seconds": 4.983776199980639
+    },
+    {
+      "kind": "asr",
+      "iteration": 5,
+      "seconds": 5.820739199989475
+    }
+  ],
+  "asr-sip-zh-pcmu-5-aot": [
+    {
+      "kind": "configuration",
+      "iteration": null,
+      "seconds": 0.017612800002098083
+    },
+    {
+      "kind": "load",
+      "iteration": null,
+      "seconds": 1.3092568999854848
+    },
+    {
+      "kind": "asr",
+      "iteration": 0,
+      "seconds": 2.290471800020896
+    },
+    {
+      "kind": "asr",
+      "iteration": 1,
+      "seconds": 3.25695569999516
+    },
+    {
+      "kind": "asr",
+      "iteration": 2,
+      "seconds": 4.2238421000074595
+    },
+    {
+      "kind": "asr",
+      "iteration": 3,
+      "seconds": 5.2284737000009045
+    },
+    {
+      "kind": "asr",
+      "iteration": 4,
+      "seconds": 6.210001699975692
+    },
+    {
+      "kind": "asr",
+      "iteration": 5,
+      "seconds": 7.201028699986637
+    }
+  ],
+  "asr-sip-zh-pcmu-6-jit": [
+    {
+      "kind": "configuration",
+      "iteration": null,
+      "seconds": 0.05540040001505986
+    },
+    {
+      "kind": "load",
+      "iteration": null,
+      "seconds": 3.4786481000483036
+    },
+    {
+      "kind": "asr",
+      "iteration": 0,
+      "seconds": 4.5521331000491045
+    },
+    {
+      "kind": "asr",
+      "iteration": 1,
+      "seconds": 5.541486900008749
+    },
+    {
+      "kind": "asr",
+      "iteration": 2,
+      "seconds": 6.515399000025354
+    },
+    {
+      "kind": "asr",
+      "iteration": 3,
+      "seconds": 7.488677500048652
+    },
+    {
+      "kind": "asr",
+      "iteration": 4,
+      "seconds": 8.462987500010058
+    },
+    {
+      "kind": "asr",
+      "iteration": 5,
+      "seconds": 9.434526800003368
+    }
+  ],
+  "asr-sip-zh-pcmu-7-current": [
+    {
+      "kind": "load",
+      "iteration": null,
+      "seconds": 3.4938622000045143
+    },
+    {
+      "kind": "asr",
+      "iteration": 0,
+      "seconds": 4.560325299971737
+    },
+    {
+      "kind": "asr",
+      "iteration": 1,
+      "seconds": 5.693306899978779
+    },
+    {
+      "kind": "asr",
+      "iteration": 2,
+      "seconds": 6.72773889999371
+    },
+    {
+      "kind": "asr",
+      "iteration": 3,
+      "seconds": 7.716295199992601
+    },
+    {
+      "kind": "asr",
+      "iteration": 4,
+      "seconds": 8.719559099990875
+    },
+    {
+      "kind": "asr",
+      "iteration": 5,
+      "seconds": 9.69897809997201
+    }
+  ],
+  "asr-sip-repeated-pcma-0-current": [
+    {
+      "kind": "load",
+      "iteration": null,
+      "seconds": 3.4807102999766357
+    },
+    {
+      "kind": "asr",
+      "iteration": 0,
+      "seconds": 6.924094299960416
+    },
+    {
+      "kind": "asr",
+      "iteration": 1,
+      "seconds": 10.25116149999667
+    },
+    {
+      "kind": "asr",
+      "iteration": 2,
+      "seconds": 13.622175599972252
+    },
+    {
+      "kind": "asr",
+      "iteration": 3,
+      "seconds": 17.01420589996269
+    }
+  ],
+  "asr-sip-repeated-pcma-1-jit": [
+    {
+      "kind": "configuration",
+      "iteration": null,
+      "seconds": 0.06473829998867586
+    },
+    {
+      "kind": "load",
+      "iteration": null,
+      "seconds": 3.580634900019504
+    },
+    {
+      "kind": "asr",
+      "iteration": 0,
+      "seconds": 7.180790700018406
+    },
+    {
+      "kind": "asr",
+      "iteration": 1,
+      "seconds": 11.052117599989288
+    },
+    {
+      "kind": "asr",
+      "iteration": 2,
+      "seconds": 14.559049999981653
+    },
+    {
+      "kind": "asr",
+      "iteration": 3,
+      "seconds": 18.04521070001647
+    }
+  ],
+  "asr-sip-repeated-pcma-2-aot": [
+    {
+      "kind": "configuration",
+      "iteration": null,
+      "seconds": 0.022161500004585832
+    },
+    {
+      "kind": "load",
+      "iteration": null,
+      "seconds": 1.3867897999589331
+    },
+    {
+      "kind": "asr",
+      "iteration": 0,
+      "seconds": 4.810475700011011
+    },
+    {
+      "kind": "asr",
+      "iteration": 1,
+      "seconds": 8.133980599988718
+    },
+    {
+      "kind": "asr",
+      "iteration": 2,
+      "seconds": 12.18429509998532
+    },
+    {
+      "kind": "asr",
+      "iteration": 3,
+      "seconds": 15.63734379998641
+    }
+  ],
+  "asr-sip-repeated-pcma-3-native": [
+    {
+      "kind": "load",
+      "iteration": null,
+      "seconds": 3.5611912000458688
+    },
+    {
+      "kind": "asr",
+      "iteration": 0,
+      "seconds": 3.5612910000490956
+    },
+    {
+      "kind": "asr",
+      "iteration": 1,
+      "seconds": 6.4417025000439025
+    },
+    {
+      "kind": "asr",
+      "iteration": 2,
+      "seconds": 9.565400700026657
+    },
+    {
+      "kind": "asr",
+      "iteration": 3,
+      "seconds": 12.425739600032102
+    }
+  ],
+  "asr-sip-repeated-pcma-4-native": [
+    {
+      "kind": "load",
+      "iteration": null,
+      "seconds": 3.567232300003525
+    },
+    {
+      "kind": "asr",
+      "iteration": 0,
+      "seconds": 3.5672927999985404
+    },
+    {
+      "kind": "asr",
+      "iteration": 1,
+      "seconds": 6.468227499979548
+    },
+    {
+      "kind": "asr",
+      "iteration": 2,
+      "seconds": 9.44457729998976
+    },
+    {
+      "kind": "asr",
+      "iteration": 3,
+      "seconds": 12.563603499962483
+    }
+  ],
+  "asr-sip-repeated-pcma-5-aot": [
+    {
+      "kind": "configuration",
+      "iteration": null,
+      "seconds": 0.009731400001328439
+    },
+    {
+      "kind": "load",
+      "iteration": null,
+      "seconds": 1.3330882000154816
+    },
+    {
+      "kind": "asr",
+      "iteration": 0,
+      "seconds": 4.727140499977395
+    },
+    {
+      "kind": "asr",
+      "iteration": 1,
+      "seconds": 8.237533400009852
+    },
+    {
+      "kind": "asr",
+      "iteration": 2,
+      "seconds": 12.009371899999678
+    },
+    {
+      "kind": "asr",
+      "iteration": 3,
+      "seconds": 15.759135100001004
+    }
+  ],
+  "asr-sip-repeated-pcma-6-jit": [
+    {
+      "kind": "configuration",
+      "iteration": null,
+      "seconds": 0.08444939996115863
+    },
+    {
+      "kind": "load",
+      "iteration": null,
+      "seconds": 3.584764199971687
+    },
+    {
+      "kind": "asr",
+      "iteration": 0,
+      "seconds": 7.077499200007878
+    },
+    {
+      "kind": "asr",
+      "iteration": 1,
+      "seconds": 10.483473200001754
+    },
+    {
+      "kind": "asr",
+      "iteration": 2,
+      "seconds": 13.854890599963255
+    },
+    {
+      "kind": "asr",
+      "iteration": 3,
+      "seconds": 17.28837179997936
+    }
+  ],
+  "asr-sip-repeated-pcma-7-current": [
+    {
+      "kind": "load",
+      "iteration": null,
+      "seconds": 3.4458104000077583
+    },
+    {
+      "kind": "asr",
+      "iteration": 0,
+      "seconds": 7.0176189999911
+    },
+    {
+      "kind": "asr",
+      "iteration": 1,
+      "seconds": 10.359101000009105
+    },
+    {
+      "kind": "asr",
+      "iteration": 2,
+      "seconds": 13.693504500028212
+    },
+    {
+      "kind": "asr",
+      "iteration": 3,
+      "seconds": 17.036666199972387
+    }
+  ]
+}

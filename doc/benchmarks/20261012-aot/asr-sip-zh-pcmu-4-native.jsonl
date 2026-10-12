@@ -1,0 +1,7 @@
+{"kind":"load","engine":"cpp-cpu","seconds":0.306363000,"threads":4,"gpuLayers":0,"promptCache":false}
+{"kind":"asr","engine":"cpp-cpu","iteration":0,"warmup":true,"seconds":1.084186000,"encoderSeconds":0.260818000,"decoderSeconds":0.823368000,"audioSeconds":5.615937500,"maxTokens":128,"peakRssBytes":1408987136,"Text":"菜饭时间早上九点至下午五点。"}
+{"kind":"asr","engine":"cpp-cpu","iteration":1,"warmup":false,"seconds":0.843712000,"encoderSeconds":0.255989000,"decoderSeconds":0.587723000,"audioSeconds":5.615937500,"maxTokens":128,"peakRssBytes":1416675328,"Text":"菜饭时间早上九点至下午五点。"}
+{"kind":"asr","engine":"cpp-cpu","iteration":2,"warmup":false,"seconds":0.837439000,"encoderSeconds":0.254484000,"decoderSeconds":0.582955000,"audioSeconds":5.615937500,"maxTokens":128,"peakRssBytes":1416769536,"Text":"菜饭时间早上九点至下午五点。"}
+{"kind":"asr","engine":"cpp-cpu","iteration":3,"warmup":false,"seconds":0.848122000,"encoderSeconds":0.253592000,"decoderSeconds":0.594530000,"audioSeconds":5.615937500,"maxTokens":128,"peakRssBytes":1416773632,"Text":"菜饭时间早上九点至下午五点。"}
+{"kind":"asr","engine":"cpp-cpu","iteration":4,"warmup":false,"seconds":0.849492000,"encoderSeconds":0.255149000,"decoderSeconds":0.594343000,"audioSeconds":5.615937500,"maxTokens":128,"peakRssBytes":1416773632,"Text":"菜饭时间早上九点至下午五点。"}
+{"kind":"asr","engine":"cpp-cpu","iteration":5,"warmup":false,"seconds":0.836945000,"encoderSeconds":0.255657000,"decoderSeconds":0.581288000,"audioSeconds":5.615937500,"maxTokens":128,"peakRssBytes":1416773632,"Text":"菜饭时间早上九点至下午五点。"}

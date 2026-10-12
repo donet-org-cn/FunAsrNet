@@ -2,6 +2,8 @@
 
 框架依赖发布需要目标机器安装 ASP.NET Core 10 运行时；开发和构建用 .NET 10 SDK。
 
+当前 Native AOT 产物是独立 CPU 基准程序，尚未完成整个 Web 服务的 AOT 适配。构建和同机结果见 [AOT 编译对比](aot-comparison-20261012.md)；`win-x64`、`IlcInstructionSet=native` 产物针对本机构建 CPU，不能用于 RK3588。下列服务部署继续使用已验证的普通 .NET 发布方式。
+
 ```shell
 dotnet publish src/FunAsrNet.Server -c Release -o artifacts/server
 dotnet artifacts/server/FunAsrNet.Server.dll --urls http://localhost:18080 --models models --lexicon assets/mandarin-lexicon.json --threads 4

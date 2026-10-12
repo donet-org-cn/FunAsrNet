@@ -1,5 +1,7 @@
 # 性能比较与证据范围
 
+最新 [Native AOT 对比](aot-comparison-20261012.md) 完成 184 次正式模型测量和 40 次预热：相同入口 JIT/AOT 的短 ASR 基本持平，长 ASR 的 AOT 中位数慢 4.9%，两种 TTS 的 AOT 中位数减少 2.3%/6.4%，仍未全面追平原生 CPU。新进程至短 ASR 首个结果约从 4.7–4.9 秒降到 2.3 秒；未清空文件缓存，不代表完整 Web 服务冷启动。报告保留原有入口控制数据、所有慢样本和内存反例，仅验证 Windows CPU 基准 AOT。
+
 继续在 i7-12700 本机优化纯 CPU。与同轮上一版 `48f2fc5` 对比，28 秒 ASR 耗时减少 **12.0%**，Huayan 减少 **18.2%**，AISHELL3 减少 **9.0%**。两条短句 ASR 只减少约 3%，提升有限。 本次 ASR 为原版 CPU 的 **1.15–1.18 倍耗时**，TTS 为 ORT CPU 的 **1.47–1.51 倍**。仍有项目超过原版 1.5 倍耗时。**尚未全面持平，也未达到原版一半耗时。** “慢 50% 以内”只是本次小样本中位数的口径，不能作为尾延迟或其他输入的保证。 最新条件、原始数据及正确性见 [本机 CPU 第三轮记录](cpu-round3-20261012.md)。前轮记录见 [CPU 后续对比](cpu-followup-20261012.md)。
 
 2026-10-12 已补做 [纯 CPU 原生对照](cpu-native-comparison-20261012.md)：修正 x64 默认交错布局的标量回退后，ASR 提速 8.47–8.99 倍，仍慢于原版 C++ CPU 1.70–1.84 倍。TTS 两批复测保留全部样本，仍慢于 ORT CPU 3.03–3.10 倍。原始记录、修正前/后构建散列与分阶段计时见 [CPU summary.json](benchmarks/20261012-cpu-native/summary.json)。下文历史结果不与新实验混算。
@@ -33,6 +35,7 @@ Windows ASR 计完整 Transcribe/解码调用：特征、编码、解码、复�
 
 ## 公开证据
 
+- [2026-10-12 AOT summary.json](benchmarks/20261012-aot/summary.json)、同入口 JIT/AOT、原有入口及原生 CPU 的 184 次正式样本、启动观测、数值检查与产物散列。
 - [RK3588 summary.json](benchmarks/20260930/summary.json)、runs 逐轮 JSONL、输入散列和波形误差结果。
 - [Windows summary.json](benchmarks/20261010-vulkan-local/summary.json)、逐轮 JSONL、CPU/GPU/原生波形校验、GPU 数值检查、环境快照与 C++ 编译特性。
 - [2026-10-12 TTS CPU summary.json](benchmarks/20261012-tts-cpu/summary.json)、优化前/后与 ORT 的 60 次正式测量、输入 ID 清单和波形校验。

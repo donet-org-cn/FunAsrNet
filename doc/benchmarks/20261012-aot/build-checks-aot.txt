@@ -1,0 +1,7 @@
+  正在确定要还原的项目…
+  已还原 <repo>\src\FunAsrNet\FunAsrNet.csproj (用时 181 毫秒)。
+  已还原 <repo>\tests\FunAsrNet.Checks\FunAsrNet.Checks.csproj (用时 181 毫秒)。
+  FunAsrNet -> <repo>\src\FunAsrNet\bin\Release\net10.0\FunAsrNet.dll
+  FunAsrNet.Checks -> <repo>\tests\FunAsrNet.Checks\bin\Release\net10.0\win-x64\FunAsrNet.Checks.dll
+  Generating native code
+  FunAsrNet.Checks -> <repo>\artifacts\aot-comparison\checks-aot\

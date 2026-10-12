@@ -22,6 +22,7 @@ FunAsrNet.Checks.QuantizedAvxChecks.Run(Check);
 FunAsrNet.Checks.ActivationChecks.Run(Check);
 FunAsrNet.Checks.CpuTensorChecks.Run(Check);
 FunAsrNet.Checks.CpuFollowupChecks.Run(Check);
+FunAsrNet.Checks.FrontendJsonChecks.Run(Check);
 
 // <summary>
 // 按绝对误差阈值比较数值结果，用于验证 SIMD 与参考实现一致性。
@@ -573,17 +574,16 @@ if (args.Contains("--bench"))
                 checksum += math.Linear(x, frames, selected)[i % rows];
             }
 
-            Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(new
+            Console.WriteLine(new System.Text.Json.Nodes.JsonObject
             {
-                frames,
-                width,
-                rows,
-                quantized,
-                kernel,
-                ms = timer2.Elapsed.TotalMilliseconds / repeats,
-                checksum
-
-            }));
+                ["frames"] = frames,
+                ["width"] = width,
+                ["rows"] = rows,
+                ["quantized"] = quantized,
+                ["kernel"] = kernel,
+                ["ms"] = timer2.Elapsed.TotalMilliseconds / repeats,
+                ["checksum"] = checksum
+            }.ToJsonString());
         }
     }
 }

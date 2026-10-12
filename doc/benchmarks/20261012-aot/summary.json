@@ -1,0 +1,1549 @@
+{
+  "platform": "Windows x64 / Intel Core i7-12700",
+  "runtime": "10.0.12",
+  "threads": 4,
+  "affinity": "0x55",
+  "order": [
+    "current",
+    "jit",
+    "aot",
+    "native",
+    "native",
+    "aot",
+    "jit",
+    "current"
+  ],
+  "percentileMethod": "nearest rank",
+  "promptCache": false,
+  "maxTokens": 128,
+  "gpu": false,
+  "formalCount": 184,
+  "warmupCount": 40,
+  "startupToConfigurationSeconds": {
+    "jit": {
+      "count": 10,
+      "median": 0.05139264996978454,
+      "p95": 0.05799480003770441,
+      "minimum": 0.0498100999975577,
+      "maximum": 0.05799480003770441
+    },
+    "aot": {
+      "count": 10,
+      "median": 0.008917200000723824,
+      "p95": 0.015337100019678473,
+      "minimum": 0.00826889998279512,
+      "maximum": 0.015337100019678473
+    }
+  },
+  "startupFileCache": "not flushed; one priming process per variant excluded",
+  "groups": [
+    {
+      "kind": "tts",
+      "subject": "huayan",
+      "variant": "current",
+      "seconds": {
+        "count": 10,
+        "median": 0.15553185,
+        "p95": 0.1716316,
+        "minimum": 0.1446332,
+        "maximum": 0.1716316
+      },
+      "firstCallSeconds": {
+        "count": 2,
+        "median": 0.28809235,
+        "p95": 0.2964176,
+        "minimum": 0.2797671,
+        "maximum": 0.2964176
+      },
+      "loadSeconds": {
+        "count": 2,
+        "median": 0.0984277,
+        "p95": 0.1083062,
+        "minimum": 0.0885492,
+        "maximum": 0.1083062
+      },
+      "processToLoadRecordSeconds": {
+        "count": 2,
+        "median": 0.20034260000102222,
+        "p95": 0.21040149999316782,
+        "minimum": 0.19028370000887662,
+        "maximum": 0.21040149999316782
+      },
+      "processToFirstResultSeconds": {
+        "count": 2,
+        "median": 0.5144230499863625,
+        "p95": 0.5329388999962248,
+        "minimum": 0.4959071999765001,
+        "maximum": 0.5329388999962248
+      },
+      "peakRssBytes": 360316928,
+      "samples": [
+        69376
+      ]
+    },
+    {
+      "kind": "tts",
+      "subject": "huayan",
+      "variant": "jit",
+      "seconds": {
+        "count": 10,
+        "median": 0.15915335,
+        "p95": 0.3790408,
+        "minimum": 0.1475757,
+        "maximum": 0.3790408
+      },
+      "firstCallSeconds": {
+        "count": 2,
+        "median": 0.2862783,
+        "p95": 0.3011572,
+        "minimum": 0.2713994,
+        "maximum": 0.3011572
+      },
+      "loadSeconds": {
+        "count": 2,
+        "median": 0.09468779999999999,
+        "p95": 0.0997554,
+        "minimum": 0.0896202,
+        "maximum": 0.0997554
+      },
+      "processToLoadRecordSeconds": {
+        "count": 2,
+        "median": 0.1598577499971725,
+        "p95": 0.16585190000478178,
+        "minimum": 0.15386359998956323,
+        "maximum": 0.16585190000478178
+      },
+      "processToFirstResultSeconds": {
+        "count": 2,
+        "median": 0.4565434999822173,
+        "p95": 0.47758070001145825,
+        "minimum": 0.4355062999529764,
+        "maximum": 0.47758070001145825
+      },
+      "peakRssBytes": 357793792,
+      "samples": [
+        69376
+      ]
+    },
+    {
+      "kind": "tts",
+      "subject": "huayan",
+      "variant": "aot",
+      "seconds": {
+        "count": 10,
+        "median": 0.15552495,
+        "p95": 0.1771741,
+        "minimum": 0.1459412,
+        "maximum": 0.1771741
+      },
+      "firstCallSeconds": {
+        "count": 2,
+        "median": 0.1586497,
+        "p95": 0.166697,
+        "minimum": 0.1506024,
+        "maximum": 0.166697
+      },
+      "loadSeconds": {
+        "count": 2,
+        "median": 0.07368285,
+        "p95": 0.0807334,
+        "minimum": 0.0666323,
+        "maximum": 0.0807334
+      },
+      "processToLoadRecordSeconds": {
+        "count": 2,
+        "median": 0.08589495002524927,
+        "p95": 0.09195850003743544,
+        "minimum": 0.0798314000130631,
+        "maximum": 0.09195850003743544
+      },
+      "processToFirstResultSeconds": {
+        "count": 2,
+        "median": 0.25202185002854094,
+        "p95": 0.2552327000303194,
+        "minimum": 0.24881100002676249,
+        "maximum": 0.2552327000303194
+      },
+      "peakRssBytes": 351363072,
+      "samples": [
+        69376
+      ]
+    },
+    {
+      "kind": "tts",
+      "subject": "huayan",
+      "variant": "native",
+      "seconds": {
+        "count": 10,
+        "median": 0.10205544999999999,
+        "p95": 0.1087095,
+        "minimum": 0.0989248,
+        "maximum": 0.1087095
+      },
+      "firstCallSeconds": {
+        "count": 2,
+        "median": 0.1399061,
+        "p95": 0.1487283,
+        "minimum": 0.1310839,
+        "maximum": 0.1487283
+      },
+      "loadSeconds": {
+        "count": 2,
+        "median": 0.79787795,
+        "p95": 0.8006125,
+        "minimum": 0.7951434,
+        "maximum": 0.8006125
+      },
+      "processToLoadRecordSeconds": {
+        "count": 2,
+        "median": 0.9442183499922976,
+        "p95": 0.951698100019712,
+        "minimum": 0.9367385999648832,
+        "maximum": 0.951698100019712
+      },
+      "processToFirstResultSeconds": {
+        "count": 2,
+        "median": 1.1079876000003424,
+        "p95": 1.1099830999737605,
+        "minimum": 1.1059921000269242,
+        "maximum": 1.1099830999737605
+      },
+      "peakRssBytes": 249946112,
+      "samples": [
+        69376
+      ]
+    },
+    {
+      "kind": "tts",
+      "subject": "aishell3",
+      "variant": "current",
+      "seconds": {
+        "count": 10,
+        "median": 0.0712508,
+        "p95": 0.1376615,
+        "minimum": 0.0683044,
+        "maximum": 0.1376615
+      },
+      "firstCallSeconds": {
+        "count": 2,
+        "median": 0.1853896,
+        "p95": 0.1910033,
+        "minimum": 0.1797759,
+        "maximum": 0.1910033
+      },
+      "loadSeconds": {
+        "count": 2,
+        "median": 0.061854900000000004,
+        "p95": 0.0626416,
+        "minimum": 0.0610682,
+        "maximum": 0.0626416
+      },
+      "processToLoadRecordSeconds": {
+        "count": 2,
+        "median": 0.16584500001044944,
+        "p95": 0.16680740000447258,
+        "minimum": 0.1648826000164263,
+        "maximum": 0.16680740000447258
+      },
+      "processToFirstResultSeconds": {
+        "count": 2,
+        "median": 0.37734945002011955,
+        "p95": 0.3825959000387229,
+        "minimum": 0.3721030000015162,
+        "maximum": 0.3825959000387229
+      },
+      "peakRssBytes": 164876288,
+      "samples": [
+        28928
+      ]
+    },
+    {
+      "kind": "tts",
+      "subject": "aishell3",
+      "variant": "jit",
+      "seconds": {
+        "count": 10,
+        "median": 0.0711427,
+        "p95": 0.0816797,
+        "minimum": 0.0690857,
+        "maximum": 0.0816797
+      },
+      "firstCallSeconds": {
+        "count": 2,
+        "median": 0.1956935,
+        "p95": 0.2016441,
+        "minimum": 0.1897429,
+        "maximum": 0.2016441
+      },
+      "loadSeconds": {
+        "count": 2,
+        "median": 0.0641182,
+        "p95": 0.0655823,
+        "minimum": 0.0626541,
+        "maximum": 0.0655823
+      },
+      "processToLoadRecordSeconds": {
+        "count": 2,
+        "median": 0.127954449999379,
+        "p95": 0.1295564000029117,
+        "minimum": 0.1263524999958463,
+        "maximum": 0.1295564000029117
+      },
+      "processToFirstResultSeconds": {
+        "count": 2,
+        "median": 0.33577814997988753,
+        "p95": 0.3414451999706216,
+        "minimum": 0.33011109998915344,
+        "maximum": 0.3414451999706216
+      },
+      "peakRssBytes": 156438528,
+      "samples": [
+        28928
+      ]
+    },
+    {
+      "kind": "tts",
+      "subject": "aishell3",
+      "variant": "aot",
+      "seconds": {
+        "count": 10,
+        "median": 0.0666074,
+        "p95": 0.0780948,
+        "minimum": 0.0639901,
+        "maximum": 0.0780948
+      },
+      "firstCallSeconds": {
+        "count": 2,
+        "median": 0.0737603,
+        "p95": 0.0745629,
+        "minimum": 0.0729577,
+        "maximum": 0.0745629
+      },
+      "loadSeconds": {
+        "count": 2,
+        "median": 0.0365855,
+        "p95": 0.0379891,
+        "minimum": 0.0351819,
+        "maximum": 0.0379891
+      },
+      "processToLoadRecordSeconds": {
+        "count": 2,
+        "median": 0.048616499989293516,
+        "p95": 0.04973329999484122,
+        "minimum": 0.04749969998374581,
+        "maximum": 0.04973329999484122
+      },
+      "processToFirstResultSeconds": {
+        "count": 2,
+        "median": 0.13075559999560937,
+        "p95": 0.1342354000080377,
+        "minimum": 0.12727579998318106,
+        "maximum": 0.1342354000080377
+      },
+      "peakRssBytes": 130285568,
+      "samples": [
+        28928
+      ]
+    },
+    {
+      "kind": "tts",
+      "subject": "aishell3",
+      "variant": "native",
+      "seconds": {
+        "count": 10,
+        "median": 0.0450184,
+        "p95": 0.0629814,
+        "minimum": 0.0424323,
+        "maximum": 0.0629814
+      },
+      "firstCallSeconds": {
+        "count": 2,
+        "median": 0.06792609999999999,
+        "p95": 0.0728577,
+        "minimum": 0.0629945,
+        "maximum": 0.0728577
+      },
+      "loadSeconds": {
+        "count": 2,
+        "median": 0.5151249,
+        "p95": 0.5205054,
+        "minimum": 0.5097444,
+        "maximum": 0.5205054
+      },
+      "processToLoadRecordSeconds": {
+        "count": 2,
+        "median": 0.6541963999916334,
+        "p95": 0.6570742999901995,
+        "minimum": 0.6513184999930672,
+        "maximum": 0.6570742999901995
+      },
+      "processToFirstResultSeconds": {
+        "count": 2,
+        "median": 0.7470752499939408,
+        "p95": 0.7567719999933615,
+        "minimum": 0.7373784999945201,
+        "maximum": 0.7567719999933615
+      },
+      "peakRssBytes": 161079296,
+      "samples": [
+        28928
+      ]
+    },
+    {
+      "kind": "asr",
+      "subject": "sip-short-pcma",
+      "variant": "current",
+      "seconds": {
+        "count": 10,
+        "median": 0.97488445,
+        "p95": 1.3483786,
+        "minimum": 0.8713162,
+        "maximum": 1.3483786
+      },
+      "firstCallSeconds": {
+        "count": 2,
+        "median": 1.1128738,
+        "p95": 1.2439282,
+        "minimum": 0.9818194,
+        "maximum": 1.2439282
+      },
+      "loadSeconds": {
+        "count": 2,
+        "median": 3.53206665,
+        "p95": 3.6394607,
+        "minimum": 3.4246726,
+        "maximum": 3.6394607
+      },
+      "processToLoadRecordSeconds": {
+        "count": 2,
+        "median": 3.645699450018583,
+        "p95": 3.754680800018832,
+        "minimum": 3.5367181000183336,
+        "maximum": 3.754680800018832
+      },
+      "processToFirstResultSeconds": {
+        "count": 2,
+        "median": 4.787137150007766,
+        "p95": 5.031043099996168,
+        "minimum": 4.543231200019363,
+        "maximum": 5.031043099996168
+      },
+      "peakRssBytes": 2712219648,
+      "texts": [
+        "我想问我在滨海新区有房。"
+      ],
+      "encoderMedianSeconds": 0.2913553,
+      "decoderMedianSeconds": 0.69987365
+    },
+    {
+      "kind": "asr",
+      "subject": "sip-short-pcma",
+      "variant": "jit",
+      "seconds": {
+        "count": 10,
+        "median": 0.9087773,
+        "p95": 0.9409013,
+        "minimum": 0.8801427,
+        "maximum": 0.9409013
+      },
+      "firstCallSeconds": {
+        "count": 2,
+        "median": 1.06376855,
+        "p95": 1.1092388,
+        "minimum": 1.0182983,
+        "maximum": 1.1092388
+      },
+      "loadSeconds": {
+        "count": 2,
+        "median": 3.7424071999999997,
+        "p95": 4.0624695,
+        "minimum": 3.4223449,
+        "maximum": 4.0624695
+      },
+      "processToLoadRecordSeconds": {
+        "count": 2,
+        "median": 3.814293550007278,
+        "p95": 4.147755199985113,
+        "minimum": 3.480831900029443,
+        "maximum": 4.147755199985113
+      },
+      "processToFirstResultSeconds": {
+        "count": 2,
+        "median": 4.88551130000269,
+        "p95": 5.264720699982718,
+        "minimum": 4.506301900022663,
+        "maximum": 5.264720699982718
+      },
+      "peakRssBytes": 2686443520,
+      "texts": [
+        "我想问我在滨海新区有房。"
+      ],
+      "encoderMedianSeconds": 0.27138335,
+      "decoderMedianSeconds": 0.6336824
+    },
+    {
+      "kind": "asr",
+      "subject": "sip-short-pcma",
+      "variant": "aot",
+      "seconds": {
+        "count": 10,
+        "median": 0.91369115,
+        "p95": 1.0202182,
+        "minimum": 0.8786816,
+        "maximum": 1.0202182
+      },
+      "firstCallSeconds": {
+        "count": 2,
+        "median": 0.92199345,
+        "p95": 0.9287441,
+        "minimum": 0.9152428,
+        "maximum": 0.9287441
+      },
+      "loadSeconds": {
+        "count": 2,
+        "median": 1.3135808999999998,
+        "p95": 1.3891824,
+        "minimum": 1.2379794,
+        "maximum": 1.3891824
+      },
+      "processToLoadRecordSeconds": {
+        "count": 2,
+        "median": 1.3266851500084158,
+        "p95": 1.4057173000182956,
+        "minimum": 1.247652999998536,
+        "maximum": 1.4057173000182956
+      },
+      "processToFirstResultSeconds": {
+        "count": 2,
+        "median": 2.2531584999815095,
+        "p95": 2.339453099993989,
+        "minimum": 2.16686389996903,
+        "maximum": 2.339453099993989
+      },
+      "peakRssBytes": 2394128384,
+      "texts": [
+        "我想问我在滨海新区有房。"
+      ],
+      "encoderMedianSeconds": 0.2623271,
+      "decoderMedianSeconds": 0.646003
+    },
+    {
+      "kind": "asr",
+      "subject": "sip-short-pcma",
+      "variant": "native",
+      "seconds": {
+        "count": 10,
+        "median": 0.7360295,
+        "p95": 0.819205,
+        "minimum": 0.716671,
+        "maximum": 0.819205
+      },
+      "firstCallSeconds": {
+        "count": 2,
+        "median": 0.941751,
+        "p95": 1.042653,
+        "minimum": 0.840849,
+        "maximum": 1.042653
+      },
+      "loadSeconds": {
+        "count": 2,
+        "median": 0.3143005,
+        "p95": 0.325793,
+        "minimum": 0.302808,
+        "maximum": 0.325793
+      },
+      "processToLoadRecordSeconds": {
+        "count": 2,
+        "median": 1.472759850003058,
+        "p95": 1.5475873000104912,
+        "minimum": 1.397932399995625,
+        "maximum": 1.5475873000104912
+      },
+      "processToFirstResultSeconds": {
+        "count": 2,
+        "median": 1.4728359500295483,
+        "p95": 1.5476583000272512,
+        "minimum": 1.3980136000318453,
+        "maximum": 1.5476583000272512
+      },
+      "peakRssBytes": 1417400320,
+      "texts": [
+        "我想问我在滨海新区有房。"
+      ],
+      "encoderMedianSeconds": 0.2544215,
+      "decoderMedianSeconds": 0.4797895
+    },
+    {
+      "kind": "asr",
+      "subject": "sip-zh-pcmu",
+      "variant": "current",
+      "seconds": {
+        "count": 10,
+        "median": 0.99131675,
+        "p95": 1.1290124,
+        "minimum": 0.9596743,
+        "maximum": 1.1290124
+      },
+      "firstCallSeconds": {
+        "count": 2,
+        "median": 1.0631035,
+        "p95": 1.0849044,
+        "minimum": 1.0413026,
+        "maximum": 1.0849044
+      },
+      "loadSeconds": {
+        "count": 2,
+        "median": 3.3880272500000004,
+        "p95": 3.3910669,
+        "minimum": 3.3849876,
+        "maximum": 3.3910669
+      },
+      "processToLoadRecordSeconds": {
+        "count": 2,
+        "median": 3.497733750002226,
+        "p95": 3.5016052999999374,
+        "minimum": 3.4938622000045143,
+        "maximum": 3.5016052999999374
+      },
+      "processToFirstResultSeconds": {
+        "count": 2,
+        "median": 4.585934599977918,
+        "p95": 4.611543899984099,
+        "minimum": 4.560325299971737,
+        "maximum": 4.611543899984099
+      },
+      "peakRssBytes": 2691657728,
+      "texts": [
+        "菜饭时间早上九点至下午五点。"
+      ],
+      "encoderMedianSeconds": 0.23362205,
+      "decoderMedianSeconds": 0.75309765
+    },
+    {
+      "kind": "asr",
+      "subject": "sip-zh-pcmu",
+      "variant": "jit",
+      "seconds": {
+        "count": 10,
+        "median": 0.9710365,
+        "p95": 1.0036942,
+        "minimum": 0.9594682,
+        "maximum": 1.0036942
+      },
+      "firstCallSeconds": {
+        "count": 2,
+        "median": 1.1080294,
+        "p95": 1.1494811,
+        "minimum": 1.0665777,
+        "maximum": 1.1494811
+      },
+      "loadSeconds": {
+        "count": 2,
+        "median": 3.4769791999999997,
+        "p95": 3.5346851,
+        "minimum": 3.4192733,
+        "maximum": 3.5346851
+      },
+      "processToLoadRecordSeconds": {
+        "count": 2,
+        "median": 3.5553737000154797,
+        "p95": 3.632099299982656,
+        "minimum": 3.4786481000483036,
+        "maximum": 3.632099299982656
+      },
+      "processToFirstResultSeconds": {
+        "count": 2,
+        "median": 4.67079770003329,
+        "p95": 4.789462300017476,
+        "minimum": 4.5521331000491045,
+        "maximum": 4.789462300017476
+      },
+      "peakRssBytes": 2682765312,
+      "texts": [
+        "菜饭时间早上九点至下午五点。"
+      ],
+      "encoderMedianSeconds": 0.2301725,
+      "decoderMedianSeconds": 0.7418266499999999
+    },
+    {
+      "kind": "asr",
+      "subject": "sip-zh-pcmu",
+      "variant": "aot",
+      "seconds": {
+        "count": 10,
+        "median": 0.9712360499999999,
+        "p95": 1.0009963,
+        "minimum": 0.9538675,
+        "maximum": 1.0009963
+      },
+      "firstCallSeconds": {
+        "count": 2,
+        "median": 0.9801717000000001,
+        "p95": 0.9829455,
+        "minimum": 0.9773979,
+        "maximum": 0.9829455
+      },
+      "loadSeconds": {
+        "count": 2,
+        "median": 1.2952415,
+        "p95": 1.2992582,
+        "minimum": 1.2912248,
+        "maximum": 1.2992582
+      },
+      "processToLoadRecordSeconds": {
+        "count": 2,
+        "median": 1.3114610000047833,
+        "p95": 1.3136651000240818,
+        "minimum": 1.3092568999854848,
+        "maximum": 1.3136651000240818
+      },
+      "processToFirstResultSeconds": {
+        "count": 2,
+        "median": 2.295610350003699,
+        "p95": 2.300748899986502,
+        "minimum": 2.290471800020896,
+        "maximum": 2.300748899986502
+      },
+      "peakRssBytes": 2417451008,
+      "texts": [
+        "菜饭时间早上九点至下午五点。"
+      ],
+      "encoderMedianSeconds": 0.2239316,
+      "decoderMedianSeconds": 0.7481682000000001
+    },
+    {
+      "kind": "asr",
+      "subject": "sip-zh-pcmu",
+      "variant": "native",
+      "seconds": {
+        "count": 10,
+        "median": 0.837052,
+        "p95": 0.849492,
+        "minimum": 0.814567,
+        "maximum": 0.849492
+      },
+      "firstCallSeconds": {
+        "count": 2,
+        "median": 1.0000645000000001,
+        "p95": 1.084186,
+        "minimum": 0.915943,
+        "maximum": 1.084186
+      },
+      "loadSeconds": {
+        "count": 2,
+        "median": 0.305639,
+        "p95": 0.306363,
+        "minimum": 0.304915,
+        "maximum": 0.306363
+      },
+      "processToLoadRecordSeconds": {
+        "count": 2,
+        "median": 1.5315152000111993,
+        "p95": 1.6049494000035338,
+        "minimum": 1.4580810000188649,
+        "maximum": 1.6049494000035338
+      },
+      "processToFirstResultSeconds": {
+        "count": 2,
+        "median": 1.531617050000932,
+        "p95": 1.6050223999773152,
+        "minimum": 1.458211700024549,
+        "maximum": 1.6050223999773152
+      },
+      "peakRssBytes": 1416773632,
+      "texts": [
+        "菜饭时间早上九点至下午五点。"
+      ],
+      "encoderMedianSeconds": 0.252231,
+      "decoderMedianSeconds": 0.5852765
+    },
+    {
+      "kind": "asr",
+      "subject": "sip-repeated-pcma",
+      "variant": "current",
+      "seconds": {
+        "count": 6,
+        "median": 3.3380873500000003,
+        "p95": 3.3879744,
+        "minimum": 3.3231291,
+        "maximum": 3.3879744
+      },
+      "firstCallSeconds": {
+        "count": 2,
+        "median": 3.482258,
+        "p95": 3.5466424,
+        "minimum": 3.4178736,
+        "maximum": 3.5466424
+      },
+      "loadSeconds": {
+        "count": 2,
+        "median": 3.3531691,
+        "p95": 3.3789199,
+        "minimum": 3.3274183,
+        "maximum": 3.3789199
+      },
+      "processToLoadRecordSeconds": {
+        "count": 2,
+        "median": 3.463260349992197,
+        "p95": 3.4807102999766357,
+        "minimum": 3.4458104000077583,
+        "maximum": 3.4807102999766357
+      },
+      "processToFirstResultSeconds": {
+        "count": 2,
+        "median": 6.970856649975758,
+        "p95": 7.0176189999911,
+        "minimum": 6.924094299960416,
+        "maximum": 7.0176189999911
+      },
+      "peakRssBytes": 2691129344,
+      "texts": [
+        "我想问我在滨海新区有房。我想问我在滨海新区有房。我想问我在滨海新区有房。我想问我在滨海新区有房。"
+      ],
+      "encoderMedianSeconds": 1.3371552,
+      "decoderMedianSeconds": 2.0053258499999997
+    },
+    {
+      "kind": "asr",
+      "subject": "sip-repeated-pcma",
+      "variant": "jit",
+      "seconds": {
+        "count": 6,
+        "median": 3.45606195,
+        "p95": 3.8643137,
+        "minimum": 3.3674771,
+        "maximum": 3.8643137
+      },
+      "firstCallSeconds": {
+        "count": 2,
+        "median": 3.5388663,
+        "p95": 3.5925249,
+        "minimum": 3.4852077,
+        "maximum": 3.5925249
+      },
+      "loadSeconds": {
+        "count": 2,
+        "median": 3.4977247,
+        "p95": 3.511014,
+        "minimum": 3.4844354,
+        "maximum": 3.511014
+      },
+      "processToLoadRecordSeconds": {
+        "count": 2,
+        "median": 3.5826995499955956,
+        "p95": 3.584764199971687,
+        "minimum": 3.580634900019504,
+        "maximum": 3.584764199971687
+      },
+      "processToFirstResultSeconds": {
+        "count": 2,
+        "median": 7.129144950013142,
+        "p95": 7.180790700018406,
+        "minimum": 7.077499200007878,
+        "maximum": 7.180790700018406
+      },
+      "peakRssBytes": 2705088512,
+      "texts": [
+        "我想问我在滨海新区有房。我想问我在滨海新区有房。我想问我在滨海新区有房。我想问我在滨海新区有房。"
+      ],
+      "encoderMedianSeconds": 1.3305949,
+      "decoderMedianSeconds": 2.0912618
+    },
+    {
+      "kind": "asr",
+      "subject": "sip-repeated-pcma",
+      "variant": "aot",
+      "seconds": {
+        "count": 6,
+        "median": 3.6257002,
+        "p95": 4.040269,
+        "minimum": 3.3196725,
+        "maximum": 4.040269
+      },
+      "firstCallSeconds": {
+        "count": 2,
+        "median": 3.40220255,
+        "p95": 3.4149829,
+        "minimum": 3.3894222,
+        "maximum": 3.4149829
+      },
+      "loadSeconds": {
+        "count": 2,
+        "median": 1.3430678999999999,
+        "p95": 1.3636456,
+        "minimum": 1.3224902,
+        "maximum": 1.3636456
+      },
+      "processToLoadRecordSeconds": {
+        "count": 2,
+        "median": 1.3599389999872074,
+        "p95": 1.3867897999589331,
+        "minimum": 1.3330882000154816,
+        "maximum": 1.3867897999589331
+      },
+      "processToFirstResultSeconds": {
+        "count": 2,
+        "median": 4.768808099994203,
+        "p95": 4.810475700011011,
+        "minimum": 4.727140499977395,
+        "maximum": 4.810475700011011
+      },
+      "peakRssBytes": 2761867264,
+      "texts": [
+        "我想问我在滨海新区有房。我想问我在滨海新区有房。我想问我在滨海新区有房。我想问我在滨海新区有房。"
+      ],
+      "encoderMedianSeconds": 1.326557,
+      "decoderMedianSeconds": 2.2102403500000003
+    },
+    {
+      "kind": "asr",
+      "subject": "sip-repeated-pcma",
+      "variant": "native",
+      "seconds": {
+        "count": 6,
+        "median": 2.9386425000000003,
+        "p95": 3.123586,
+        "minimum": 2.86034,
+        "maximum": 3.123586
+      },
+      "firstCallSeconds": {
+        "count": 2,
+        "median": 3.0372385,
+        "p95": 3.077891,
+        "minimum": 2.996586,
+        "maximum": 3.077891
+      },
+      "loadSeconds": {
+        "count": 2,
+        "median": 0.31337550000000003,
+        "p95": 0.31935,
+        "minimum": 0.307401,
+        "maximum": 0.31935
+      },
+      "processToLoadRecordSeconds": {
+        "count": 2,
+        "median": 3.564211750024697,
+        "p95": 3.567232300003525,
+        "minimum": 3.5611912000458688,
+        "maximum": 3.567232300003525
+      },
+      "processToFirstResultSeconds": {
+        "count": 2,
+        "median": 3.564291900023818,
+        "p95": 3.5672927999985404,
+        "minimum": 3.5612910000490956,
+        "maximum": 3.5672927999985404
+      },
+      "peakRssBytes": 1444569088,
+      "texts": [
+        "我想问我在滨海新区有房。我想问我在滨海新区有房。我想问我在滨海新区有房。我想问我在滨海新区有房。"
+      ],
+      "encoderMedianSeconds": 1.3705555,
+      "decoderMedianSeconds": 1.5588134999999999
+    }
+  ],
+  "waveParity": {
+    "tts-huayan-0-current-vs-native": {
+      "samples": 69376,
+      "maximumAbsoluteError": 2.421438694000244e-05,
+      "rmse": 1.272118416743521e-06,
+      "referenceSha256": "b9363b1c8461b068b7fb51dcd3b08a1ae55e13f5e042dd8dfbb407eb0aeebc86",
+      "actualSha256": "6b021c3836d6d9e045ca98b06d4cfc5f154b01e0c0abad8b086bfbbb80a9302b",
+      "passed": true
+    },
+    "tts-huayan-0-current-vs-jit": {
+      "samples": 69376,
+      "maximumAbsoluteError": 0.0,
+      "rmse": 0.0,
+      "referenceSha256": "6b021c3836d6d9e045ca98b06d4cfc5f154b01e0c0abad8b086bfbbb80a9302b",
+      "actualSha256": "6b021c3836d6d9e045ca98b06d4cfc5f154b01e0c0abad8b086bfbbb80a9302b",
+      "passed": true
+    },
+    "tts-huayan-1-jit-vs-native": {
+      "samples": 69376,
+      "maximumAbsoluteError": 2.421438694000244e-05,
+      "rmse": 1.272118416743521e-06,
+      "referenceSha256": "b9363b1c8461b068b7fb51dcd3b08a1ae55e13f5e042dd8dfbb407eb0aeebc86",
+      "actualSha256": "6b021c3836d6d9e045ca98b06d4cfc5f154b01e0c0abad8b086bfbbb80a9302b",
+      "passed": true
+    },
+    "tts-huayan-1-jit-vs-jit": {
+      "samples": 69376,
+      "maximumAbsoluteError": 0.0,
+      "rmse": 0.0,
+      "referenceSha256": "6b021c3836d6d9e045ca98b06d4cfc5f154b01e0c0abad8b086bfbbb80a9302b",
+      "actualSha256": "6b021c3836d6d9e045ca98b06d4cfc5f154b01e0c0abad8b086bfbbb80a9302b",
+      "passed": true
+    },
+    "tts-huayan-2-aot-vs-native": {
+      "samples": 69376,
+      "maximumAbsoluteError": 2.421438694000244e-05,
+      "rmse": 1.272118416743521e-06,
+      "referenceSha256": "b9363b1c8461b068b7fb51dcd3b08a1ae55e13f5e042dd8dfbb407eb0aeebc86",
+      "actualSha256": "6b021c3836d6d9e045ca98b06d4cfc5f154b01e0c0abad8b086bfbbb80a9302b",
+      "passed": true
+    },
+    "tts-huayan-2-aot-vs-jit": {
+      "samples": 69376,
+      "maximumAbsoluteError": 0.0,
+      "rmse": 0.0,
+      "referenceSha256": "6b021c3836d6d9e045ca98b06d4cfc5f154b01e0c0abad8b086bfbbb80a9302b",
+      "actualSha256": "6b021c3836d6d9e045ca98b06d4cfc5f154b01e0c0abad8b086bfbbb80a9302b",
+      "passed": true
+    },
+    "tts-huayan-3-native-vs-native": {
+      "samples": 69376,
+      "maximumAbsoluteError": 0.0,
+      "rmse": 0.0,
+      "referenceSha256": "b9363b1c8461b068b7fb51dcd3b08a1ae55e13f5e042dd8dfbb407eb0aeebc86",
+      "actualSha256": "b9363b1c8461b068b7fb51dcd3b08a1ae55e13f5e042dd8dfbb407eb0aeebc86",
+      "passed": true
+    },
+    "tts-huayan-3-native-vs-jit": {
+      "samples": 69376,
+      "maximumAbsoluteError": 2.421438694000244e-05,
+      "rmse": 1.272118416743521e-06,
+      "referenceSha256": "6b021c3836d6d9e045ca98b06d4cfc5f154b01e0c0abad8b086bfbbb80a9302b",
+      "actualSha256": "b9363b1c8461b068b7fb51dcd3b08a1ae55e13f5e042dd8dfbb407eb0aeebc86",
+      "passed": true
+    },
+    "tts-huayan-4-native-vs-native": {
+      "samples": 69376,
+      "maximumAbsoluteError": 0.0,
+      "rmse": 0.0,
+      "referenceSha256": "b9363b1c8461b068b7fb51dcd3b08a1ae55e13f5e042dd8dfbb407eb0aeebc86",
+      "actualSha256": "b9363b1c8461b068b7fb51dcd3b08a1ae55e13f5e042dd8dfbb407eb0aeebc86",
+      "passed": true
+    },
+    "tts-huayan-4-native-vs-jit": {
+      "samples": 69376,
+      "maximumAbsoluteError": 2.421438694000244e-05,
+      "rmse": 1.272118416743521e-06,
+      "referenceSha256": "6b021c3836d6d9e045ca98b06d4cfc5f154b01e0c0abad8b086bfbbb80a9302b",
+      "actualSha256": "b9363b1c8461b068b7fb51dcd3b08a1ae55e13f5e042dd8dfbb407eb0aeebc86",
+      "passed": true
+    },
+    "tts-huayan-5-aot-vs-native": {
+      "samples": 69376,
+      "maximumAbsoluteError": 2.421438694000244e-05,
+      "rmse": 1.272118416743521e-06,
+      "referenceSha256": "b9363b1c8461b068b7fb51dcd3b08a1ae55e13f5e042dd8dfbb407eb0aeebc86",
+      "actualSha256": "6b021c3836d6d9e045ca98b06d4cfc5f154b01e0c0abad8b086bfbbb80a9302b",
+      "passed": true
+    },
+    "tts-huayan-5-aot-vs-jit": {
+      "samples": 69376,
+      "maximumAbsoluteError": 0.0,
+      "rmse": 0.0,
+      "referenceSha256": "6b021c3836d6d9e045ca98b06d4cfc5f154b01e0c0abad8b086bfbbb80a9302b",
+      "actualSha256": "6b021c3836d6d9e045ca98b06d4cfc5f154b01e0c0abad8b086bfbbb80a9302b",
+      "passed": true
+    },
+    "tts-huayan-6-jit-vs-native": {
+      "samples": 69376,
+      "maximumAbsoluteError": 2.421438694000244e-05,
+      "rmse": 1.272118416743521e-06,
+      "referenceSha256": "b9363b1c8461b068b7fb51dcd3b08a1ae55e13f5e042dd8dfbb407eb0aeebc86",
+      "actualSha256": "6b021c3836d6d9e045ca98b06d4cfc5f154b01e0c0abad8b086bfbbb80a9302b",
+      "passed": true
+    },
+    "tts-huayan-6-jit-vs-jit": {
+      "samples": 69376,
+      "maximumAbsoluteError": 0.0,
+      "rmse": 0.0,
+      "referenceSha256": "6b021c3836d6d9e045ca98b06d4cfc5f154b01e0c0abad8b086bfbbb80a9302b",
+      "actualSha256": "6b021c3836d6d9e045ca98b06d4cfc5f154b01e0c0abad8b086bfbbb80a9302b",
+      "passed": true
+    },
+    "tts-huayan-7-current-vs-native": {
+      "samples": 69376,
+      "maximumAbsoluteError": 2.421438694000244e-05,
+      "rmse": 1.272118416743521e-06,
+      "referenceSha256": "b9363b1c8461b068b7fb51dcd3b08a1ae55e13f5e042dd8dfbb407eb0aeebc86",
+      "actualSha256": "6b021c3836d6d9e045ca98b06d4cfc5f154b01e0c0abad8b086bfbbb80a9302b",
+      "passed": true
+    },
+    "tts-huayan-7-current-vs-jit": {
+      "samples": 69376,
+      "maximumAbsoluteError": 0.0,
+      "rmse": 0.0,
+      "referenceSha256": "6b021c3836d6d9e045ca98b06d4cfc5f154b01e0c0abad8b086bfbbb80a9302b",
+      "actualSha256": "6b021c3836d6d9e045ca98b06d4cfc5f154b01e0c0abad8b086bfbbb80a9302b",
+      "passed": true
+    },
+    "tts-aishell3-0-current-vs-native": {
+      "samples": 28928,
+      "maximumAbsoluteError": 1.177377998828888e-05,
+      "rmse": 7.451167166487346e-07,
+      "referenceSha256": "24c7f168c08655065311a99f8e3e32d35ff86125186d20ec31d59391c8041ac4",
+      "actualSha256": "f378dbb3abad6fa55f4200ba7b44f8ba48782bb629a733284e0fafd79a2259fa",
+      "passed": true
+    },
+    "tts-aishell3-0-current-vs-jit": {
+      "samples": 28928,
+      "maximumAbsoluteError": 0.0,
+      "rmse": 0.0,
+      "referenceSha256": "f378dbb3abad6fa55f4200ba7b44f8ba48782bb629a733284e0fafd79a2259fa",
+      "actualSha256": "f378dbb3abad6fa55f4200ba7b44f8ba48782bb629a733284e0fafd79a2259fa",
+      "passed": true
+    },
+    "tts-aishell3-1-jit-vs-native": {
+      "samples": 28928,
+      "maximumAbsoluteError": 1.177377998828888e-05,
+      "rmse": 7.451167166487346e-07,
+      "referenceSha256": "24c7f168c08655065311a99f8e3e32d35ff86125186d20ec31d59391c8041ac4",
+      "actualSha256": "f378dbb3abad6fa55f4200ba7b44f8ba48782bb629a733284e0fafd79a2259fa",
+      "passed": true
+    },
+    "tts-aishell3-1-jit-vs-jit": {
+      "samples": 28928,
+      "maximumAbsoluteError": 0.0,
+      "rmse": 0.0,
+      "referenceSha256": "f378dbb3abad6fa55f4200ba7b44f8ba48782bb629a733284e0fafd79a2259fa",
+      "actualSha256": "f378dbb3abad6fa55f4200ba7b44f8ba48782bb629a733284e0fafd79a2259fa",
+      "passed": true
+    },
+    "tts-aishell3-2-aot-vs-native": {
+      "samples": 28928,
+      "maximumAbsoluteError": 1.177377998828888e-05,
+      "rmse": 7.451167166487346e-07,
+      "referenceSha256": "24c7f168c08655065311a99f8e3e32d35ff86125186d20ec31d59391c8041ac4",
+      "actualSha256": "f378dbb3abad6fa55f4200ba7b44f8ba48782bb629a733284e0fafd79a2259fa",
+      "passed": true
+    },
+    "tts-aishell3-2-aot-vs-jit": {
+      "samples": 28928,
+      "maximumAbsoluteError": 0.0,
+      "rmse": 0.0,
+      "referenceSha256": "f378dbb3abad6fa55f4200ba7b44f8ba48782bb629a733284e0fafd79a2259fa",
+      "actualSha256": "f378dbb3abad6fa55f4200ba7b44f8ba48782bb629a733284e0fafd79a2259fa",
+      "passed": true
+    },
+    "tts-aishell3-3-native-vs-native": {
+      "samples": 28928,
+      "maximumAbsoluteError": 0.0,
+      "rmse": 0.0,
+      "referenceSha256": "24c7f168c08655065311a99f8e3e32d35ff86125186d20ec31d59391c8041ac4",
+      "actualSha256": "24c7f168c08655065311a99f8e3e32d35ff86125186d20ec31d59391c8041ac4",
+      "passed": true
+    },
+    "tts-aishell3-3-native-vs-jit": {
+      "samples": 28928,
+      "maximumAbsoluteError": 1.177377998828888e-05,
+      "rmse": 7.451167166487346e-07,
+      "referenceSha256": "f378dbb3abad6fa55f4200ba7b44f8ba48782bb629a733284e0fafd79a2259fa",
+      "actualSha256": "24c7f168c08655065311a99f8e3e32d35ff86125186d20ec31d59391c8041ac4",
+      "passed": true
+    },
+    "tts-aishell3-4-native-vs-native": {
+      "samples": 28928,
+      "maximumAbsoluteError": 0.0,
+      "rmse": 0.0,
+      "referenceSha256": "24c7f168c08655065311a99f8e3e32d35ff86125186d20ec31d59391c8041ac4",
+      "actualSha256": "24c7f168c08655065311a99f8e3e32d35ff86125186d20ec31d59391c8041ac4",
+      "passed": true
+    },
+    "tts-aishell3-4-native-vs-jit": {
+      "samples": 28928,
+      "maximumAbsoluteError": 1.177377998828888e-05,
+      "rmse": 7.451167166487346e-07,
+      "referenceSha256": "f378dbb3abad6fa55f4200ba7b44f8ba48782bb629a733284e0fafd79a2259fa",
+      "actualSha256": "24c7f168c08655065311a99f8e3e32d35ff86125186d20ec31d59391c8041ac4",
+      "passed": true
+    },
+    "tts-aishell3-5-aot-vs-native": {
+      "samples": 28928,
+      "maximumAbsoluteError": 1.177377998828888e-05,
+      "rmse": 7.451167166487346e-07,
+      "referenceSha256": "24c7f168c08655065311a99f8e3e32d35ff86125186d20ec31d59391c8041ac4",
+      "actualSha256": "f378dbb3abad6fa55f4200ba7b44f8ba48782bb629a733284e0fafd79a2259fa",
+      "passed": true
+    },
+    "tts-aishell3-5-aot-vs-jit": {
+      "samples": 28928,
+      "maximumAbsoluteError": 0.0,
+      "rmse": 0.0,
+      "referenceSha256": "f378dbb3abad6fa55f4200ba7b44f8ba48782bb629a733284e0fafd79a2259fa",
+      "actualSha256": "f378dbb3abad6fa55f4200ba7b44f8ba48782bb629a733284e0fafd79a2259fa",
+      "passed": true
+    },
+    "tts-aishell3-6-jit-vs-native": {
+      "samples": 28928,
+      "maximumAbsoluteError": 1.177377998828888e-05,
+      "rmse": 7.451167166487346e-07,
+      "referenceSha256": "24c7f168c08655065311a99f8e3e32d35ff86125186d20ec31d59391c8041ac4",
+      "actualSha256": "f378dbb3abad6fa55f4200ba7b44f8ba48782bb629a733284e0fafd79a2259fa",
+      "passed": true
+    },
+    "tts-aishell3-6-jit-vs-jit": {
+      "samples": 28928,
+      "maximumAbsoluteError": 0.0,
+      "rmse": 0.0,
+      "referenceSha256": "f378dbb3abad6fa55f4200ba7b44f8ba48782bb629a733284e0fafd79a2259fa",
+      "actualSha256": "f378dbb3abad6fa55f4200ba7b44f8ba48782bb629a733284e0fafd79a2259fa",
+      "passed": true
+    },
+    "tts-aishell3-7-current-vs-native": {
+      "samples": 28928,
+      "maximumAbsoluteError": 1.177377998828888e-05,
+      "rmse": 7.451167166487346e-07,
+      "referenceSha256": "24c7f168c08655065311a99f8e3e32d35ff86125186d20ec31d59391c8041ac4",
+      "actualSha256": "f378dbb3abad6fa55f4200ba7b44f8ba48782bb629a733284e0fafd79a2259fa",
+      "passed": true
+    },
+    "tts-aishell3-7-current-vs-jit": {
+      "samples": 28928,
+      "maximumAbsoluteError": 0.0,
+      "rmse": 0.0,
+      "referenceSha256": "f378dbb3abad6fa55f4200ba7b44f8ba48782bb629a733284e0fafd79a2259fa",
+      "actualSha256": "f378dbb3abad6fa55f4200ba7b44f8ba48782bb629a733284e0fafd79a2259fa",
+      "passed": true
+    }
+  },
+  "asrTextParity": true,
+  "runs": [
+    {
+      "name": "tts-huayan-0-current",
+      "kind": "tts",
+      "subject": "huayan",
+      "variant": "current",
+      "formalCount": 5,
+      "warmupCount": 1
+    },
+    {
+      "name": "tts-huayan-1-jit",
+      "kind": "tts",
+      "subject": "huayan",
+      "variant": "jit",
+      "formalCount": 5,
+      "warmupCount": 1
+    },
+    {
+      "name": "tts-huayan-2-aot",
+      "kind": "tts",
+      "subject": "huayan",
+      "variant": "aot",
+      "formalCount": 5,
+      "warmupCount": 1
+    },
+    {
+      "name": "tts-huayan-3-native",
+      "kind": "tts",
+      "subject": "huayan",
+      "variant": "native",
+      "formalCount": 5,
+      "warmupCount": 1
+    },
+    {
+      "name": "tts-huayan-4-native",
+      "kind": "tts",
+      "subject": "huayan",
+      "variant": "native",
+      "formalCount": 5,
+      "warmupCount": 1
+    },
+    {
+      "name": "tts-huayan-5-aot",
+      "kind": "tts",
+      "subject": "huayan",
+      "variant": "aot",
+      "formalCount": 5,
+      "warmupCount": 1
+    },
+    {
+      "name": "tts-huayan-6-jit",
+      "kind": "tts",
+      "subject": "huayan",
+      "variant": "jit",
+      "formalCount": 5,
+      "warmupCount": 1
+    },
+    {
+      "name": "tts-huayan-7-current",
+      "kind": "tts",
+      "subject": "huayan",
+      "variant": "current",
+      "formalCount": 5,
+      "warmupCount": 1
+    },
+    {
+      "name": "tts-aishell3-0-current",
+      "kind": "tts",
+      "subject": "aishell3",
+      "variant": "current",
+      "formalCount": 5,
+      "warmupCount": 1
+    },
+    {
+      "name": "tts-aishell3-1-jit",
+      "kind": "tts",
+      "subject": "aishell3",
+      "variant": "jit",
+      "formalCount": 5,
+      "warmupCount": 1
+    },
+    {
+      "name": "tts-aishell3-2-aot",
+      "kind": "tts",
+      "subject": "aishell3",
+      "variant": "aot",
+      "formalCount": 5,
+      "warmupCount": 1
+    },
+    {
+      "name": "tts-aishell3-3-native",
+      "kind": "tts",
+      "subject": "aishell3",
+      "variant": "native",
+      "formalCount": 5,
+      "warmupCount": 1
+    },
+    {
+      "name": "tts-aishell3-4-native",
+      "kind": "tts",
+      "subject": "aishell3",
+      "variant": "native",
+      "formalCount": 5,
+      "warmupCount": 1
+    },
+    {
+      "name": "tts-aishell3-5-aot",
+      "kind": "tts",
+      "subject": "aishell3",
+      "variant": "aot",
+      "formalCount": 5,
+      "warmupCount": 1
+    },
+    {
+      "name": "tts-aishell3-6-jit",
+      "kind": "tts",
+      "subject": "aishell3",
+      "variant": "jit",
+      "formalCount": 5,
+      "warmupCount": 1
+    },
+    {
+      "name": "tts-aishell3-7-current",
+      "kind": "tts",
+      "subject": "aishell3",
+      "variant": "current",
+      "formalCount": 5,
+      "warmupCount": 1
+    },
+    {
+      "name": "asr-sip-short-pcma-0-current",
+      "kind": "asr",
+      "subject": "sip-short-pcma",
+      "variant": "current",
+      "formalCount": 5,
+      "warmupCount": 1
+    },
+    {
+      "name": "asr-sip-short-pcma-1-jit",
+      "kind": "asr",
+      "subject": "sip-short-pcma",
+      "variant": "jit",
+      "formalCount": 5,
+      "warmupCount": 1
+    },
+    {
+      "name": "asr-sip-short-pcma-2-aot",
+      "kind": "asr",
+      "subject": "sip-short-pcma",
+      "variant": "aot",
+      "formalCount": 5,
+      "warmupCount": 1
+    },
+    {
+      "name": "asr-sip-short-pcma-3-native",
+      "kind": "asr",
+      "subject": "sip-short-pcma",
+      "variant": "native",
+      "formalCount": 5,
+      "warmupCount": 1
+    },
+    {
+      "name": "asr-sip-short-pcma-4-native",
+      "kind": "asr",
+      "subject": "sip-short-pcma",
+      "variant": "native",
+      "formalCount": 5,
+      "warmupCount": 1
+    },
+    {
+      "name": "asr-sip-short-pcma-5-aot",
+      "kind": "asr",
+      "subject": "sip-short-pcma",
+      "variant": "aot",
+      "formalCount": 5,
+      "warmupCount": 1
+    },
+    {
+      "name": "asr-sip-short-pcma-6-jit",
+      "kind": "asr",
+      "subject": "sip-short-pcma",
+      "variant": "jit",
+      "formalCount": 5,
+      "warmupCount": 1
+    },
+    {
+      "name": "asr-sip-short-pcma-7-current",
+      "kind": "asr",
+      "subject": "sip-short-pcma",
+      "variant": "current",
+      "formalCount": 5,
+      "warmupCount": 1
+    },
+    {
+      "name": "asr-sip-zh-pcmu-0-current",
+      "kind": "asr",
+      "subject": "sip-zh-pcmu",
+      "variant": "current",
+      "formalCount": 5,
+      "warmupCount": 1
+    },
+    {
+      "name": "asr-sip-zh-pcmu-1-jit",
+      "kind": "asr",
+      "subject": "sip-zh-pcmu",
+      "variant": "jit",
+      "formalCount": 5,
+      "warmupCount": 1
+    },
+    {
+      "name": "asr-sip-zh-pcmu-2-aot",
+      "kind": "asr",
+      "subject": "sip-zh-pcmu",
+      "variant": "aot",
+      "formalCount": 5,
+      "warmupCount": 1
+    },
+    {
+      "name": "asr-sip-zh-pcmu-3-native",
+      "kind": "asr",
+      "subject": "sip-zh-pcmu",
+      "variant": "native",
+      "formalCount": 5,
+      "warmupCount": 1
+    },
+    {
+      "name": "asr-sip-zh-pcmu-4-native",
+      "kind": "asr",
+      "subject": "sip-zh-pcmu",
+      "variant": "native",
+      "formalCount": 5,
+      "warmupCount": 1
+    },
+    {
+      "name": "asr-sip-zh-pcmu-5-aot",
+      "kind": "asr",
+      "subject": "sip-zh-pcmu",
+      "variant": "aot",
+      "formalCount": 5,
+      "warmupCount": 1
+    },
+    {
+      "name": "asr-sip-zh-pcmu-6-jit",
+      "kind": "asr",
+      "subject": "sip-zh-pcmu",
+      "variant": "jit",
+      "formalCount": 5,
+      "warmupCount": 1
+    },
+    {
+      "name": "asr-sip-zh-pcmu-7-current",
+      "kind": "asr",
+      "subject": "sip-zh-pcmu",
+      "variant": "current",
+      "formalCount": 5,
+      "warmupCount": 1
+    },
+    {
+      "name": "asr-sip-repeated-pcma-0-current",
+      "kind": "asr",
+      "subject": "sip-repeated-pcma",
+      "variant": "current",
+      "formalCount": 3,
+      "warmupCount": 1
+    },
+    {
+      "name": "asr-sip-repeated-pcma-1-jit",
+      "kind": "asr",
+      "subject": "sip-repeated-pcma",
+      "variant": "jit",
+      "formalCount": 3,
+      "warmupCount": 1
+    },
+    {
+      "name": "asr-sip-repeated-pcma-2-aot",
+      "kind": "asr",
+      "subject": "sip-repeated-pcma",
+      "variant": "aot",
+      "formalCount": 3,
+      "warmupCount": 1
+    },
+    {
+      "name": "asr-sip-repeated-pcma-3-native",
+      "kind": "asr",
+      "subject": "sip-repeated-pcma",
+      "variant": "native",
+      "formalCount": 3,
+      "warmupCount": 1
+    },
+    {
+      "name": "asr-sip-repeated-pcma-4-native",
+      "kind": "asr",
+      "subject": "sip-repeated-pcma",
+      "variant": "native",
+      "formalCount": 3,
+      "warmupCount": 1
+    },
+    {
+      "name": "asr-sip-repeated-pcma-5-aot",
+      "kind": "asr",
+      "subject": "sip-repeated-pcma",
+      "variant": "aot",
+      "formalCount": 3,
+      "warmupCount": 1
+    },
+    {
+      "name": "asr-sip-repeated-pcma-6-jit",
+      "kind": "asr",
+      "subject": "sip-repeated-pcma",
+      "variant": "jit",
+      "formalCount": 3,
+      "warmupCount": 1
+    },
+    {
+      "name": "asr-sip-repeated-pcma-7-current",
+      "kind": "asr",
+      "subject": "sip-repeated-pcma",
+      "variant": "current",
+      "formalCount": 3,
+      "warmupCount": 1
+    }
+  ],
+  "date": "2026-10-12",
+  "sdk": "10.0.401",
+  "nativeReference": {
+    "funAsrCommit": "0339018ba74a7defa3b6b6a96718d17b816be77b",
+    "llamaCommit": "8086439a4cea94c71a5dfb8fe4ad1546aebd640f",
+    "nativeCpuBuild": {
+      "msvc": "19.44.35207",
+      "avx2": true,
+      "avxVnni": true,
+      "fma": true,
+      "openmp": true,
+      "gpuLayers": 0,
+      "cuda": false,
+      "vulkan": false
+    },
+    "ortVersion": "1.23.2",
+    "ortProvider": "CPUExecutionProvider"
+  },
+  "numericChecksPerMode": 1796447,
+  "scope": "CPU benchmark only; no AOT server, GPU or ARM64 measurements",
+  "startupScope": "Fresh process to first configuration line; not disk-cold boot. Model readiness and first result each have two processes per variant.",
+  "sourceManifest": "manifest.json",
+  "nativeLogPathRedaction": "Repository root replaced with <repo>; diagnostic stderr trailing whitespace normalized; numeric JSONL unchanged."
+}

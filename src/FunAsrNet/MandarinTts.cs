@@ -19,9 +19,9 @@ public sealed class MandarinFrontend
     /// <param name="configPath">模型音素表和配置 JSON 文件路径。</param>
     public MandarinFrontend(string lexiconPath, string configPath)
     {
-        _lexicon = JsonSerializer.Deserialize<Dictionary<string, string>>(File.ReadAllText(lexiconPath))!;
+        _lexicon = JsonSerializer.Deserialize(File.ReadAllText(lexiconPath), MandarinJsonContext.Default.Lexicon)!;
         using var config = JsonDocument.Parse(File.ReadAllText(configPath));
-        _symbols = config.RootElement.GetProperty("phoneme_id_map").Deserialize<Dictionary<string, int[]>>()!;
+        _symbols = config.RootElement.GetProperty("phoneme_id_map").Deserialize(MandarinJsonContext.Default.Symbols)!;
         _longest = _lexicon.Keys.Max(k => k.Length);
     }
 
