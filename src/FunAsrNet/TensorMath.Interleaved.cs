@@ -3,6 +3,7 @@ using System.Buffers;
 using System.Runtime.InteropServices;
 using System.Runtime.Intrinsics;
 using System.Runtime.Intrinsics.Arm;
+using System.Runtime.Intrinsics.X86;
 
 namespace FunAsrNet;
 
@@ -29,6 +30,14 @@ public sealed partial class TensorMath
             && groupedBackend.TryLinearMany(input, frames, weights, out var groupedOutputs))
         {
             return groupedOutputs!;
+        }
+
+        if (Optimized && Simd && Avx2.IsSupported && FloatBackend is null && weights.Length > 1
+            && Environment.GetEnvironmentVariable("FUNASRNET_AVX2_Q8") != "0"
+            && Environment.GetEnvironmentVariable("FUNASRNET_Q8_GROUPED") != "0"
+            && weights.All(w => w.Values is null && w.Quantized is not null && !w.QuantizedInterleaved && (w.Columns & 31) == 0))
+        {
+            return QuantizedLinearManyAvx(input, frames, weights);
         }
 
         if (!Simd || !Dp.IsSupported || weights.Any(w => !w.QuantizedInterleaved))

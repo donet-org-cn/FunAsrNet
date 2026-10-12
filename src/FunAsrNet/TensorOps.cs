@@ -294,11 +294,17 @@ public static partial class TensorOps
         var shape = permutation.Select(i => x.Shape[i]).ToArray();
         var source = Strides(x.Shape);
         var strides = permutation.Select(i => source[i]).ToArray();
-        var y = Tensor.Zeros(shape, x.Integer);
+        var y = Tensor.ForOverwrite(shape, x.Integer);
         if (x.Rank >= 2 && permutation.Take(x.Rank - 2).SequenceEqual(Enumerable.Range(0, x.Rank - 2))
             && permutation[^2] == x.Rank - 1 && permutation[^1] == x.Rank - 2)
         {
             int rows = x.Shape[^2], columns = x.Shape[^1], batches = Tensor.Size(x.Shape[..^2]);
+            if (System.Runtime.Intrinsics.X86.Avx2.IsSupported && rows >= 8 && columns >= 8
+                && Environment.GetEnvironmentVariable("FUNASRNET_AVX_TRANSPOSE") != "0")
+            {
+                TransposeLastTwoAvx(x.Data, y.Data, rows, columns, batches);
+                return y;
+            }
             for (int batch = 0; batch < batches; batch++)
             {
                 int offset = batch * rows * columns;
@@ -554,10 +560,15 @@ public static partial class TensorOps
     /// <param name="x">连续存储的输入张量或向量。</param>
     /// <param name="pads">每个轴前后的填充长度。</param>
     /// <param name="value">待编码、填充或处理的值。</param>
+    /// <param name="math">可选同步线程组，大张量按独立行并行处理。</param>
     /// <returns>具有输出形状的结果张量。</returns>
-    public static Tensor Pad(Tensor x, int[] pads, float value)
+    public static Tensor Pad(Tensor x, int[] pads, float value, TensorMath? math = null)
     {
         var shape = x.Shape.Select((n, i) => checked(n + pads[i] + pads[i + x.Rank])).ToArray();
+        if (x.Rank > 0 && Environment.GetEnvironmentVariable("FUNASRNET_LEGACY_PAD") != "1")
+        {
+            return PadRows(x, pads, shape, value, math);
+        }
         var y = Tensor.Zeros(shape, x.Integer);
         var strides = Strides(x.Shape);
         // 只填充最后一维时，按整行复制；同时处理负填充造成的裁剪。

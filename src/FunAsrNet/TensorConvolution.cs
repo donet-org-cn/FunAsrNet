@@ -83,6 +83,30 @@ public static partial class TensorOps
     /// <param name="math">用于矩阵与向量运算的托管计算内核。</param>
     /// <returns>具有输出形状的结果张量。</returns>
     public static Tensor Conv1D(Tensor x, Tensor w, Tensor? bias, OnnxNode node, TensorMath math)
+        => Conv1DCore(x, w, bias, node, math, null, null);
+
+    /// <summary>计算卷积并按独占消费者计划加入残差或执行激活，避免再次读取完整卷积输出。</summary>
+    /// <param name="x">只读输入张量。</param>
+    /// <param name="w">只读卷积权重。</param>
+    /// <param name="bias">可选输出通道偏置。</param>
+    /// <param name="node">卷积节点与属性。</param>
+    /// <param name="math">同步计算调度器。</param>
+    /// <param name="residual">卷积之后相加的可选张量，直接融合要求与输出同形。</param>
+    /// <param name="leakyAlpha">残差相加后可选的 LeakyRelu 负值缩放系数。</param>
+    /// <returns>已完成卷积及指定后处理的自有张量。</returns>
+    internal static Tensor Conv1DFused(Tensor x, Tensor w, Tensor? bias, OnnxNode node, TensorMath math, Tensor? residual, float? leakyAlpha)
+        => Conv1DCore(x, w, bias, node, math, residual, leakyAlpha);
+
+    /// <summary>共享卷积形状验证和调度，直接 AVX2 内核支持有界的融合后处理。</summary>
+    /// <param name="x">连续存储的输入张量。</param>
+    /// <param name="w">卷积权重。</param>
+    /// <param name="bias">可选输出偏置。</param>
+    /// <param name="node">节点和卷积属性。</param>
+    /// <param name="math">当前同步工作线程组。</param>
+    /// <param name="residual">在卷积及偏置完成后相加的可选张量。</param>
+    /// <param name="leakyAlpha">残差相加之后执行的可选激活系数。</param>
+    /// <returns>完整覆盖的卷积及后处理结果。</returns>
+    private static Tensor Conv1DCore(Tensor x, Tensor w, Tensor? bias, OnnxNode node, TensorMath math, Tensor? residual, float? leakyAlpha)
     {
         if (x.Rank != 3 || w.Rank != 3)
         {
@@ -94,7 +118,7 @@ public static partial class TensorOps
         int[] pads = node.Ints("pads", [0, 0]);
         if (math.FloatBackend?.TryConvolution(x, w, bias, node, out var gpuOutput) == true)
         {
-            return gpuOutput!;
+            return FinishConvEpilogue(gpuOutput!, residual, leakyAlpha, math);
         }
 
         int outLength = (length + pads[0] + pads[1] - dilation * (kernel - 1) - 1) / stride + 1;
@@ -110,7 +134,7 @@ public static partial class TensorOps
             && Environment.GetEnvironmentVariable("FUNASRNET_LEGACY_CONV") != "1")
         {
             DirectConv1D(x, w, bias, y, dilation, pads[0], math);
-            return y;
+            return FinishConvEpilogue(y, residual, leakyAlpha, math);
         }
 
         if (groups == channels && outputs == channels && stride == 1)
@@ -131,14 +155,19 @@ public static partial class TensorOps
                         }
                     }
                 });
-            return y;
+            return FinishConvEpilogue(y, residual, leakyAlpha, math);
         }
 
         if (math.Simd && System.Runtime.Intrinsics.X86.Avx2.IsSupported && System.Runtime.Intrinsics.X86.Fma.IsSupported
             && stride == 1 && outLength >= 128 && Environment.GetEnvironmentVariable("FUNASRNET_LEGACY_CONV") != "1")
         {
+            if (residual is null || residual.Shape.SequenceEqual(y.Shape))
+            {
+                DirectConv1DAvx(x, w, bias, y, groups, dilation, pads[0], math, residual, leakyAlpha);
+                return y;
+            }
             DirectConv1DAvx(x, w, bias, y, groups, dilation, pads[0], math);
-            return y;
+            return FinishConvEpilogue(y, residual, leakyAlpha, math);
         }
 
         for (int batch = 0; batch < batches; ++batch)
@@ -187,7 +216,7 @@ public static partial class TensorOps
             }
         }
 
-        return y;
+        return FinishConvEpilogue(y, residual, leakyAlpha, math);
     }
 
     /// <summary>

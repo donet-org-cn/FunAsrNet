@@ -17,12 +17,14 @@ public static partial class TensorOps
     /// <param name="dilation">相邻卷积核位置的采样间隔，须为正数。</param>
     /// <param name="padLeft">输入左侧零填充的采样点数。</param>
     /// <param name="math">同步计算任务调度器。</param>
-    private static void DirectConv1DAvx(Tensor x, Tensor w, Tensor? bias, Tensor y, int groups, int dilation, int padLeft, TensorMath math)
+    /// <param name="residual">偏置之后相加的可选同形残差。</param>
+    /// <param name="leakyAlpha">残差相加后可选的 LeakyRelu 缩放系数。</param>
+    private static void DirectConv1DAvx(Tensor x, Tensor w, Tensor? bias, Tensor y, int groups, int dilation, int padLeft, TensorMath math, Tensor? residual = null, float? leakyAlpha = null)
     {
         if (w.Shape[0] / groups >= 192 && Environment.GetEnvironmentVariable("FUNASRNET_AVX_CONV8") != "0"
             && Environment.GetEnvironmentVariable("FUNASRNET_LEGACY_AVX_CONV_INNER") != "1")
         {
-            DirectConv1DEightAvx(x, w, bias, y, groups, dilation, padLeft, math);
+            DirectConv1DEightAvx(x, w, bias, y, groups, dilation, padLeft, math, residual, leakyAlpha);
             return;
         }
         int channels = x.Shape[1], length = x.Shape[2], outputs = w.Shape[0], kernel = w.Shape[2], outLength = y.Shape[2];
@@ -36,7 +38,8 @@ public static partial class TensorOps
             int valid = Math.Min(4, outGroup - block * 4), end = Math.Min(outLength, (tile + 1) * 256);
             ref float source = ref MemoryMarshal.GetArrayDataReference(x.Data);
             ref float weight = ref Unsafe.Add(ref MemoryMarshal.GetArrayDataReference(w.Data), output * width);
-            ref float destination = ref Unsafe.Add(ref MemoryMarshal.GetArrayDataReference(y.Data), (batch * outputs + output) * outLength);
+            int destinationOffset = (batch * outputs + output) * outLength;
+            ref float destination = ref Unsafe.Add(ref MemoryMarshal.GetArrayDataReference(y.Data), destinationOffset);
             int time = tile * 256;
             for (; time < end; time += 16)
             {
@@ -114,25 +117,25 @@ public static partial class TensorOps
 
                 }
                 var offsetBias = Vector256.Create(bias?.Data[output] ?? 0);
-                StoreTime(a0 + offsetBias, ref destination, time, end - time);
-                StoreTime(a1 + offsetBias, ref destination, time + 8, end - time - 8);
+                StoreConvTime(a0 + offsetBias, ref destination, time, end - time, residual, destinationOffset + time, leakyAlpha);
+                StoreConvTime(a1 + offsetBias, ref destination, time + 8, end - time - 8, residual, destinationOffset + time + 8, leakyAlpha);
                 if (valid > 1)
                 {
                     offsetBias = Vector256.Create(bias?.Data[output + 1] ?? 0);
-                    StoreTime(b0 + offsetBias, ref destination, outLength + time, end - time);
-                    StoreTime(b1 + offsetBias, ref destination, outLength + time + 8, end - time - 8);
+                    StoreConvTime(b0 + offsetBias, ref destination, outLength + time, end - time, residual, destinationOffset + outLength + time, leakyAlpha);
+                    StoreConvTime(b1 + offsetBias, ref destination, outLength + time + 8, end - time - 8, residual, destinationOffset + outLength + time + 8, leakyAlpha);
                 }
                 if (valid > 2)
                 {
                     offsetBias = Vector256.Create(bias?.Data[output + 2] ?? 0);
-                    StoreTime(c0 + offsetBias, ref destination, 2 * outLength + time, end - time);
-                    StoreTime(c1 + offsetBias, ref destination, 2 * outLength + time + 8, end - time - 8);
+                    StoreConvTime(c0 + offsetBias, ref destination, 2 * outLength + time, end - time, residual, destinationOffset + 2 * outLength + time, leakyAlpha);
+                    StoreConvTime(c1 + offsetBias, ref destination, 2 * outLength + time + 8, end - time - 8, residual, destinationOffset + 2 * outLength + time + 8, leakyAlpha);
                 }
                 if (valid > 3)
                 {
                     offsetBias = Vector256.Create(bias?.Data[output + 3] ?? 0);
-                    StoreTime(d0 + offsetBias, ref destination, 3 * outLength + time, end - time);
-                    StoreTime(d1 + offsetBias, ref destination, 3 * outLength + time + 8, end - time - 8);
+                    StoreConvTime(d0 + offsetBias, ref destination, 3 * outLength + time, end - time, residual, destinationOffset + 3 * outLength + time, leakyAlpha);
+                    StoreConvTime(d1 + offsetBias, ref destination, 3 * outLength + time + 8, end - time - 8, residual, destinationOffset + 3 * outLength + time + 8, leakyAlpha);
                 }
             }
         });

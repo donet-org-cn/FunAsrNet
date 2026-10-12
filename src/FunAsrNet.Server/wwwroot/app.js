@@ -320,6 +320,7 @@ async function stop() {
   const s = current;
   if (!s || s.stopping) return;
   s.stopping = true;
+  s.stopTime = performance.now();
   buttons();
   status("live-status", "正在完成最后一句…");
   clearTimeout(s.sampleTimer);
@@ -336,14 +337,14 @@ async function stop() {
         };
         s.node.port.postMessage("stop");
       });
+    if (current === s && s.ws.readyState === WebSocket.OPEN) {
+      s.ws.send(JSON.stringify({ event: "end" }));
+      s.endTimer = setTimeout(
+        () => fail(s, "等待识别结果超时，请重试。"),
+        120000,
+      );
+    }
     await releaseAudio(s);
-    if (current !== s || s.ws.readyState !== WebSocket.OPEN) return;
-    s.stopTime = performance.now();
-    s.ws.send(JSON.stringify({ event: "end" }));
-    s.endTimer = setTimeout(
-      () => fail(s, "等待识别结果超时，请重试。"),
-      120000,
-    );
   } catch (e) {
     fail(s, e.message);
   }

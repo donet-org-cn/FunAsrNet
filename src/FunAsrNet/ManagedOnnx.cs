@@ -60,6 +60,7 @@ public sealed partial class ManagedOnnx
         {
             _uses[output] = _uses.GetValueOrDefault(output) + 1;
         }
+        BuildConvFusionPlans();
     }
 
     /// <summary>
@@ -72,6 +73,9 @@ public sealed partial class ManagedOnnx
     {
         using var affinity = _math.PinCaller();
         using var scope = _workspace.Enter(ReuseBuffers && Trace is null);
+        ConvFusionsExecuted = 0;
+        bool fuseConvolutions = Environment.GetEnvironmentVariable("FUNASRNET_FUSE_CONV") != "0"
+            && Trace is null && NodeMeasured is null && FloatBackend is null;
         _random = new Random(seed);
         var values = new Dictionary<string, Tensor>(_model.Constants);
         var references = new Dictionary<float[], int>(ReferenceEqualityComparer.Instance);
@@ -88,16 +92,26 @@ public sealed partial class ManagedOnnx
         for (int i = 0; i < _model.Nodes.Count; ++i)
         {
             var node = _model.Nodes[i];
+            OnnxNode? fusedConsumer = null;
             Tensor?[] x = node.Inputs.Select(n => n.Length == 0 ? null : values[n]).ToArray();
             Tensor[] output;
             long started = NodeMeasured is null ? 0 : System.Diagnostics.Stopwatch.GetTimestamp();
             try
             {
-                Tensor? reuse = FindReusableInput(node, x, remaining, references);
-                output = reuse is null ? Execute(node, x) :
-                    [node.Op == "LeakyRelu"
-                        ? TensorOps.LeakyReluOwned(x[0]!, node.Float("alpha", 0.01f), _math, reuse)
-                        : TensorOps.ArithmeticOwned(x[0]!, x[1]!, node.Op, _math, reuse)];
+                if (fuseConvolutions && TryExecuteConvFusion(i, x, values, out var fused))
+                {
+                    output = [fused!];
+                    fusedConsumer = _model.Nodes[i + 1];
+                    ConvFusionsExecuted++;
+                }
+                else
+                {
+                    Tensor? reuse = FindReusableInput(node, x, remaining, references);
+                    output = reuse is null ? Execute(node, x) :
+                        [node.Op == "LeakyRelu"
+                            ? TensorOps.LeakyReluOwned(x[0]!, node.Float("alpha", 0.01f), _math, reuse)
+                            : TensorOps.ArithmeticOwned(x[0]!, x[1]!, node.Op, _math, reuse)];
+                }
             }
             catch (Exception e)
             {
@@ -106,31 +120,25 @@ public sealed partial class ManagedOnnx
 
             NodeMeasured?.Invoke(node, x, System.Diagnostics.Stopwatch.GetElapsedTime(started).TotalMilliseconds);
 
-            if (output.Length != node.Outputs.Length)
+            var outputNode = fusedConsumer ?? node;
+            if (output.Length != outputNode.Outputs.Length)
             {
                 throw new InvalidDataException("Output count mismatch");
             }
 
             for (int j = 0; j < output.Length; ++j)
             {
-                values[node.Outputs[j]] = output[j];
+                values[outputNode.Outputs[j]] = output[j];
                 references[output[j].Data] = references.GetValueOrDefault(output[j].Data) + 1;
             }
 
             Trace?.Invoke(i, node, output);
-            foreach (string input in node.Inputs)
+            ReleaseNodeInputs(node, values, remaining, references);
+            if (fusedConsumer is not null)
             {
-                if (input.Length != 0 && --remaining[input] == 0 && !_model.Constants.ContainsKey(input))
-                {
-                    // Reshape、Identity、Split 等视图可能仍引用同一数组，最后一个命名视图结束后才能回收。
-                    float[] array = values[input].Data;
-                    values.Remove(input);
-                    if (--references[array] == 0)
-                    {
-                        references.Remove(array);
-                        TensorWorkspace.Release(array);
-                    }
-                }
+                // 融合只保存最终输出；唯一消费者读取的卷积中间名没有独立数组。
+                ReleaseNodeInputs(fusedConsumer, values, remaining, references, node.Outputs[0]);
+                i++;
             }
         }
 
@@ -326,7 +334,7 @@ public sealed partial class ManagedOnnx
                 result = TensorOps.Where(X(0), X(1), X(2));
                 break;
             case "Pad":
-                result = TensorOps.Pad(X(0), X(1).Ints(), Optional(2)?.Data[0] ?? 0);
+                result = TensorOps.Pad(X(0), X(1).Ints(), Optional(2)?.Data[0] ?? 0, _math);
                 break;
             case "ReduceMean":
             case "ReduceSum":

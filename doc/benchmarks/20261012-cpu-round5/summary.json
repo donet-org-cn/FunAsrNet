@@ -1,0 +1,522 @@
+{
+  "date": "2026-10-12",
+  "platform": "Windows x64 / Intel Core i7-12700",
+  "runtime": "10.0.12",
+  "threads": 4,
+  "affinity": "0x55",
+  "beforeSourceCommit": "3a6105931c37fc2cbe027987930d3c388d7db730",
+  "afterSource": "3a61059 plus shared Q8 projections, sequential FP32 microkernel with preserved K128 and exact F16 loading; CPU convolution fusion and layout operations",
+  "buildManifest": {
+    "beforeCore": "b7fc38f8b1894c8d9448ac1ad2c89acaa432384213cfcdb4683d5279a39e4e58",
+    "afterCore": "eefa678f1947bec933de2c06b1baf15e58b3d83874411ae2c6db7f5a1b222996",
+    "nativeCpp": "217da1d28db2ae4718c12d92f4dc23fdb66e2a71b980ec2d6905658e8e4a6d09"
+  },
+  "funAsrCommit": "0339018ba74a7defa3b6b6a96718d17b816be77b",
+  "llamaCommit": "8086439a4cea94c71a5dfb8fe4ad1546aebd640f",
+  "nativeCpuBuild": {
+    "msvc": "19.44.35207",
+    "avx2": true,
+    "avxVnni": true,
+    "fma": true,
+    "openmp": true,
+    "gpuLayers": 0,
+    "cuda": false,
+    "vulkan": false
+  },
+  "ortVersion": "1.23.2",
+  "ortProvider": "CPUExecutionProvider",
+  "modelSha256": {
+    "encoder": "f92f91d01a24fbed6c863495b2ee8c6a6788144a02858b75743f0946668de8a2",
+    "decoder": "819f385dc0e035dccc3d9e7edaf6b7b044b8ba7ace63cbcbf84c7e397eecbf27",
+    "huayan": "04234ec24907e9efa7e153669e07d4e0cf6d260adc005323aa929386dae53f86",
+    "aishell3": "5511d651b7840c0a93a6bbfd4afd070a2c7f39ca1ec3ff2ecd73191519bbb852"
+  },
+  "inputSha256": {
+    "aishell3.i64": "66ac60d96f74dd848d71580982ac6dd0227ce53ec80fac3afca25cfa2dc012ee",
+    "huayan.i64": "feb05cdbb64fdf8045f0c08e42701ee5e24a72f7feee73c2858abce65f760569",
+    "sip-official-pcma.f32": "3ce8d1e2e027cdd55927903791e2f9e0daf5bb00f58c56932943bc48d07d9838",
+    "sip-official-short.f32": "ae2fda8ce95f85cad76bfb8e5fc885006ef723c366142255763f5a1541affbab",
+    "sip-repeated-pcma.f32": "839f53e709e87ed6c74b645c5e2f871fd4af68e84b4b09698372f2d065c5b048",
+    "sip-short-pcma.f32": "8ebc139144c67bba23110e445db36b0cb9da70eeef32e5e8ad0d9dda06ce2322",
+    "sip-zh-pcmu.f32": "fb705a8368d62b25bfec86b28b897e94c61173ca5ba6c0490b5556e078471432"
+  },
+  "gpuEnabled": false,
+  "asrPromptCache": false,
+  "maxTokens": 128,
+  "order": [
+    "before-a",
+    "after-b",
+    "native-c",
+    "native-d",
+    "after-e",
+    "before-f"
+  ],
+  "measured": 258,
+  "warmup": 42,
+  "percentileMethod": "nearest rank",
+  "groups": [
+    {
+      "kind": "tts",
+      "subject": "huayan",
+      "variant": "before",
+      "count": 20,
+      "medianSeconds": 0.14572210000000002,
+      "p95Seconds": 0.1568435,
+      "minimumSeconds": 0.1423385,
+      "maximumSeconds": 0.1579463,
+      "audioSeconds": 3.1463038548752835,
+      "peakRssBytes": 312881152,
+      "loadSecondsMedian": 0.0890619,
+      "samples": 69376,
+      "allocatedBytesMedian": 17012808.0
+    },
+    {
+      "kind": "tts",
+      "subject": "huayan",
+      "variant": "after",
+      "count": 20,
+      "medianSeconds": 0.1381036,
+      "p95Seconds": 0.1433154,
+      "minimumSeconds": 0.1349954,
+      "maximumSeconds": 0.1455956,
+      "audioSeconds": 3.1463038548752835,
+      "peakRssBytes": 315830272,
+      "loadSecondsMedian": 0.09534329999999999,
+      "samples": 69376,
+      "allocatedBytesMedian": 17009160.0
+    },
+    {
+      "kind": "tts",
+      "subject": "huayan",
+      "variant": "native",
+      "count": 20,
+      "medianSeconds": 0.10296495,
+      "p95Seconds": 0.1063318,
+      "minimumSeconds": 0.1008058,
+      "maximumSeconds": 0.106873,
+      "audioSeconds": 3.1463038548752835,
+      "peakRssBytes": 250007552,
+      "loadSecondsMedian": 0.8250509,
+      "samples": 69376
+    },
+    {
+      "kind": "tts",
+      "subject": "aishell3",
+      "variant": "before",
+      "count": 20,
+      "medianSeconds": 0.0681939,
+      "p95Seconds": 0.0816379,
+      "minimumSeconds": 0.0642684,
+      "maximumSeconds": 0.1088094,
+      "audioSeconds": 3.616,
+      "peakRssBytes": 187105280,
+      "loadSecondsMedian": 0.06207120000000001,
+      "samples": 28928,
+      "allocatedBytesMedian": 8386136.0
+    },
+    {
+      "kind": "tts",
+      "subject": "aishell3",
+      "variant": "after",
+      "count": 20,
+      "medianSeconds": 0.0648102,
+      "p95Seconds": 0.0770972,
+      "minimumSeconds": 0.0622589,
+      "maximumSeconds": 0.08424,
+      "audioSeconds": 3.616,
+      "peakRssBytes": 187846656,
+      "loadSecondsMedian": 0.07772165,
+      "samples": 28928,
+      "allocatedBytesMedian": 8385336.0
+    },
+    {
+      "kind": "tts",
+      "subject": "aishell3",
+      "variant": "native",
+      "count": 20,
+      "medianSeconds": 0.0440044,
+      "p95Seconds": 0.047084,
+      "minimumSeconds": 0.0427004,
+      "maximumSeconds": 0.0480203,
+      "audioSeconds": 3.616,
+      "peakRssBytes": 160972800,
+      "loadSecondsMedian": 0.52656405,
+      "samples": 28928
+    },
+    {
+      "kind": "asr",
+      "subject": "sip-short-pcma",
+      "variant": "before",
+      "count": 10,
+      "medianSeconds": 0.7425520999999999,
+      "p95Seconds": 0.8017747,
+      "minimumSeconds": 0.7181914,
+      "maximumSeconds": 0.8017747,
+      "audioSeconds": 5.9999375,
+      "peakRssBytes": 2694754304,
+      "loadSecondsMedian": 3.6334854500000002,
+      "texts": [
+        "我想问我在滨海新区有房。"
+      ],
+      "encoderMedianSeconds": 0.2245925,
+      "decoderMedianSeconds": 0.51760605
+    },
+    {
+      "kind": "asr",
+      "subject": "sip-short-pcma",
+      "variant": "after",
+      "count": 10,
+      "medianSeconds": 0.69110775,
+      "p95Seconds": 0.7643748,
+      "minimumSeconds": 0.6830408,
+      "maximumSeconds": 0.7643748,
+      "audioSeconds": 5.9999375,
+      "peakRssBytes": 2694074368,
+      "loadSecondsMedian": 3.22295035,
+      "texts": [
+        "我想问我在滨海新区有房。"
+      ],
+      "encoderMedianSeconds": 0.18862365,
+      "decoderMedianSeconds": 0.50509515
+    },
+    {
+      "kind": "asr",
+      "subject": "sip-short-pcma",
+      "variant": "native",
+      "count": 10,
+      "medianSeconds": 0.7486875,
+      "p95Seconds": 0.766747,
+      "minimumSeconds": 0.738127,
+      "maximumSeconds": 0.766747,
+      "audioSeconds": 5.9999375,
+      "peakRssBytes": 1417502720,
+      "loadSecondsMedian": 0.309781,
+      "texts": [
+        "我想问我在滨海新区有房。"
+      ],
+      "encoderMedianSeconds": 0.257073,
+      "decoderMedianSeconds": 0.4908825
+    },
+    {
+      "kind": "asr",
+      "subject": "sip-zh-pcmu",
+      "variant": "before",
+      "count": 10,
+      "medianSeconds": 0.86080825,
+      "p95Seconds": 0.9128066,
+      "minimumSeconds": 0.8349483,
+      "maximumSeconds": 0.9128066,
+      "audioSeconds": 5.6159375,
+      "peakRssBytes": 2710028288,
+      "loadSecondsMedian": 3.46416985,
+      "texts": [
+        "菜饭时间早上九点至下午五点。"
+      ],
+      "encoderMedianSeconds": 0.19789445,
+      "decoderMedianSeconds": 0.66303675
+    },
+    {
+      "kind": "asr",
+      "subject": "sip-zh-pcmu",
+      "variant": "after",
+      "count": 10,
+      "medianSeconds": 0.8253524,
+      "p95Seconds": 0.9240689,
+      "minimumSeconds": 0.7843664,
+      "maximumSeconds": 0.9240689,
+      "audioSeconds": 5.6159375,
+      "peakRssBytes": 2819764224,
+      "loadSecondsMedian": 3.26161345,
+      "texts": [
+        "菜饭时间早上九点至下午五点。"
+      ],
+      "encoderMedianSeconds": 0.17033405000000001,
+      "decoderMedianSeconds": 0.65567155
+    },
+    {
+      "kind": "asr",
+      "subject": "sip-zh-pcmu",
+      "variant": "native",
+      "count": 10,
+      "medianSeconds": 0.8792804999999999,
+      "p95Seconds": 0.962114,
+      "minimumSeconds": 0.853478,
+      "maximumSeconds": 0.962114,
+      "audioSeconds": 5.6159375,
+      "peakRssBytes": 1417068544,
+      "loadSecondsMedian": 0.3223465,
+      "texts": [
+        "菜饭时间早上九点至下午五点。"
+      ],
+      "encoderMedianSeconds": 0.24706699999999998,
+      "decoderMedianSeconds": 0.6308475
+    },
+    {
+      "kind": "asr",
+      "subject": "sip-repeated-pcma",
+      "variant": "before",
+      "count": 6,
+      "medianSeconds": 2.9385213,
+      "p95Seconds": 3.1225548,
+      "minimumSeconds": 2.8929289,
+      "maximumSeconds": 3.1225548,
+      "audioSeconds": 27.99975,
+      "peakRssBytes": 2693107712,
+      "loadSecondsMedian": 3.472286,
+      "texts": [
+        "我想问我在滨海新区有房。我想问我在滨海新区有房。我想问我在滨海新区有房。我想问我在滨海新区有房。"
+      ],
+      "encoderMedianSeconds": 1.1490559500000002,
+      "decoderMedianSeconds": 1.7775241
+    },
+    {
+      "kind": "asr",
+      "subject": "sip-repeated-pcma",
+      "variant": "after",
+      "count": 6,
+      "medianSeconds": 2.763782,
+      "p95Seconds": 2.7751741,
+      "minimumSeconds": 2.7453241,
+      "maximumSeconds": 2.7751741,
+      "audioSeconds": 27.99975,
+      "peakRssBytes": 2693406720,
+      "loadSecondsMedian": 3.1980192,
+      "texts": [
+        "我想问我在滨海新区有房。我想问我在滨海新区有房。我想问我在滨海新区有房。我想问我在滨海新区有房。"
+      ],
+      "encoderMedianSeconds": 1.0173074500000001,
+      "decoderMedianSeconds": 1.7450298000000002
+    },
+    {
+      "kind": "asr",
+      "subject": "sip-repeated-pcma",
+      "variant": "native",
+      "count": 6,
+      "medianSeconds": 2.9760425,
+      "p95Seconds": 3.109717,
+      "minimumSeconds": 2.929366,
+      "maximumSeconds": 3.109717,
+      "audioSeconds": 27.99975,
+      "peakRssBytes": 1444745216,
+      "loadSecondsMedian": 0.334151,
+      "texts": [
+        "我想问我在滨海新区有房。我想问我在滨海新区有房。我想问我在滨海新区有房。我想问我在滨海新区有房。"
+      ],
+      "encoderMedianSeconds": 1.385222,
+      "decoderMedianSeconds": 1.5868465
+    },
+    {
+      "kind": "asr",
+      "subject": "sip-official-short",
+      "variant": "before",
+      "count": 10,
+      "medianSeconds": 0.6800790000000001,
+      "p95Seconds": 0.7114233,
+      "minimumSeconds": 0.6759615,
+      "maximumSeconds": 0.7114233,
+      "audioSeconds": 6,
+      "peakRssBytes": 2695020544,
+      "loadSecondsMedian": 3.4592605499999998,
+      "texts": [
+        "我想问我在滨海新区有房"
+      ],
+      "encoderMedianSeconds": 0.2162235,
+      "decoderMedianSeconds": 0.46402564999999996
+    },
+    {
+      "kind": "asr",
+      "subject": "sip-official-short",
+      "variant": "after",
+      "count": 10,
+      "medianSeconds": 0.641666,
+      "p95Seconds": 0.6919369,
+      "minimumSeconds": 0.6339591,
+      "maximumSeconds": 0.6919369,
+      "audioSeconds": 6,
+      "peakRssBytes": 2819301376,
+      "loadSecondsMedian": 3.1863863,
+      "texts": [
+        "我想问我在滨海新区有房"
+      ],
+      "encoderMedianSeconds": 0.18605539999999998,
+      "decoderMedianSeconds": 0.45774305000000004
+    },
+    {
+      "kind": "asr",
+      "subject": "sip-official-short",
+      "variant": "native",
+      "count": 10,
+      "medianSeconds": 0.7083765,
+      "p95Seconds": 0.765532,
+      "minimumSeconds": 0.698146,
+      "maximumSeconds": 0.765532,
+      "audioSeconds": 6.0,
+      "peakRssBytes": 1417453568,
+      "loadSecondsMedian": 0.3122685,
+      "texts": [
+        "我想问我在滨海新区有房"
+      ],
+      "encoderMedianSeconds": 0.2591785,
+      "decoderMedianSeconds": 0.448744
+    },
+    {
+      "kind": "asr",
+      "subject": "sip-official-pcma",
+      "variant": "before",
+      "count": 10,
+      "medianSeconds": 0.72943365,
+      "p95Seconds": 0.7861766,
+      "minimumSeconds": 0.6791299,
+      "maximumSeconds": 0.7861766,
+      "audioSeconds": 5.9999375,
+      "peakRssBytes": 2695004160,
+      "loadSecondsMedian": 3.47196795,
+      "texts": [
+        "我想问我在滨海新区有房"
+      ],
+      "encoderMedianSeconds": 0.21998230000000002,
+      "decoderMedianSeconds": 0.4966728
+    },
+    {
+      "kind": "asr",
+      "subject": "sip-official-pcma",
+      "variant": "after",
+      "count": 10,
+      "medianSeconds": 0.68173455,
+      "p95Seconds": 0.7361159,
+      "minimumSeconds": 0.6423506,
+      "maximumSeconds": 0.7361159,
+      "audioSeconds": 5.9999375,
+      "peakRssBytes": 2690560000,
+      "loadSecondsMedian": 3.2648662,
+      "texts": [
+        "我想问我在滨海新区有房"
+      ],
+      "encoderMedianSeconds": 0.1885254,
+      "decoderMedianSeconds": 0.49320405
+    },
+    {
+      "kind": "asr",
+      "subject": "sip-official-pcma",
+      "variant": "native",
+      "count": 10,
+      "medianSeconds": 0.7298005000000001,
+      "p95Seconds": 0.793658,
+      "minimumSeconds": 0.698476,
+      "maximumSeconds": 0.793658,
+      "audioSeconds": 5.9999375,
+      "peakRssBytes": 1417355264,
+      "loadSecondsMedian": 0.3106725,
+      "texts": [
+        "我想问我在滨海新区有房"
+      ],
+      "encoderMedianSeconds": 0.2589435,
+      "decoderMedianSeconds": 0.46142799999999995
+    }
+  ],
+  "ttsParity": {
+    "parity-aishell3-d-native": {
+      "samples": 28928,
+      "maxAbsoluteError": 2.2724270820617676e-05,
+      "rmse": 1.0399635105195363e-06,
+      "cosine": 0.9999999974717021,
+      "passed": true
+    },
+    "parity-aishell3-f-before": {
+      "samples": 28928,
+      "maxAbsoluteError": 0,
+      "rmse": 0,
+      "cosine": 1,
+      "passed": true
+    },
+    "parity-huayan-d-native": {
+      "samples": 69376,
+      "maxAbsoluteError": 2.421438694000244e-05,
+      "rmse": 1.272118416743521e-06,
+      "cosine": 0.9999999998985086,
+      "passed": true
+    },
+    "parity-huayan-f-before": {
+      "samples": 69376,
+      "maxAbsoluteError": 0,
+      "rmse": 0,
+      "cosine": 1,
+      "passed": true
+    }
+  },
+  "asrTextChecks": {
+    "sip-short-pcma": {
+      "exactMatch": true,
+      "textsByVariant": {
+        "before": [
+          "我想问我在滨海新区有房。"
+        ],
+        "after": [
+          "我想问我在滨海新区有房。"
+        ],
+        "native": [
+          "我想问我在滨海新区有房。"
+        ]
+      }
+    },
+    "sip-zh-pcmu": {
+      "exactMatch": true,
+      "textsByVariant": {
+        "before": [
+          "菜饭时间早上九点至下午五点。"
+        ],
+        "after": [
+          "菜饭时间早上九点至下午五点。"
+        ],
+        "native": [
+          "菜饭时间早上九点至下午五点。"
+        ]
+      }
+    },
+    "sip-repeated-pcma": {
+      "exactMatch": true,
+      "textsByVariant": {
+        "before": [
+          "我想问我在滨海新区有房。我想问我在滨海新区有房。我想问我在滨海新区有房。我想问我在滨海新区有房。"
+        ],
+        "after": [
+          "我想问我在滨海新区有房。我想问我在滨海新区有房。我想问我在滨海新区有房。我想问我在滨海新区有房。"
+        ],
+        "native": [
+          "我想问我在滨海新区有房。我想问我在滨海新区有房。我想问我在滨海新区有房。我想问我在滨海新区有房。"
+        ]
+      }
+    },
+    "sip-official-short": {
+      "exactMatch": true,
+      "textsByVariant": {
+        "before": [
+          "我想问我在滨海新区有房"
+        ],
+        "after": [
+          "我想问我在滨海新区有房"
+        ],
+        "native": [
+          "我想问我在滨海新区有房"
+        ]
+      }
+    },
+    "sip-official-pcma": {
+      "exactMatch": true,
+      "textsByVariant": {
+        "before": [
+          "我想问我在滨海新区有房"
+        ],
+        "after": [
+          "我想问我在滨海新区有房"
+        ],
+        "native": [
+          "我想问我在滨海新区有房"
+        ]
+      }
+    }
+  },
+  "nativeLogPathRedaction": "Local model/source prefixes replaced; stderr trailing whitespace normalized; numerical JSONL unchanged.",
+  "extraInputScope": "Official clean PCM and its PCMA version contain the same utterance as the existing short example; they add codec coverage, not independent linguistic coverage.",
+  "targetHalfNativeLatencyMet": false
+}

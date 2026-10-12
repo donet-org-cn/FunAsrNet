@@ -32,7 +32,37 @@ public sealed class PhoneStream : IAsyncDisposable
     /// <param name="End">句段的结束采样位置，不包含该位置。</param>
     /// <param name="Final">是否为不可再替换的最终句段。</param>
     /// <param name="Epoch">预览所属的句段代数，用于丢弃过期预览结果。</param>
-    private sealed record Job(PooledAudioBuffer Pcm, long Start, long End, bool Final, int Epoch);
+    /// <param name="PreviewCancellation">预览独有的取消源；最终句段为空并使用会话取消令牌。</param>
+    private sealed record Job(PooledAudioBuffer Pcm, long Start, long End, bool Final, int Epoch, CancellationTokenSource? PreviewCancellation) : IDisposable
+    {
+        private readonly object _lifetime = new();
+        private bool _disposed;
+        /// <summary>安全取消过期预览，不归还仍由推理任务使用的音频。</summary>
+        internal void CancelPreview()
+        {
+            lock (_lifetime)
+            {
+                if (!_disposed)
+                {
+                    PreviewCancellation?.Cancel();
+                }
+            }
+        }
+        /// <summary>在任务已结束或尚未提交时归还音频，并与并发取消安全协调。</summary>
+        public void Dispose()
+        {
+            lock (_lifetime)
+            {
+                if (_disposed)
+                {
+                    return;
+                }
+                _disposed = true;
+                PreviewCancellation?.Dispose();
+                Pcm.Dispose();
+            }
+        }
+    }
     private readonly Func<ReadOnlyMemory<float>, CancellationToken, Task<AsrResult>> _transcribe;
     private readonly CancellationTokenSource _stop;
     private readonly FsmnVad _vad;
@@ -46,6 +76,7 @@ public sealed class PhoneStream : IAsyncDisposable
     private readonly Task _worker;
     private readonly bool _partials;
     private Job? _preview;
+    private Job? _activePreview;
     private volatile bool _finished;
     private int _epoch;
     private long _received, _lastPreview;
@@ -131,12 +162,16 @@ public sealed class PhoneStream : IAsyncDisposable
         if (_partials && _endpoint.ActiveStartSample >= 0 && _received - _lastPreview >= 24000 && _received - _endpoint.ActiveStartSample >= 12000)
         {
             var job = Snapshot(_endpoint.ActiveStartSample, _received, false);
+            Job? obsolete, active;
             lock (_sync)
             {
-                _preview?.Pcm.Dispose();
+                obsolete = _preview;
                 _preview = job;
+                active = _activePreview;
             }
-
+            obsolete?.CancelPreview();
+            obsolete?.Dispose();
+            active?.CancelPreview();
             _lastPreview = _received;
             _signal.Writer.TryWrite(true);
         }
@@ -165,13 +200,17 @@ public sealed class PhoneStream : IAsyncDisposable
                 EnqueueFinal(trailing.Value);
             }
 
+            Job? obsolete, active;
             lock (_sync)
             {
                 _finished = true;
-                _preview?.Pcm.Dispose();
+                obsolete = _preview;
                 _preview = null;
+                active = _activePreview;
             }
-
+            obsolete?.CancelPreview();
+            obsolete?.Dispose();
+            active?.CancelPreview();
             _signal.Writer.TryWrite(true);
         }
 
@@ -202,7 +241,7 @@ public sealed class PhoneStream : IAsyncDisposable
         int offset = (int)(start % _ring.Length), first = Math.Min(pcm.Memory.Length, _ring.Length - offset);
         _ring.AsSpan(offset, first).CopyTo(pcm.Memory.Span);
         _ring.AsSpan(0, pcm.Memory.Length - first).CopyTo(pcm.Memory.Span[first..]);
-        return new(pcm, start, end, final, _epoch);
+        return new(pcm, start, end, final, _epoch, final ? null : CancellationTokenSource.CreateLinkedTokenSource(_stop.Token));
     }
 
     /// <summary>
@@ -214,24 +253,27 @@ public sealed class PhoneStream : IAsyncDisposable
         var job = Snapshot(segment.StartSample, segment.EndSample, true);
         if (job.Pcm.Memory.Length < 400)
         {
-            job.Pcm.Dispose();
+            job.Dispose();
             return;
         }
-
+        Job? obsolete, active;
         lock (_sync)
         {
             if (_finals.Count >= 4)
             {
-                job.Pcm.Dispose();
+                job.Dispose();
                 throw new InvalidOperationException("Recognition is overloaded (four queued segments)");
             }
 
             ++_epoch;
-            _preview?.Pcm.Dispose();
+            obsolete = _preview;
             _preview = null;
+            active = _activePreview;
             _finals.Enqueue(job);
         }
-
+        obsolete?.CancelPreview();
+        obsolete?.Dispose();
+        active?.CancelPreview();
         _signal.Writer.TryWrite(true);
     }
 
@@ -257,7 +299,10 @@ public sealed class PhoneStream : IAsyncDisposable
                         {
                             _preview = null;
                         }
-
+                        if (job is not null && !job.Final)
+                        {
+                            _activePreview = job;
+                        }
                         finished = _finished;
                     }
 
@@ -274,15 +319,30 @@ public sealed class PhoneStream : IAsyncDisposable
 
                     try
                     {
-                        var result = await _transcribe(job.Pcm.Memory, _stop.Token);
-                        if (job.Final || job.Epoch == Volatile.Read(ref _epoch))
+                        var result = await _transcribe(job.Pcm.Memory, job.PreviewCancellation?.Token ?? _stop.Token);
+                        if (job.Final || (job.PreviewCancellation?.IsCancellationRequested != true && job.Epoch == Volatile.Read(ref _epoch)))
                         {
                             await _emit(new(job.Final ? "final" : "partial", result.Text, _clock.Elapsed.TotalSeconds, job.Start / 16000.0, job.End / 16000.0, result.TotalSeconds));
                         }
                     }
+                    catch (OperationCanceledException exception) when (!job.Final && job.PreviewCancellation?.IsCancellationRequested == true
+                        && exception.CancellationToken == job.PreviewCancellation.Token && !_stop.IsCancellationRequested)
+                    {
+                        // 只丢弃预览的局部取消；会话取消仍由外层报告并终止工作。
+                    }
                     finally
                     {
-                        job.Pcm.Dispose();
+                        if (!job.Final)
+                        {
+                            lock (_sync)
+                            {
+                                if (ReferenceEquals(_activePreview, job))
+                                {
+                                    _activePreview = null;
+                                }
+                            }
+                        }
+                        job.Dispose();
                     }
                 }
             }
@@ -301,17 +361,24 @@ public sealed class PhoneStream : IAsyncDisposable
     {
         // 连接断开会取消排队任务；已经开始的 CPU 推理须完成后才能安全归还缓冲区。
         _stop.Cancel();
+        Job? obsolete, active;
+        Job[] finals;
         lock (_sync)
         {
             _finished = true;
-            _preview?.Pcm.Dispose();
+            obsolete = _preview;
             _preview = null;
-            while (_finals.TryDequeue(out var job))
-            {
-                job.Pcm.Dispose();
-            }
+            active = _activePreview;
+            finals = _finals.ToArray();
+            _finals.Clear();
         }
-
+        obsolete?.CancelPreview();
+        obsolete?.Dispose();
+        active?.CancelPreview();
+        foreach (var job in finals)
+        {
+            job.Dispose();
+        }
         _signal.Writer.TryWrite(true);
         await _worker;
         _stop.Dispose();

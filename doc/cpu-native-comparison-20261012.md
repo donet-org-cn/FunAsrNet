@@ -1,6 +1,6 @@
 # 纯 CPU 原生对照复测（2026-10-12）
 
-**本页为前轮历史快照。** 当前 Windows CPU 的最新优化和原版对照见 [本机 CPU 第四轮记录](cpu-round4-20261012.md)；本页数字不代表最新构建。
+**本页为前轮历史快照。** 当前 Windows CPU 的最新优化和原版对照见 [本机 ASR 第五轮记录](cpu-round5-20261012.md)；本页数字不代表最新构建。
 
 本次单独复测 Windows x64 与 RK3588 的 CPU 路径：ASR 对照固定上游 C++/ggml/llama.cpp CPU，TTS 对照同模型原生 ONNX Runtime CPU。所有正式样本均关闭 GPU。
 

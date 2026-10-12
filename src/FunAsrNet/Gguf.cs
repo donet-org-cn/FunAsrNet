@@ -107,10 +107,7 @@ public sealed class Gguf
                 stream.ReadExactly(raw);
                 var half = MemoryMarshal.Cast<byte, Half>(raw);
                 weight.Values = GC.AllocateUninitializedArray<float>(count);
-                for (int i = 0; i < count; ++i)
-                {
-                    weight.Values[i] = (float)half[i];
-                }
+                TensorMath.ConvertHalfToSingle(half, weight.Values);
             }
             else if (d.Type == 8)
             {

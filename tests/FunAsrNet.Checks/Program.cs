@@ -20,6 +20,13 @@ void Check(bool condition, string name)
 
 FunAsrNet.Checks.QuantizedAvxChecks.Run(Check);
 FunAsrNet.Checks.QuantizeRoundingChecks.Run(Check);
+FunAsrNet.Checks.LayoutChecks.Run(Check);
+FunAsrNet.Checks.QuantizedGroupAvxChecks.Run(Check);
+FunAsrNet.Checks.ConvEpilogueChecks.Run(Check);
+OnnxConvFusionChecks.Run(Check);
+FunAsrNet.Checks.UnrolledFloatAvxChecks.Run(Check);
+FunAsrNet.Checks.HalfLoadAvxChecks.Run(Check);
+await FunAsrNet.Checks.PhonePreviewCancellationChecks.RunAsync(Check);
 FunAsrNet.Checks.ActivationChecks.Run(Check);
 FunAsrNet.Checks.CpuTensorChecks.Run(Check);
 FunAsrNet.Checks.CpuFollowupChecks.Run(Check);

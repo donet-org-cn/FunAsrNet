@@ -17,7 +17,9 @@ public static partial class TensorOps
     /// <param name="dilation">核采样间隔。</param>
     /// <param name="padLeft">左侧零填充量。</param>
     /// <param name="math">同步工作线程组。</param>
-    private static void DirectConv1DEightAvx(Tensor x, Tensor w, Tensor? bias, Tensor y, int groups, int dilation, int padLeft, TensorMath math)
+    /// <param name="residual">偏置之后相加的可选同形残差。</param>
+    /// <param name="leakyAlpha">残差相加后可选的 LeakyRelu 缩放系数。</param>
+    private static void DirectConv1DEightAvx(Tensor x, Tensor w, Tensor? bias, Tensor y, int groups, int dilation, int padLeft, TensorMath math, Tensor? residual, float? leakyAlpha)
     {
         int channels = x.Shape[1], length = x.Shape[2], outputs = w.Shape[0], kernel = w.Shape[2], outLength = y.Shape[2];
         int inGroup = channels / groups, outGroup = outputs / groups, width = inGroup * kernel;
@@ -29,7 +31,8 @@ public static partial class TensorOps
             int valid = Math.Min(8, outGroup - block * 8), end = Math.Min(outLength, (tile + 1) * 256);
             ref float source = ref MemoryMarshal.GetArrayDataReference(x.Data);
             ref float weight = ref Unsafe.Add(ref MemoryMarshal.GetArrayDataReference(w.Data), output * width);
-            ref float destination = ref Unsafe.Add(ref MemoryMarshal.GetArrayDataReference(y.Data), (batch * outputs + output) * outLength);
+            int destinationOffset = (batch * outputs + output) * outLength;
+            ref float destination = ref Unsafe.Add(ref MemoryMarshal.GetArrayDataReference(y.Data), destinationOffset);
             for (int time = tile * 256; time < end; time += 8)
             {
                 int first = time - padLeft;
@@ -103,34 +106,34 @@ public static partial class TensorOps
                         }
                     }
                 }
-                StoreTime(a0 + Vector256.Create(bias?.Data[output + 0] ?? 0), ref destination, 0 * outLength + time, end - time);
+                StoreConvTime(a0 + Vector256.Create(bias?.Data[output + 0] ?? 0), ref destination, 0 * outLength + time, end - time, residual, destinationOffset + 0 * outLength + time, leakyAlpha);
                 if (valid > 1)
                 {
-                    StoreTime(a1 + Vector256.Create(bias?.Data[output + 1] ?? 0), ref destination, 1 * outLength + time, end - time);
+                    StoreConvTime(a1 + Vector256.Create(bias?.Data[output + 1] ?? 0), ref destination, 1 * outLength + time, end - time, residual, destinationOffset + 1 * outLength + time, leakyAlpha);
                 }
                 if (valid > 2)
                 {
-                    StoreTime(a2 + Vector256.Create(bias?.Data[output + 2] ?? 0), ref destination, 2 * outLength + time, end - time);
+                    StoreConvTime(a2 + Vector256.Create(bias?.Data[output + 2] ?? 0), ref destination, 2 * outLength + time, end - time, residual, destinationOffset + 2 * outLength + time, leakyAlpha);
                 }
                 if (valid > 3)
                 {
-                    StoreTime(a3 + Vector256.Create(bias?.Data[output + 3] ?? 0), ref destination, 3 * outLength + time, end - time);
+                    StoreConvTime(a3 + Vector256.Create(bias?.Data[output + 3] ?? 0), ref destination, 3 * outLength + time, end - time, residual, destinationOffset + 3 * outLength + time, leakyAlpha);
                 }
                 if (valid > 4)
                 {
-                    StoreTime(a4 + Vector256.Create(bias?.Data[output + 4] ?? 0), ref destination, 4 * outLength + time, end - time);
+                    StoreConvTime(a4 + Vector256.Create(bias?.Data[output + 4] ?? 0), ref destination, 4 * outLength + time, end - time, residual, destinationOffset + 4 * outLength + time, leakyAlpha);
                 }
                 if (valid > 5)
                 {
-                    StoreTime(a5 + Vector256.Create(bias?.Data[output + 5] ?? 0), ref destination, 5 * outLength + time, end - time);
+                    StoreConvTime(a5 + Vector256.Create(bias?.Data[output + 5] ?? 0), ref destination, 5 * outLength + time, end - time, residual, destinationOffset + 5 * outLength + time, leakyAlpha);
                 }
                 if (valid > 6)
                 {
-                    StoreTime(a6 + Vector256.Create(bias?.Data[output + 6] ?? 0), ref destination, 6 * outLength + time, end - time);
+                    StoreConvTime(a6 + Vector256.Create(bias?.Data[output + 6] ?? 0), ref destination, 6 * outLength + time, end - time, residual, destinationOffset + 6 * outLength + time, leakyAlpha);
                 }
                 if (valid > 7)
                 {
-                    StoreTime(a7 + Vector256.Create(bias?.Data[output + 7] ?? 0), ref destination, 7 * outLength + time, end - time);
+                    StoreConvTime(a7 + Vector256.Create(bias?.Data[output + 7] ?? 0), ref destination, 7 * outLength + time, end - time, residual, destinationOffset + 7 * outLength + time, leakyAlpha);
                 }
             }
         });

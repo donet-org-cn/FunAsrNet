@@ -102,8 +102,13 @@ public sealed partial class TensorMath
     /// <param name="output">调用方提供的帧主序结果，各任务写入独立区间。</param>
     private void PackedFloatLinearAvx(float[] input, int frames, Weight w, Weight? bias, float[] output)
     {
+        if (w.Rows % 4 == 0 && Environment.GetEnvironmentVariable("FUNASRNET_AVX_UNROLL") != "0")
+        {
+            PackedFloatLinearUnrolledAvx(input, frames, w, bias, output);
+            return;
+        }
         int n = w.Columns, m = w.Rows, tiles = (frames + 15) / 16, blocks = (m + 3) / 4;
-        int segment = n <= 256 || Environment.GetEnvironmentVariable("FUNASRNET_AVX_SEGMENT128") != "0" ? 128 : 32;
+        int segment = FloatAvxSegment(n);
         float[] packed = ArrayPool<float>.Shared.Rent(checked(tiles * 16 * n));
         try
         {
@@ -201,5 +206,22 @@ public sealed partial class TensorMath
         {
             ArrayPool<float>.Shared.Return(packed);
         }
+    }
+
+    /// <summary>选择浮点内积分段，保留已有诊断开关并允许对照更长的 FP32 分段。</summary>
+    /// <param name="width">内积元素数量。</param>
+    /// <returns>使用原精度 FMA 的正数分段长度。</returns>
+    private static int FloatAvxSegment(int width)
+    {
+        string? legacy = Environment.GetEnvironmentVariable("FUNASRNET_AVX_SEGMENT128");
+        if (legacy == "0")
+        {
+            return width <= 256 ? 128 : 32;
+        }
+        if (legacy == "1")
+        {
+            return 128;
+        }
+        return 128;
     }
 }
