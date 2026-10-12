@@ -15,6 +15,14 @@ if (args.Length == 4 && args[0] == "prepare-asr-reference")
 }
 #endif
 
+#if !NATIVE_GPU_REFERENCE
+if (args.Length == 4 && args[0] == "prepare-asr-cpu-reference")
+{
+    FunAsrNet.NativeReference.NativeAsrCpuFixture.Prepare(args[1], args[2], args[3]);
+    return;
+}
+#endif
+
 // <summary>
 // 读取板端温度，未提供该接口的平台返回空值。
 // </summary>

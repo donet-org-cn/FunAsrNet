@@ -1,0 +1,61 @@
+PASS GET /
+PASS GET /app.css
+PASS GET /app.js
+PASS GET /capture.js
+PASS GET /health
+PASS GET /demo/config
+PASS Browser sample: canonical 16 kHz mono PCM16, 6 seconds
+PASS Invalid WAV returns 400
+PASS Oversized WAV returns 413
+{"text":"我想问我在滨海新区有房","audioSeconds":6,"encoderSeconds":0.7026976,"decoderSeconds":0.37687990000000005,"inferenceSeconds":1.0795775,"realTimeFactor":0.17992958333333334,"requestSeconds":1.0947336}
+PASS WAV upload recognized sample
+PASS TTS generates playable WAV
+{"ttsSeconds":"0.901740","audioSeconds":1.7531065759637188,"bytes":77356}
+{"event":"ready","codec":"pcm16","rate":48000}
+PASS Upload coexists with a connected WebSocket session
+{"event":"partial","text":"\u6211\u60F3\u3002","elapsedSeconds":3.0276747,"audioStartSeconds":0.77,"audioEndSeconds":1.539375,"inferenceSeconds":0.35285}
+{"event":"final","text":"\u6211\u60F3\u95EE\u3002","elapsedSeconds":5.0083601,"audioStartSeconds":0.77,"audioEndSeconds":2.4,"inferenceSeconds":0.325912}
+{"event":"partial","text":"\u6211\u5728\u6EE8\u6D77\u3002","elapsedSeconds":6.1030665,"audioStartSeconds":3.37,"audioEndSeconds":4.539375,"inferenceSeconds":0.4620528}
+{"event":"final","text":"\u6211\u5728\u6EE8\u6D77\u65B0\u533A\u6709\u623F\u3002","elapsedSeconds":7.7484278,"audioStartSeconds":3.37,"audioEndSeconds":6,"inferenceSeconds":0.6412729}
+{"event":"done","text":"","elapsedSeconds":7.7485217,"audioStartSeconds":null,"audioEndSeconds":null,"inferenceSeconds":null}
+PASS 48 kHz browser audio produced final text and done
+{"afterEofSeconds":0.6746642999999999,"final":"\u6211\u60F3\u95EE\u3002\u6211\u5728\u6EE8\u6D77\u65B0\u533A\u6709\u623F\u3002"}
+PASS 保留华严单发音人元数据
+PASS 拒绝不支持的发音人或参数
+PASS 拒绝不支持的发音人或参数
+PASS 拒绝不支持的发音人或参数
+PASS 拒绝不支持的发音人或参数
+PASS 音量为零生成静音 WAV
+PASS 相同种子和参数生成相同 PCM
+PASS 会话独立就绪
+PASS 会话独立就绪
+PASS 会话收到完成事件
+PASS 会话收到完成事件
+PASS 短会话没有混入长会话文本
+PASS 长会话完整识别
+{"concurrentTexts":["\u6211\u60F3\u95EE\u3002","\u6211\u60F3\u95EE\u3002\u6211\u5728\u6EE8\u6D77\u65B0\u533A\u6709\u623F\u3002"]}
+PASS 会话独立就绪
+PASS 会话独立就绪
+PASS 会话独立就绪
+PASS 会话独立就绪
+PASS 会话数达到上限时拒绝额外连接
+PASS 174 个真实发音人编号
+PASS 发音人详情与原生 8kHz
+PASS 拒绝 AISHELL3 越界编号 -1
+PASS 拒绝 AISHELL3 越界编号 174
+PASS 发音人 50 WAV 输出
+TTS aishell3/50: inference=0.774522s audio=4.000000s
+PASS 发音人 75 WAV 输出
+TTS aishell3/75: inference=1.907730s audio=4.864000s
+PASS 发音人 150 WAV 输出
+TTS aishell3/150: inference=3.070155s audio=4.512000s
+PASS 并发请求使用不同发音人
+PASS 发音人 50 WAV 输出
+TTS aishell3/50: inference=0.739007s audio=4.000000s
+PASS 跨发音人请求保持确定性
+PASS 发音人 173 WAV 输出
+TTS aishell3/173: inference=1.178871s audio=4.736000s
+PASS 多发音人流式 pcma
+PASS 多发音人流式 pcmu
+PASS 多发音人流式 pcm16
+PASS ASR gate released

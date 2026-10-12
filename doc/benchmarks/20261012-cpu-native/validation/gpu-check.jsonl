@@ -1,0 +1,1 @@
+{"kind":"gpu-check","checks":134474,"passed":true,"statistics":{"device":"NVIDIA GeForce RTX 3060","loader":"vulkan-1.dll","precision":"FP32 + original Q8_0","linearCalls":6,"convolutionCalls":16,"quantizedCalls":20,"cacheBytes":2276564,"cacheHits":22,"uploadedBytes":2842156,"downloadedBytes":537896,"endToEndSeconds":0.08315850000000002,"maxStorageRange":4294967295}}

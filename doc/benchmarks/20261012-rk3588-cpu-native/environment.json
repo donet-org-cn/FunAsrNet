@@ -1,0 +1,458 @@
+{
+  "platform": "RK3588 / Ubuntu 20.04.5 / Linux ARM64",
+  "runtime": "10.0.10",
+  "threads": 4,
+  "affinity": [
+    4,
+    5,
+    6,
+    7
+  ],
+  "cooldownBlockThresholdCelsius": 60,
+  "blocks": [
+    {
+      "name": "asr-sip-short-pcma-a-csharp",
+      "before": {
+        "temperature": 54.538,
+        "memory": {
+          "MemTotal": 8109588,
+          "MemAvailable": 3970636,
+          "SwapTotal": 8388604,
+          "SwapFree": 7030268
+        },
+        "swapCounters": {
+          "pswpin": 374392,
+          "pswpout": 800803
+        },
+        "frequencyKhz": [
+          408000,
+          408000
+        ]
+      },
+      "after": {
+        "temperature": 61.0,
+        "memory": {
+          "MemTotal": 8109588,
+          "MemAvailable": 4150688,
+          "SwapTotal": 8388604,
+          "SwapFree": 6882300
+        },
+        "swapCounters": {
+          "pswpin": 374469,
+          "pswpout": 838569
+        },
+        "frequencyKhz": [
+          408000,
+          2304000
+        ]
+      }
+    },
+    {
+      "name": "asr-sip-short-pcma-b-native",
+      "before": {
+        "temperature": 54.538,
+        "memory": {
+          "MemTotal": 8109588,
+          "MemAvailable": 4157344,
+          "SwapTotal": 8388604,
+          "SwapFree": 6882300
+        },
+        "swapCounters": {
+          "pswpin": 374469,
+          "pswpout": 838569
+        },
+        "frequencyKhz": [
+          408000,
+          408000
+        ]
+      },
+      "after": {
+        "temperature": 61.0,
+        "memory": {
+          "MemTotal": 8109588,
+          "MemAvailable": 4163552,
+          "SwapTotal": 8388604,
+          "SwapFree": 6882300
+        },
+        "swapCounters": {
+          "pswpin": 374469,
+          "pswpout": 838569
+        },
+        "frequencyKhz": [
+          408000,
+          408000
+        ]
+      }
+    },
+    {
+      "name": "asr-sip-short-pcma-c-native",
+      "before": {
+        "temperature": 54.538,
+        "memory": {
+          "MemTotal": 8109588,
+          "MemAvailable": 4157296,
+          "SwapTotal": 8388604,
+          "SwapFree": 6882300
+        },
+        "swapCounters": {
+          "pswpin": 374469,
+          "pswpout": 838569
+        },
+        "frequencyKhz": [
+          408000,
+          408000
+        ]
+      },
+      "after": {
+        "temperature": 61.923,
+        "memory": {
+          "MemTotal": 8109588,
+          "MemAvailable": 4154176,
+          "SwapTotal": 8388604,
+          "SwapFree": 6882300
+        },
+        "swapCounters": {
+          "pswpin": 374470,
+          "pswpout": 838569
+        },
+        "frequencyKhz": [
+          408000,
+          2304000
+        ]
+      }
+    },
+    {
+      "name": "asr-sip-short-pcma-d-csharp",
+      "before": {
+        "temperature": 54.538,
+        "memory": {
+          "MemTotal": 8109588,
+          "MemAvailable": 4152456,
+          "SwapTotal": 8388604,
+          "SwapFree": 6882300
+        },
+        "swapCounters": {
+          "pswpin": 374472,
+          "pswpout": 838569
+        },
+        "frequencyKhz": [
+          408000,
+          408000
+        ]
+      },
+      "after": {
+        "temperature": 61.0,
+        "memory": {
+          "MemTotal": 8109588,
+          "MemAvailable": 4553396,
+          "SwapTotal": 8388604,
+          "SwapFree": 6463740
+        },
+        "swapCounters": {
+          "pswpin": 374664,
+          "pswpout": 943539
+        },
+        "frequencyKhz": [
+          2304000,
+          408000
+        ]
+      }
+    },
+    {
+      "name": "asr-sip-zh-pcmu-a-csharp",
+      "before": {
+        "temperature": 54.538,
+        "memory": {
+          "MemTotal": 8109588,
+          "MemAvailable": 4559832,
+          "SwapTotal": 8388604,
+          "SwapFree": 6463740
+        },
+        "swapCounters": {
+          "pswpin": 374670,
+          "pswpout": 943539
+        },
+        "frequencyKhz": [
+          408000,
+          408000
+        ]
+      },
+      "after": {
+        "temperature": 61.0,
+        "memory": {
+          "MemTotal": 8109588,
+          "MemAvailable": 4828832,
+          "SwapTotal": 8388604,
+          "SwapFree": 6166524
+        },
+        "swapCounters": {
+          "pswpin": 374989,
+          "pswpout": 1018058
+        },
+        "frequencyKhz": [
+          408000,
+          2304000
+        ]
+      }
+    },
+    {
+      "name": "asr-sip-zh-pcmu-b-native",
+      "before": {
+        "temperature": 55.461,
+        "memory": {
+          "MemTotal": 8109588,
+          "MemAvailable": 4825108,
+          "SwapTotal": 8388604,
+          "SwapFree": 6166780
+        },
+        "swapCounters": {
+          "pswpin": 375026,
+          "pswpout": 1018058
+        },
+        "frequencyKhz": [
+          408000,
+          408000
+        ]
+      },
+      "after": {
+        "temperature": 61.923,
+        "memory": {
+          "MemTotal": 8109588,
+          "MemAvailable": 4822376,
+          "SwapTotal": 8388604,
+          "SwapFree": 6166780
+        },
+        "swapCounters": {
+          "pswpin": 375028,
+          "pswpout": 1018058
+        },
+        "frequencyKhz": [
+          408000,
+          408000
+        ]
+      }
+    },
+    {
+      "name": "asr-sip-zh-pcmu-c-native",
+      "before": {
+        "temperature": 54.538,
+        "memory": {
+          "MemTotal": 8109588,
+          "MemAvailable": 4818152,
+          "SwapTotal": 8388604,
+          "SwapFree": 6166780
+        },
+        "swapCounters": {
+          "pswpin": 375094,
+          "pswpout": 1018058
+        },
+        "frequencyKhz": [
+          408000,
+          408000
+        ]
+      },
+      "after": {
+        "temperature": 61.923,
+        "memory": {
+          "MemTotal": 8109588,
+          "MemAvailable": 4814548,
+          "SwapTotal": 8388604,
+          "SwapFree": 6166780
+        },
+        "swapCounters": {
+          "pswpin": 375098,
+          "pswpout": 1018058
+        },
+        "frequencyKhz": [
+          2304000,
+          408000
+        ]
+      }
+    },
+    {
+      "name": "asr-sip-zh-pcmu-d-csharp",
+      "before": {
+        "temperature": 55.461,
+        "memory": {
+          "MemTotal": 8109588,
+          "MemAvailable": 4809760,
+          "SwapTotal": 8388604,
+          "SwapFree": 6166780
+        },
+        "swapCounters": {
+          "pswpin": 375114,
+          "pswpout": 1018058
+        },
+        "frequencyKhz": [
+          408000,
+          408000
+        ]
+      },
+      "after": {
+        "temperature": 61.0,
+        "memory": {
+          "MemTotal": 8109588,
+          "MemAvailable": 4908040,
+          "SwapTotal": 8388604,
+          "SwapFree": 6128636
+        },
+        "swapCounters": {
+          "pswpin": 375143,
+          "pswpout": 1027610
+        },
+        "frequencyKhz": [
+          408000,
+          2304000
+        ]
+      }
+    },
+    {
+      "name": "asr-sip-repeated-pcma-a-csharp",
+      "before": {
+        "temperature": 54.538,
+        "memory": {
+          "MemTotal": 8109588,
+          "MemAvailable": 4916524,
+          "SwapTotal": 8388604,
+          "SwapFree": 6128636
+        },
+        "swapCounters": {
+          "pswpin": 375143,
+          "pswpout": 1027610
+        },
+        "frequencyKhz": [
+          408000,
+          408000
+        ]
+      },
+      "after": {
+        "temperature": 66.538,
+        "memory": {
+          "MemTotal": 8109588,
+          "MemAvailable": 4941580,
+          "SwapTotal": 8388604,
+          "SwapFree": 6095100
+        },
+        "swapCounters": {
+          "pswpin": 375602,
+          "pswpout": 1036034
+        },
+        "frequencyKhz": [
+          408000,
+          2304000
+        ]
+      }
+    },
+    {
+      "name": "asr-sip-repeated-pcma-b-native",
+      "before": {
+        "temperature": 59.153,
+        "memory": {
+          "MemTotal": 8109588,
+          "MemAvailable": 4942636,
+          "SwapTotal": 8388604,
+          "SwapFree": 6097916
+        },
+        "swapCounters": {
+          "pswpin": 375687,
+          "pswpout": 1036034
+        },
+        "frequencyKhz": [
+          408000,
+          408000
+        ]
+      },
+      "after": {
+        "temperature": 67.461,
+        "memory": {
+          "MemTotal": 8109588,
+          "MemAvailable": 4932244,
+          "SwapTotal": 8388604,
+          "SwapFree": 6098172
+        },
+        "swapCounters": {
+          "pswpin": 375707,
+          "pswpout": 1036034
+        },
+        "frequencyKhz": [
+          408000,
+          2304000
+        ]
+      }
+    },
+    {
+      "name": "asr-sip-repeated-pcma-c-native",
+      "before": {
+        "temperature": 59.153,
+        "memory": {
+          "MemTotal": 8109588,
+          "MemAvailable": 4928916,
+          "SwapTotal": 8388604,
+          "SwapFree": 6098172
+        },
+        "swapCounters": {
+          "pswpin": 375718,
+          "pswpout": 1036034
+        },
+        "frequencyKhz": [
+          408000,
+          408000
+        ]
+      },
+      "after": {
+        "temperature": 67.461,
+        "memory": {
+          "MemTotal": 8109588,
+          "MemAvailable": 4937988,
+          "SwapTotal": 8388604,
+          "SwapFree": 6098172
+        },
+        "swapCounters": {
+          "pswpin": 375861,
+          "pswpout": 1036034
+        },
+        "frequencyKhz": [
+          408000,
+          600000
+        ]
+      }
+    },
+    {
+      "name": "asr-sip-repeated-pcma-d-csharp",
+      "before": {
+        "temperature": 59.153,
+        "memory": {
+          "MemTotal": 8109588,
+          "MemAvailable": 4927056,
+          "SwapTotal": 8388604,
+          "SwapFree": 6098172
+        },
+        "swapCounters": {
+          "pswpin": 375861,
+          "pswpout": 1036034
+        },
+        "frequencyKhz": [
+          1008000,
+          408000
+        ]
+      },
+      "after": {
+        "temperature": 67.461,
+        "memory": {
+          "MemTotal": 8109588,
+          "MemAvailable": 4992216,
+          "SwapTotal": 8388604,
+          "SwapFree": 6042620
+        },
+        "swapCounters": {
+          "pswpin": 375862,
+          "pswpout": 1049996
+        },
+        "frequencyKhz": [
+          408000,
+          2304000
+        ]
+      }
+    }
+  ]
+}

@@ -1,6 +1,8 @@
 # 同卡原生 GPU 对比（2026-10-12）
 
-在同一 RTX 3060 上，当前 C# Vulkan 没有速度优势。两种 TTS 的原生 ORT CUDA 更快；ASR 的上游计算图 CUDA 适配也更快。此前 GPU 对原版 CPU 的表格只能描述历史实验，不能替代这次 GPU/GPU 对比。
+在本页同一 RTX 3060 的测量中，C# Vulkan 没有速度优势。两种 TTS 的原生 ORT CUDA 更快；ASR 的上游计算图 CUDA 适配也更快。此前 GPU 对原版 CPU 的表格只能描述历史实验，不能替代这次 GPU/GPU 对比。
+
+本页性能数据对应 `1f817be` 推理实现，测于后续 x64 CPU 默认布局修正前。新的 [纯 CPU 对比](cpu-native-comparison-20261012.md) 已包含修正后的 CPU 数据；布局修正后补做 GPU 数值和 ASR 文本回归，但没有将诊断样本重标为本页的整套 GPU 性能复测。
 
 ## 条件与测量
 

@@ -1,3 +1,5 @@
+using System.Runtime.Intrinsics.Arm;
+
 namespace FunAsrNet;
 
 /// <summary>
@@ -45,7 +47,8 @@ public sealed class QwenDecoder
         _model = model;
         _math = math;
         _capacity = capacity;
-        if (math.Simd && math.Optimized && Environment.GetEnvironmentVariable("FUNASRNET_INTERLEAVE") != "0")
+        // Q8 交错内核依赖 ARM SDOT；其他平台保留行主序，使用已有向量点积。
+        if (math.Simd && math.Optimized && Dp.IsSupported && Environment.GetEnvironmentVariable("FUNASRNET_INTERLEAVE") != "0")
         {
             foreach (var w in model.Tensors.Values)
             {

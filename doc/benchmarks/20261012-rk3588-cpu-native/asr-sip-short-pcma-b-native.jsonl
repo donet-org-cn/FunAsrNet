@@ -1,0 +1,7 @@
+{"kind":"load","engine":"cpp-cpu","seconds":5.400648000,"threads":4,"gpuLayers":0,"promptCache":false}
+{"kind":"asr","engine":"cpp-cpu","iteration":0,"warmup":true,"seconds":1.477260000,"encoderSeconds":1.030671000,"decoderSeconds":0.446589000,"audioSeconds":5.999937500,"maxTokens":128,"peakRssBytes":2034171904,"Text":"我想问我在滨海新区有房"}
+{"kind":"asr","engine":"cpp-cpu","iteration":1,"warmup":false,"seconds":1.534007000,"encoderSeconds":1.086889000,"decoderSeconds":0.447118000,"audioSeconds":5.999937500,"maxTokens":128,"peakRssBytes":2039361536,"Text":"我想问我在滨海新区有房"}
+{"kind":"asr","engine":"cpp-cpu","iteration":2,"warmup":false,"seconds":1.566862000,"encoderSeconds":1.078607000,"decoderSeconds":0.488255000,"audioSeconds":5.999937500,"maxTokens":128,"peakRssBytes":2039410688,"Text":"我想问我在滨海新区有房"}
+{"kind":"asr","engine":"cpp-cpu","iteration":3,"warmup":false,"seconds":1.516805000,"encoderSeconds":1.079264000,"decoderSeconds":0.437541000,"audioSeconds":5.999937500,"maxTokens":128,"peakRssBytes":2039410688,"Text":"我想问我在滨海新区有房"}
+{"kind":"asr","engine":"cpp-cpu","iteration":4,"warmup":false,"seconds":1.453629000,"encoderSeconds":1.027312000,"decoderSeconds":0.426317000,"audioSeconds":5.999937500,"maxTokens":128,"peakRssBytes":2039410688,"Text":"我想问我在滨海新区有房"}
+{"kind":"asr","engine":"cpp-cpu","iteration":5,"warmup":false,"seconds":1.498842000,"encoderSeconds":1.076603000,"decoderSeconds":0.422239000,"audioSeconds":5.999937500,"maxTokens":128,"peakRssBytes":2039410688,"Text":"我想问我在滨海新区有房"}

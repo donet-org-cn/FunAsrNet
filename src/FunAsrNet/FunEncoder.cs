@@ -1,4 +1,5 @@
 using System.Runtime.Intrinsics;
+using System.Runtime.Intrinsics.Arm;
 
 namespace FunAsrNet;
 
@@ -34,7 +35,9 @@ public sealed class FunEncoder
     {
         _model = model;
         _math = math;
-        if (math.Simd && math.Optimized && Environment.GetEnvironmentVariable("FUNASRNET_INTERLEAVE") != "0" && Environment.GetEnvironmentVariable("FUNASRNET_FLOAT_INTERLEAVE") != "0")
+        // 交错浮点内核使用 ARM64 NEON；x64 保留行主序以使用 AVX2/FMA，避免标量回退。
+        if (math.Simd && math.Optimized && AdvSimd.Arm64.IsSupported
+            && Environment.GetEnvironmentVariable("FUNASRNET_INTERLEAVE") != "0" && Environment.GetEnvironmentVariable("FUNASRNET_FLOAT_INTERLEAVE") != "0")
         {
             foreach (var w in model.Tensors.Values)
             {

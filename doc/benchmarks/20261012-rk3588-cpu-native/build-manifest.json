@@ -1,0 +1,10 @@
+{
+  "upstream-adapter.cpp": "ca725db375305908ef1f8bac28bcfaf1a1b367582adfa7ae6103d1bd202f8337",
+  "reference-main.cpp": "515a91e49994a6252a25e937ecb29e906cfe39833d5350ec0859b857c1bc86da",
+  "CMakeLists.txt": "518a62cc66c3e45ddd046a9ac41b971b3605f33e9b7ffa862d9bc096ebbc348f",
+  "build/funasr-native-cpu-reference": "2acbd011e013a9dd1ad2bda205d8e13e57d311d45c77be085a954a965e0b1202",
+  "managed-core.dll": "e2fac0a0e9033fcfb5f348644f7b361257f04f971a574e0a0fd22cd1207c7351",
+  "sip-zh-pcmu.f32": "fb705a8368d62b25bfec86b28b897e94c61173ca5ba6c0490b5556e078471432",
+  "sip-repeated-pcma.f32": "839f53e709e87ed6c74b645c5e2f871fd4af68e84b4b09698372f2d065c5b048",
+  "sip-short-pcma.f32": "8ebc139144c67bba23110e445db36b0cb9da70eeef32e5e8ad0d9dda06ce2322"
+}

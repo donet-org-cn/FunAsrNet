@@ -2,6 +2,8 @@
 
 本次直接优化纯 C# 的模型执行，没有增加原生推理依赖，也没有更换模型、缩短文本或改变权重精度。Windows x64 的两个固定模型均提速约 3 倍，与原生 ORT CPU 的差距从约 9 倍缩小到约 3 倍，仍未追平 ORT。
 
+随后完成的 [纯 CPU 复测](cpu-native-comparison-20261012.md) 合并两批 TTS 全部样本，测得 Windows Huayan 0.321 秒、AISHELL3 0.138 秒，仍比各自 ORT CPU 慢约 3.03–3.10 倍；本页保留首次优化前/后的三方实验。该后续实验还修正并复测了 x64 ASR 的默认布局选择，不改变这里的 TTS 算法。
+
 ## 相同模型、输入与线程的对比
 
 环境为 Intel Core i7-12700、Windows x64、.NET SDK 10.0.401、运行时 10.0.12，CPU 4 线程、进程亲和性 `0x55`；对照 ORT 为 1.23.2 CPU Provider、intra-op=4、inter-op=1、顺序执行、全部图优化。优化前使用本仓库提交 `fcfb20af9599383e03d19835dd083acfbe1b850a` 的独立 Release 构建，优化后使用本次工作区构建。
