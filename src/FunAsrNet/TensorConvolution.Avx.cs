@@ -22,6 +22,7 @@ public static partial class TensorOps
         int channels = x.Shape[1], length = x.Shape[2], outputs = w.Shape[0], kernel = w.Shape[2], outLength = y.Shape[2];
         int inGroup = channels / groups, outGroup = outputs / groups, width = inGroup * kernel;
         int blocks = (outGroup + 3) / 4, tiles = (outLength + 255) / 256;
+        bool specialize = Environment.GetEnvironmentVariable("FUNASRNET_LEGACY_AVX_CONV_INNER") != "1";
         math.For(x.Shape[0] * groups * blocks * tiles, task =>
         {
             int tile = task % tiles, block = task / tiles % blocks, group = task / (tiles * blocks) % groups;
@@ -43,39 +44,69 @@ public static partial class TensorOps
                 var c1 = a0;
                 var d0 = a0;
                 var d1 = a0;
-                for (int channel = 0; channel < inGroup; channel++)
+                if (specialize && interior && valid == 4)
                 {
-                    int offset = (batch * channels + group * inGroup + channel) * length + first;
-                    for (int tap = 0; tap < kernel; tap++)
+                    // 模型长卷积的大多数时间点和输出块都是完整内部块；
+                    // 把通道尾部及填充分支移到内积之外，保持原 FMA 顺序。
+                    for (int channel = 0; channel < inGroup; channel++)
                     {
-                        int at = offset + tap * dilation, k = channel * kernel + tap;
-                        int channelStart = offset - first, position = first + tap * dilation;
-                        var x0 = interior ? Vector256.LoadUnsafe(ref source, (nuint)at) : ReadPaddedTime(x.Data, channelStart, position, length);
-                        var x1 = interior ? Vector256.LoadUnsafe(ref source, (nuint)(at + 8)) : ReadPaddedTime(x.Data, channelStart, position + 8, length);
-                        var scale = Vector256.Create(Unsafe.Add(ref weight, k));
-                        a0 = Fma.MultiplyAdd(x0, scale, a0);
-                        a1 = Fma.MultiplyAdd(x1, scale, a1);
-                        if (valid > 1)
+                        int offset = (batch * channels + group * inGroup + channel) * length + first;
+                        for (int tap = 0; tap < kernel; tap++)
                         {
+                            int at = offset + tap * dilation, k = channel * kernel + tap;
+                            var x0 = Vector256.LoadUnsafe(ref source, (nuint)at);
+                            var x1 = Vector256.LoadUnsafe(ref source, (nuint)(at + 8));
+                            var scale = Vector256.Create(Unsafe.Add(ref weight, k));
+                            a0 = Fma.MultiplyAdd(x0, scale, a0);
+                            a1 = Fma.MultiplyAdd(x1, scale, a1);
                             scale = Vector256.Create(Unsafe.Add(ref weight, width + k));
                             b0 = Fma.MultiplyAdd(x0, scale, b0);
                             b1 = Fma.MultiplyAdd(x1, scale, b1);
-                        }
-                        if (valid > 2)
-                        {
                             scale = Vector256.Create(Unsafe.Add(ref weight, 2 * width + k));
                             c0 = Fma.MultiplyAdd(x0, scale, c0);
                             c1 = Fma.MultiplyAdd(x1, scale, c1);
-                        }
-                        if (valid > 3)
-                        {
                             scale = Vector256.Create(Unsafe.Add(ref weight, 3 * width + k));
                             d0 = Fma.MultiplyAdd(x0, scale, d0);
                             d1 = Fma.MultiplyAdd(x1, scale, d1);
                         }
                     }
                 }
+                else
+                {
+                    for (int channel = 0; channel < inGroup; channel++)
+                    {
+                        int offset = (batch * channels + group * inGroup + channel) * length + first;
+                        for (int tap = 0; tap < kernel; tap++)
+                        {
+                            int at = offset + tap * dilation, k = channel * kernel + tap;
+                            int channelStart = offset - first, position = first + tap * dilation;
+                            var x0 = interior ? Vector256.LoadUnsafe(ref source, (nuint)at) : ReadPaddedTime(x.Data, channelStart, position, length);
+                            var x1 = interior ? Vector256.LoadUnsafe(ref source, (nuint)(at + 8)) : ReadPaddedTime(x.Data, channelStart, position + 8, length);
+                            var scale = Vector256.Create(Unsafe.Add(ref weight, k));
+                            a0 = Fma.MultiplyAdd(x0, scale, a0);
+                            a1 = Fma.MultiplyAdd(x1, scale, a1);
+                            if (valid > 1)
+                            {
+                                scale = Vector256.Create(Unsafe.Add(ref weight, width + k));
+                                b0 = Fma.MultiplyAdd(x0, scale, b0);
+                                b1 = Fma.MultiplyAdd(x1, scale, b1);
+                            }
+                            if (valid > 2)
+                            {
+                                scale = Vector256.Create(Unsafe.Add(ref weight, 2 * width + k));
+                                c0 = Fma.MultiplyAdd(x0, scale, c0);
+                                c1 = Fma.MultiplyAdd(x1, scale, c1);
+                            }
+                            if (valid > 3)
+                            {
+                                scale = Vector256.Create(Unsafe.Add(ref weight, 3 * width + k));
+                                d0 = Fma.MultiplyAdd(x0, scale, d0);
+                                d1 = Fma.MultiplyAdd(x1, scale, d1);
+                            }
+                        }
+                    }
 
+                }
                 var offsetBias = Vector256.Create(bias?.Data[output] ?? 0);
                 StoreTime(a0 + offsetBias, ref destination, time, end - time);
                 StoreTime(a1 + offsetBias, ref destination, time + 8, end - time - 8);

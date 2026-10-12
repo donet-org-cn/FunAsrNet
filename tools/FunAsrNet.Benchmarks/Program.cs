@@ -217,6 +217,21 @@ if (args[0] == "gpu-check")
     return;
 }
 
+if (args[0] == "cpu-info")
+{
+    Emit(new
+    {
+        avx2 = System.Runtime.Intrinsics.X86.Avx2.IsSupported,
+        fma = System.Runtime.Intrinsics.X86.Fma.IsSupported,
+        avxVnni = System.Runtime.Intrinsics.X86.AvxVnni.IsSupported,
+        neon = System.Runtime.Intrinsics.Arm.AdvSimd.Arm64.IsSupported,
+        sdot = System.Runtime.Intrinsics.Arm.Dp.IsSupported,
+        threads = 4,
+        runtime = Environment.Version.ToString()
+    });
+    return;
+}
+
 if (args[0] == "gpu-info")
 {
     using var gpu = new VulkanFloatBackend();

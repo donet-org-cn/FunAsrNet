@@ -70,10 +70,16 @@ string engine = provider switch
     _ => throw new ArgumentException("原生对照仅支持 cpu 或 cuda。")
 };
 int repeats = int.Parse(args[3], CultureInfo.InvariantCulture);
+int threadIndex = Array.IndexOf(args, "--threads");
+int threads = threadIndex >= 0 ? int.Parse(args[threadIndex + 1], CultureInfo.InvariantCulture) : 4;
+if (threads is < 1 or > 32)
+{
+    throw new ArgumentException("线程范围为 1–32。");
+}
 long[] ids = MemoryMarshal.Cast<byte, long>(File.ReadAllBytes(args[1])).ToArray();
 using var options = new SessionOptions
 {
-    IntraOpNumThreads = 4,
+    IntraOpNumThreads = threads,
     InterOpNumThreads = 1,
     ExecutionMode = ExecutionMode.ORT_SEQUENTIAL,
     GraphOptimizationLevel = GraphOptimizationLevel.ORT_ENABLE_ALL

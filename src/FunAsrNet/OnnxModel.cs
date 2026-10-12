@@ -55,6 +55,12 @@ public sealed class Tensor(float[] data, int[] shape, bool integer = false)
     /// <param name="integer">是否将张量视为模型的整数形状或索引数据。</param>
     /// <returns>具有输出形状的结果张量。</returns>
     public static Tensor Zeros(int[] shape, bool integer = false) => new(TensorWorkspace.Allocate(Size(shape), clear: true), shape, integer);
+
+    /// <summary>为会完整写入结果的内部算子分配张量，避免先清零再覆盖；不得读取未写入元素。</summary>
+    /// <param name="shape">每一元素都会被算子写入的结果形状。</param>
+    /// <param name="integer">是否保留形状与索引张量的整数标记。</param>
+    /// <returns>当前工作区持有的独立存储，算子必须在返回前完整填充。</returns>
+    internal static Tensor ForOverwrite(int[] shape, bool integer = false) => new(TensorWorkspace.Allocate(Size(shape)), shape, integer);
     /// <summary>
     /// 将张量元素或节点整数属性转换为整数数组。
     /// </summary>

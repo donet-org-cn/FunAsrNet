@@ -98,7 +98,7 @@ public static partial class TensorOps
         }
 
         int outLength = (length + pads[0] + pads[1] - dilation * (kernel - 1) - 1) / stride + 1;
-        var y = Tensor.Zeros([batches, outputs, outLength]);
+        var y = Tensor.ForOverwrite([batches, outputs, outLength]);
         int inGroup = channels / groups, outGroup = outputs / groups;
         if (w.Shape[1] != inGroup || channels % groups != 0 || outputs % groups != 0)
         {
@@ -135,7 +135,7 @@ public static partial class TensorOps
         }
 
         if (math.Simd && System.Runtime.Intrinsics.X86.Avx2.IsSupported && System.Runtime.Intrinsics.X86.Fma.IsSupported
-            && stride == 1 && outLength >= 4096 && Environment.GetEnvironmentVariable("FUNASRNET_LEGACY_CONV") != "1")
+            && stride == 1 && outLength >= 128 && Environment.GetEnvironmentVariable("FUNASRNET_LEGACY_CONV") != "1")
         {
             DirectConv1DAvx(x, w, bias, y, groups, dilation, pads[0], math);
             return y;
@@ -210,7 +210,7 @@ public static partial class TensorOps
         int stride = node.Ints("strides", [1])[0], dilation = node.Ints("dilations", [1])[0];
         int[] pads = node.Ints("pads", [0, 0]);
         int outLength = stride * (length - 1) + dilation * (kernel - 1) + 1 - pads[0] - pads[1] + node.Ints("output_padding", [0])[0];
-        var y = Tensor.Zeros([batches, outputs, outLength]);
+        var y = Tensor.ForOverwrite([batches, outputs, outLength]);
         var packed = new float[inputs * outputs * kernel];
         for (int i = 0; i < inputs; ++i)
         {

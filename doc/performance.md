@@ -1,5 +1,7 @@
 # 性能比较与证据范围
 
+本机后续 CPU 优化已完成 138 次正式样本、30 次预热：C# ASR 比上一版耗时减少 19–33%，仍慢于同指令集原版 CPU 21–40%；TTS 减少 41–44%，仍慢于 ORT CPU 71–79%。目标尚未全面达到持平或原版一半耗时，数据及正确性见 [本机后续对比](cpu-followup-20261012.md) 和 [原始统计](benchmarks/20261012-cpu-next/summary.json)。这轮只测 Windows x64。
+
 2026-10-12 已补做 [纯 CPU 原生对照](cpu-native-comparison-20261012.md)：修正 x64 默认交错布局的标量回退后，ASR 提速 8.47–8.99 倍，仍慢于原版 C++ CPU 1.70–1.84 倍。TTS 两批复测保留全部样本，仍慢于 ORT CPU 3.03–3.10 倍。原始记录、修正前/后构建散列与分阶段计时见 [CPU summary.json](benchmarks/20261012-cpu-native/summary.json)。下文历史结果不与新实验混算。
 
 同日新的 RK3588 CPU 对 C++ CPU 实验中，三组 C# 中位数为 1.271、1.351、5.339 秒，C++ 为 1.545、1.604、7.351 秒。该在线环境期间有明显换页，短句还存在句末标点差异，不能宣称稳定语言优势；52 次正式样本、温度和交换计数见 [ARM64 CPU summary](benchmarks/20261012-rk3588-cpu-native/summary.json)。
@@ -38,6 +40,7 @@ Windows ASR 计完整 Transcribe/解码调用：特征、编码、解码、复�
 - [2026-10-12 原生 GPU summary.json](benchmarks/20261012-gpu-native/summary.json)、同卡 GPU 对比的 105 次正式测量、CUDA 节点剖析和转写/波形校验。
 - [2026-10-12 新纯 CPU summary.json](benchmarks/20261012-cpu-native/summary.json)、Windows 默认布局修正前/后及 TTS 复核的 184 次正式测量；布局与 GPU 回归单独保存。
 - [2026-10-12 新 ARM64 CPU summary.json](benchmarks/20261012-rk3588-cpu-native/summary.json)、与固定 C++ CPU 的 52 次正式 ASR 测量、温度/频率/换页和 Linux 计时包装。
+- [2026-10-12 本机 CPU 后续 summary.json](benchmarks/20261012-cpu-next/summary.json)、进一步优化前/后及同指令集原版 CPU 的 138 次正式样本。
 - 每个记录目录的 `SHA256SUMS.txt` 对应本仓库证据；历史归档已确认逐字节与历史来源相同，保留原 CRLF 与历史引擎标签。新实验的 JSONL 保留全部逐轮记录；已注明的原生日志路径脱敏与换行整理不改变数值。
 
 未复制私人部署/健康快照、内部 Git 地址、证书或含个人工作路径的构建日志。Windows 证据保留系统 Vulkan 加载器路径，便于确认真实驱动；它不是通用安装说明。

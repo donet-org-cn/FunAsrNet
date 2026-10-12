@@ -117,6 +117,11 @@ public sealed partial class TensorMath(int threads = 4, bool simd = true)
         {
             TiledQuantizedLinear(input, frames, w, bias, output);
         }
+        else if (Optimized && Simd && System.Runtime.Intrinsics.X86.Avx2.IsSupported && w.Quantized is not null && (n & 31) == 0
+            && Environment.GetEnvironmentVariable("FUNASRNET_AVX2_Q8") != "0")
+        {
+            QuantizedLinearAvx(input, frames, w, bias, output);
+        }
         else if (w.Values is not null)
         {
             int rowsPerBlock = m < 128 ? 4 : 16;

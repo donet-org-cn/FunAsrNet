@@ -185,10 +185,12 @@ public sealed class ManagedOnnx
             case "Sub":
             case "Mul":
             case "Div":
-                result = TensorOps.Arithmetic(X(0), X(1), n.Op);
+                result = TensorOps.Arithmetic(X(0), X(1), n.Op, _math);
                 break;
             case "Pow":
-                result = B(MathF.Pow);
+                result = !X(0).Integer && X(1).Count == 1 && X(1).Data[0] == 2f
+                    ? TensorOps.Arithmetic(X(0), X(0), "Mul", _math)
+                    : B(MathF.Pow);
                 break;
             case "Equal":
                 result = B((a, b) => a == b ? 1 : 0, true);
@@ -224,10 +226,10 @@ public sealed class ManagedOnnx
                 result = U(MathF.Tanh);
                 break;
             case "Erf":
-                result = U(Erf);
+                result = TensorOps.ErrorFunction(X(0));
                 break;
             case "Sigmoid":
-                result = U(a => 1 / (1 + MathF.Exp(-a)));
+                result = TensorOps.Sigmoid(X(0));
                 break;
             case "Softplus":
                 result = U(a => a > 20 ? a : MathF.Log(1 + MathF.Exp(a)));

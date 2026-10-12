@@ -104,7 +104,7 @@ public static partial class TensorOps
     /// <returns>具有输出形状的结果张量。</returns>
     public static Tensor Unary(Tensor x, Func<float, float> operation, bool integer = false)
     {
-        var y = Tensor.Zeros(x.Shape, integer);
+        var y = Tensor.ForOverwrite(x.Shape, integer);
         for (int i = 0; i < x.Count; ++i)
         {
             y.Data[i] = operation(x.Data[i]);
@@ -169,13 +169,23 @@ public static partial class TensorOps
     public static Tensor Where(Tensor condition, Tensor a, Tensor b)
     {
         var shape = BroadcastShape(condition.Shape, a.Shape, b.Shape);
-        var y = Tensor.Zeros(shape, a.Integer);
+        var y = Tensor.ForOverwrite(shape, a.Integer);
         var sc = BroadcastStrides(condition, shape.Length);
         var sa = BroadcastStrides(a, shape.Length);
         var sb = BroadcastStrides(b, shape.Length);
-        for (int i = 0; i < y.Count; ++i)
+        if (y.Count == 0)
         {
-            y.Data[i] = condition.Data[Offset(i, shape, sc)] != 0 ? a.Data[Offset(i, shape, sa)] : b.Data[Offset(i, shape, sb)];
+            return y;
+        }
+        int width = shape.Length == 0 ? 1 : shape[^1];
+        var outer = shape.Length == 0 ? [] : shape[..^1];
+        int conditionWidth = shape.Length == 0 || sc[^1] == 0 ? 1 : width;
+        int leftWidth = shape.Length == 0 || sa[^1] == 0 ? 1 : width;
+        int rightWidth = shape.Length == 0 || sb[^1] == 0 ? 1 : width;
+        for (int row = 0; row < y.Count / width; row++)
+        {
+            int conditionOffset = Offset(row, outer, sc), leftOffset = Offset(row, outer, sa), rightOffset = Offset(row, outer, sb);
+            SelectBlock(condition.Data.AsSpan(conditionOffset, conditionWidth), a.Data.AsSpan(leftOffset, leftWidth), b.Data.AsSpan(rightOffset, rightWidth), y.Data.AsSpan(row * width, width));
         }
 
         return y;

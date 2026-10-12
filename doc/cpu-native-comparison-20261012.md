@@ -1,5 +1,7 @@
 # 纯 CPU 原生对照复测（2026-10-12）
 
+**本页保留前轮测量。** 后续按要求只在本机优化和测试，新的 ASR 为原版 CPU 的 1.21–1.40 倍耗时、TTS 为 ORT CPU 的 1.71–1.79 倍，见 [本机 CPU 后续对比](cpu-followup-20261012.md)。不将后续 x64 改动当作新的 ARM64 验收。
+
 本次单独复测 Windows x64 与 RK3588 的 CPU 路径：ASR 对照固定上游 C++/ggml/llama.cpp CPU，TTS 对照同模型原生 ONNX Runtime CPU。所有正式样本均关闭 GPU。
 
 发现并修正了 x64 默认权重布局选择：ARM 用的浮点/Q8 交错布局在 x64 上落入标量循环，挡住已有 SIMD 内核。现在只在 ARM64 NEON/SDOT 可用时准备对应交错布局；x64 保留行主序，使用已有 AVX2/FMA 浮点矩阵和向量 Q8 点积。没有改变模型、权重量化、输入或 token 上限，RK3588 的 NEON/SDOT 选择保持原有行为。

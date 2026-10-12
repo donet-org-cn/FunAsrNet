@@ -18,6 +18,10 @@ void Check(bool condition, string name)
     }
 }
 
+FunAsrNet.Checks.QuantizedAvxChecks.Run(Check);
+FunAsrNet.Checks.ActivationChecks.Run(Check);
+FunAsrNet.Checks.CpuTensorChecks.Run(Check);
+
 // <summary>
 // 按绝对误差阈值比较数值结果，用于验证 SIMD 与参考实现一致性。
 // </summary>
