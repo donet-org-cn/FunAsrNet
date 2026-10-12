@@ -9,9 +9,10 @@ namespace FunAsrNet;
 public sealed partial class TensorMath
 {
     private static readonly bool VectorElementwise = Environment.GetEnvironmentVariable("FUNASRNET_SCALAR_ELEMENTWISE") != "1";
-    // 在 Cortex-A76 上，.NET 10 的 Vector128.Exp 比 MathF.Exp 指令开销更大，
-    // 因此保留 SIMD 归一化，指数部分使用标量实现。
-    private static readonly bool VectorTranscendentals = VectorElementwise && Environment.GetEnvironmentVariable("FUNASRNET_VECTOR_EXP") == "1";
+    // x64 使用八路向量指数；Cortex-A76 默认保留较快的标量指数。
+    private static readonly bool VectorTranscendentals = VectorElementwise
+        && (Environment.GetEnvironmentVariable("FUNASRNET_VECTOR_EXP") == "1"
+            || System.Runtime.Intrinsics.X86.Avx2.IsSupported && Environment.GetEnvironmentVariable("FUNASRNET_VECTOR_EXP") != "0");
     /// <summary>
     /// 使用 SIMD 执行按行归一化与仿射变换。
     /// </summary>
@@ -104,6 +105,11 @@ public sealed partial class TensorMath
     /// <param name="x">连续存储的输入张量或向量。</param>
     private static void VectorSoftmax(Span<float> x)
     {
+        if (System.Runtime.Intrinsics.X86.Avx2.IsSupported)
+        {
+            VectorSoftmaxAvx(x);
+            return;
+        }
         ref float p = ref MemoryMarshal.GetReference(x);
         var maxima = Vector128.Create(float.NegativeInfinity);
         int i = 0;
@@ -166,6 +172,14 @@ public sealed partial class TensorMath
         }
 
         int i = 0;
+        if (Vector256.IsHardwareAccelerated && VectorTranscendentals)
+        {
+            for (; i <= gate.Length - 8; i += 8)
+            {
+                var g = Vector256.LoadUnsafe(ref gate[i]);
+                (g / (Vector256.Create(1f) + Vector256.Exp(-g)) * Vector256.LoadUnsafe(ref up[i])).StoreUnsafe(ref gate[i]);
+            }
+        }
         if (Vector128.IsHardwareAccelerated && VectorTranscendentals)
         {
             for (; i <= gate.Length - 4; i += 4)

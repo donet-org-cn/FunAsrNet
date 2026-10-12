@@ -1,6 +1,6 @@
 # 纯 CPU 原生对照复测（2026-10-12）
 
-**本页保留前轮测量。** 后续按要求只在本机优化和测试，新的 ASR 为原版 CPU 的 1.21–1.40 倍耗时、TTS 为 ORT CPU 的 1.71–1.79 倍，见 [本机 CPU 后续对比](cpu-followup-20261012.md)。不将后续 x64 改动当作新的 ARM64 验收。
+**本页为前轮历史快照。** 当前 Windows CPU 的最新优化和原版对照见 [本机 CPU 第三轮记录](cpu-round3-20261012.md)；本页数字不代表最新构建。
 
 本次单独复测 Windows x64 与 RK3588 的 CPU 路径：ASR 对照固定上游 C++/ggml/llama.cpp CPU，TTS 对照同模型原生 ONNX Runtime CPU。所有正式样本均关闭 GPU。
 

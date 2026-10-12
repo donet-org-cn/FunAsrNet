@@ -106,6 +106,23 @@ public static partial class TensorOps
     /// <param name="scalar">处理不足四个元素的尾部所用参考运算。</param>
     private static void ArithmeticBlock(ReadOnlySpan<float> left, ReadOnlySpan<float> right, Span<float> output, string operation, Func<float, float, float> scalar)
     {
+        switch (operation)
+        {
+            case "Add": ArithmeticBlockCore<AddOperation>(left, right, output, scalar); break;
+            case "Sub": ArithmeticBlockCore<SubtractOperation>(left, right, output, scalar); break;
+            case "Mul": ArithmeticBlockCore<MultiplyOperation>(left, right, output, scalar); break;
+            case "Div": ArithmeticBlockCore<DivideOperation>(left, right, output, scalar); break;
+            default: throw new InvalidOperationException("未验证的逐元素运算。");
+        }
+    }
+
+    /// <summary>通过值类型专用化在循环外选定运算，消除每个向量的字符串分派。</summary>
+    /// <param name="left">连续左侧输入或标量。</param>
+    /// <param name="right">连续右侧输入或标量。</param>
+    /// <param name="output">完整覆盖的独立结果区间。</param>
+    /// <param name="scalar">不足一个向量时的参考运算。</param>
+    private static void ArithmeticBlockCore<TOperation>(ReadOnlySpan<float> left, ReadOnlySpan<float> right, Span<float> output, Func<float, float, float> scalar) where TOperation : struct
+    {
         int index = 0;
         if (Vector256.IsHardwareAccelerated)
         {
@@ -113,14 +130,7 @@ public static partial class TensorOps
             {
                 var a = left.Length == 1 ? Vector256.Create(left[0]) : Vector256.LoadUnsafe(ref System.Runtime.InteropServices.MemoryMarshal.GetReference(left), (nuint)index);
                 var b = right.Length == 1 ? Vector256.Create(right[0]) : Vector256.LoadUnsafe(ref System.Runtime.InteropServices.MemoryMarshal.GetReference(right), (nuint)index);
-                var value = operation switch
-                {
-                    "Add" => a + b,
-                    "Sub" => a - b,
-                    "Mul" => a * b,
-                    "Div" => a / b,
-                    _ => throw new InvalidOperationException("未验证的逐元素运算。")
-                };
+                var value = ArithmeticValue<TOperation>(a, b);
                 value.StoreUnsafe(ref System.Runtime.InteropServices.MemoryMarshal.GetReference(output), (nuint)index);
             }
         }
@@ -128,14 +138,7 @@ public static partial class TensorOps
         {
             var a = left.Length == 1 ? Vector128.Create(left[0]) : Vector128.LoadUnsafe(ref System.Runtime.InteropServices.MemoryMarshal.GetReference(left), (nuint)index);
             var b = right.Length == 1 ? Vector128.Create(right[0]) : Vector128.LoadUnsafe(ref System.Runtime.InteropServices.MemoryMarshal.GetReference(right), (nuint)index);
-            var value = operation switch
-            {
-                "Add" => a + b,
-                "Sub" => a - b,
-                "Mul" => a * b,
-                "Div" => a / b,
-                _ => throw new InvalidOperationException("未验证的逐元素运算。")
-            };
+            var value = ArithmeticValue<TOperation>(a, b);
             value.StoreUnsafe(ref System.Runtime.InteropServices.MemoryMarshal.GetReference(output), (nuint)index);
         }
 
@@ -145,39 +148,108 @@ public static partial class TensorOps
         }
     }
 
+    /// <summary>由即时编译器按类型常量选定单个向量的算术运算。</summary>
+    /// <param name="a">左输入向量。</param>
+    /// <param name="b">右输入向量。</param>
+    /// <returns>保持逐元素浮点语义的运算结果。</returns>
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+    private static Vector256<float> ArithmeticValue<TOperation>(Vector256<float> a, Vector256<float> b) where TOperation : struct
+    {
+        if (typeof(TOperation) == typeof(AddOperation))
+        {
+            return a + b;
+        }
+        if (typeof(TOperation) == typeof(SubtractOperation))
+        {
+            return a - b;
+        }
+        return typeof(TOperation) == typeof(MultiplyOperation) ? a * b : a / b;
+    }
+
+    /// <summary>由即时编译器按类型常量选定单个向量的算术运算。</summary>
+    /// <param name="a">左输入向量。</param>
+    /// <param name="b">右输入向量。</param>
+    /// <returns>保持逐元素浮点语义的运算结果。</returns>
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+    private static Vector128<float> ArithmeticValue<TOperation>(Vector128<float> a, Vector128<float> b) where TOperation : struct
+    {
+        if (typeof(TOperation) == typeof(AddOperation))
+        {
+            return a + b;
+        }
+        if (typeof(TOperation) == typeof(SubtractOperation))
+        {
+            return a - b;
+        }
+        return typeof(TOperation) == typeof(MultiplyOperation) ? a * b : a / b;
+    }
+
+    /// <summary>加法内核的编译期类型标记。</summary>
+    private readonly struct AddOperation { }
+
+    /// <summary>减法内核的编译期类型标记。</summary>
+    private readonly struct SubtractOperation { }
+
+    /// <summary>乘法内核的编译期类型标记。</summary>
+    private readonly struct MultiplyOperation { }
+
+    /// <summary>除法内核的编译期类型标记。</summary>
+    private readonly struct DivideOperation { }
+
     /// <summary>向量化 LeakyRelu，保留负零和 NaN 的标量分支语义。</summary>
     /// <param name="x">只读 FP32 输入张量。</param>
     /// <param name="alpha">负值分支的乘数，与模型属性一致。</param>
+    /// <param name="math">可选线程组，大张量分块并行。</param>
     /// <returns>具有相同形状和独立存储的结果。</returns>
-    public static Tensor LeakyRelu(Tensor x, float alpha)
+    public static Tensor LeakyRelu(Tensor x, float alpha, TensorMath? math = null)
     {
         var y = Tensor.ForOverwrite(x.Shape);
+        if (math is not null && x.Count >= 65536 && Environment.GetEnvironmentVariable("FUNASRNET_SERIAL_ELEMENTWISE") != "1")
+        {
+            math.For((x.Count + 65535) / 65536, block =>
+            {
+                int start = block * 65536, count = Math.Min(65536, x.Count - start);
+                LeakyReluBlock(x.Data.AsSpan(start, count), y.Data.AsSpan(start, count), alpha);
+            });
+        }
+        else
+        {
+            LeakyReluBlock(x.Data, y.Data, alpha);
+        }
+        return y;
+    }
+
+    /// <summary>处理独立的连续激活区间，保留负零和非数分支。</summary>
+    /// <param name="input">只读输入区间。</param>
+    /// <param name="output">待完整覆盖的输出区间。</param>
+    /// <param name="alpha">模型定义的负数缩放系数。</param>
+    private static void LeakyReluBlock(ReadOnlySpan<float> input, Span<float> output, float alpha)
+    {
         int index = 0;
         if (Vector256.IsHardwareAccelerated)
         {
             var wideScale = Vector256.Create(alpha);
-            for (; index <= x.Count - 8; index += 8)
+            for (; index <= input.Length - 8; index += 8)
             {
-                var value = Vector256.LoadUnsafe(ref x.Data[index]);
-                Vector256.ConditionalSelect(Vector256.GreaterThanOrEqual(value, Vector256<float>.Zero), value, value * wideScale).StoreUnsafe(ref y.Data[index]);
+                var value = Vector256.LoadUnsafe(ref System.Runtime.InteropServices.MemoryMarshal.GetReference(input), (nuint)index);
+                Vector256.ConditionalSelect(Vector256.GreaterThanOrEqual(value, Vector256<float>.Zero), value, value * wideScale).StoreUnsafe(ref System.Runtime.InteropServices.MemoryMarshal.GetReference(output), (nuint)index);
             }
         }
         var scale = Vector128.Create(alpha);
         if (Vector128.IsHardwareAccelerated)
         {
-            for (; index <= x.Count - 4; index += 4)
+            for (; index <= input.Length - 4; index += 4)
             {
-                var value = Vector128.LoadUnsafe(ref x.Data[index]);
-                Vector128.ConditionalSelect(Vector128.GreaterThanOrEqual(value, Vector128<float>.Zero), value, value * scale).StoreUnsafe(ref y.Data[index]);
+                var value = Vector128.LoadUnsafe(ref System.Runtime.InteropServices.MemoryMarshal.GetReference(input), (nuint)index);
+                Vector128.ConditionalSelect(Vector128.GreaterThanOrEqual(value, Vector128<float>.Zero), value, value * scale).StoreUnsafe(ref System.Runtime.InteropServices.MemoryMarshal.GetReference(output), (nuint)index);
             }
         }
 
-        for (; index < x.Count; index++)
+        for (; index < input.Length; index++)
         {
-            float value = x.Data[index];
-            y.Data[index] = value >= 0 ? value : value * alpha;
+            float value = input[index];
+            output[index] = value >= 0 ? value : value * alpha;
         }
 
-        return y;
     }
 }

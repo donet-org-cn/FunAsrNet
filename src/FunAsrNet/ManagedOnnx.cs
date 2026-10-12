@@ -223,7 +223,7 @@ public sealed class ManagedOnnx
                 result = U(MathF.Log);
                 break;
             case "Tanh":
-                result = U(MathF.Tanh);
+                result = TensorOps.Tanh(X(0));
                 break;
             case "Erf":
                 result = TensorOps.ErrorFunction(X(0));
@@ -239,7 +239,7 @@ public sealed class ManagedOnnx
                 break;
             case "LeakyRelu":
                 float alpha = n.Float("alpha", 0.01f);
-                result = TensorOps.LeakyRelu(X(0), alpha);
+                result = TensorOps.LeakyRelu(X(0), alpha, _math);
                 break;
             case "Ceil":
                 result = U(MathF.Ceiling);

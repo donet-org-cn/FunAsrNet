@@ -6,6 +6,36 @@ namespace FunAsrNet;
 /// <summary>使用运行时向量指数实现 x64 激活函数，其他平台保留原标量实现。</summary>
 public static partial class TensorOps
 {
+    /// <summary>批量计算双曲正切，小输入使用奇多项式以避免指数相减损失精度。</summary>
+    /// <param name="x">只读浮点输入张量。</param>
+    /// <returns>保留输入形状、非数和零符号的结果。</returns>
+    public static Tensor Tanh(Tensor x)
+    {
+        if (!Avx2.IsSupported)
+        {
+            return Unary(x, MathF.Tanh);
+        }
+        var result = Tensor.ForOverwrite(x.Shape);
+        int index = 0;
+        var one = Vector256.Create(1f);
+        for (; index <= x.Count - 8; index += 8)
+        {
+            var value = Vector256.LoadUnsafe(ref x.Data[index]);
+            var magnitude = Vector256.Abs(value);
+            var exponential = Vector256.Exp(Vector256.Create(-2f) * magnitude);
+            var regular = Vector256.CopySign((one - exponential) / (one + exponential), value);
+            var small = Vector256.Min(magnitude, Vector256.Create(0.125f));
+            var square = small * small;
+            var polynomial = value * (one + square * (Vector256.Create(-1f / 3) + square * (Vector256.Create(2f / 15) + square * (Vector256.Create(-17f / 315) + square * Vector256.Create(62f / 2835)))));
+            Vector256.ConditionalSelect(Vector256.LessThan(magnitude, Vector256.Create(0.125f)), polynomial, regular).StoreUnsafe(ref result.Data[index]);
+        }
+        for (; index < x.Count; index++)
+        {
+            result.Data[index] = MathF.Tanh(x.Data[index]);
+        }
+        return result;
+    }
+
     /// <summary>逐元素计算 sigmoid，使用运行时向量指数并保持 FP32 存储和原函数定义。</summary>
     /// <param name="x">只读输入张量。</param>
     /// <returns>具有相同形状的独立结果。</returns>

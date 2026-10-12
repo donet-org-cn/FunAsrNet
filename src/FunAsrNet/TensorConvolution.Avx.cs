@@ -19,6 +19,12 @@ public static partial class TensorOps
     /// <param name="math">同步计算任务调度器。</param>
     private static void DirectConv1DAvx(Tensor x, Tensor w, Tensor? bias, Tensor y, int groups, int dilation, int padLeft, TensorMath math)
     {
+        if (w.Shape[0] / groups >= 192 && Environment.GetEnvironmentVariable("FUNASRNET_AVX_CONV8") != "0"
+            && Environment.GetEnvironmentVariable("FUNASRNET_LEGACY_AVX_CONV_INNER") != "1")
+        {
+            DirectConv1DEightAvx(x, w, bias, y, groups, dilation, padLeft, math);
+            return;
+        }
         int channels = x.Shape[1], length = x.Shape[2], outputs = w.Shape[0], kernel = w.Shape[2], outLength = y.Shape[2];
         int inGroup = channels / groups, outGroup = outputs / groups, width = inGroup * kernel;
         int blocks = (outGroup + 3) / 4, tiles = (outLength + 255) / 256;

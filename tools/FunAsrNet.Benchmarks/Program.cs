@@ -13,7 +13,7 @@ Console.OutputEncoding = Encoding.UTF8;
 var jsonOptions = new JsonSerializerOptions { Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping };
 if (args.Length < 1)
 {
-    throw new ArgumentException("用法：prepare 模型目录 词典 样例目录 输出目录 | prepare-tts 模型目录 词典 huayan或aishell3 文本 ID文件 | asr 模型目录 PCM文件 次数 [--vulkan] | http-asr 服务地址 WAV文件 次数 | tts 模型目录 ID文件 huayan或aishell3 次数 输出文件 [--threads 4] [--profile] [--vulkan] | compare 参考波形 实际波形 | gpu-info | gpu-check | vulkan | npu；Windows 可添加 --affinity 0x55。");
+    throw new ArgumentException("用法：prepare 模型目录 词典 样例目录 输出目录 | prepare-tts 模型目录 词典 huayan或aishell3 文本 ID文件 | asr 模型目录 PCM文件 次数 [--profile] [--vulkan] | http-asr 服务地址 WAV文件 次数 | tts 模型目录 ID文件 huayan或aishell3 次数 输出文件 [--threads 4] [--profile] [--vulkan] | compare 参考波形 实际波形 | gpu-info | gpu-check | vulkan | npu；Windows 可添加 --affinity 0x55。");
 }
 
 if (OperatingSystem.IsWindows() && Array.IndexOf(args, "--affinity") is int affinityIndex and >= 0)
@@ -364,6 +364,11 @@ if (args[0] == "asr")
     int repeats = int.Parse(args[3], CultureInfo.InvariantCulture);
     var watch = Stopwatch.StartNew();
     var engine = new FunAsr(Path.Combine(args[1], "funasr-encoder-f16.gguf"), Path.Combine(args[1], "qwen3-0.6b-q8_0.gguf"), 4);
+    Dictionary<string, double> profile = [];
+    if (args.Contains("--profile"))
+    {
+        engine.LinearMeasured = (name, milliseconds) => profile[name] = profile.GetValueOrDefault(name) + milliseconds;
+    }
     using var gpu = args.Contains("--vulkan") ? new VulkanFloatBackend() : null;
     engine.FloatBackend = gpu;
     GC.Collect(2, GCCollectionMode.Forced, true);
@@ -380,6 +385,7 @@ if (args[0] == "asr")
         double cooldownSeconds = await CoolAsync();
         double? before = Temperature();
         int[] frequencyBefore = Frequencies();
+        profile.Clear();
         watch.Restart();
         var result = engine.Transcribe(audio, 128);
         double seconds = watch.Elapsed.TotalSeconds;
@@ -402,6 +408,15 @@ if (args[0] == "asr")
             cooldownSeconds,
             peakRssBytes = Process.GetCurrentProcess().PeakWorkingSet64
         });
+        if (args.Contains("--profile"))
+        {
+            Emit(new
+            {
+                kind = "profile", iteration,
+                groups = profile.GroupBy(item => string.Join(' ', item.Key.Split(' ').Take(2))).ToDictionary(group => group.Key, group => group.Sum(item => item.Value)),
+                slowest = profile.OrderByDescending(item => item.Value).Take(20).ToDictionary()
+            });
+        }
         if (gpu is not null)
         {
             Emit(new

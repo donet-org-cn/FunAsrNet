@@ -605,7 +605,7 @@ public sealed partial class TensorMath(int threads = 4, bool simd = true)
     /// <returns>按计算顺序排列的浮点结果数组。</returns>
     public float[] Attention(float[] q, float[] k, float[] v, int frames, int width, int heads)
     {
-        if (Simd && AdvSimd.IsSupported && frames >= 16 && Environment.GetEnvironmentVariable("FUNASRNET_BLOCK_ATTENTION") != "0")
+        if (Simd && (AdvSimd.IsSupported || System.Runtime.Intrinsics.X86.Avx2.IsSupported) && frames >= 16 && Environment.GetEnvironmentVariable("FUNASRNET_BLOCK_ATTENTION") != "0")
         {
             return BlockAttention(q, k, v, frames, width, heads);
         }

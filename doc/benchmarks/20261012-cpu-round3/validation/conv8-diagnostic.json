@@ -1,0 +1,13 @@
+{
+  "scope": "Diagnostic equality for 4x16 vs 8x8 with outputs per group >=192; not formal latency data",
+  "waveSha256": {
+    "huayan": {
+      "-a-4": "6b021c3836d6d9e045ca98b06d4cfc5f154b01e0c0abad8b086bfbbb80a9302b",
+      "-b-8": "6b021c3836d6d9e045ca98b06d4cfc5f154b01e0c0abad8b086bfbbb80a9302b"
+    },
+    "aishell3": {
+      "-a-4": "f378dbb3abad6fa55f4200ba7b44f8ba48782bb629a733284e0fafd79a2259fa",
+      "-b-8": "f378dbb3abad6fa55f4200ba7b44f8ba48782bb629a733284e0fafd79a2259fa"
+    }
+  }
+}

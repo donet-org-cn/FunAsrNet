@@ -211,6 +211,13 @@ public static partial class TensorOps
         int[] pads = node.Ints("pads", [0, 0]);
         int outLength = stride * (length - 1) + dilation * (kernel - 1) + 1 - pads[0] - pads[1] + node.Ints("output_padding", [0])[0];
         var y = Tensor.ForOverwrite([batches, outputs, outLength]);
+        if (math.FloatBackend is null && math.Simd && System.Runtime.Intrinsics.X86.Avx2.IsSupported && System.Runtime.Intrinsics.X86.Fma.IsSupported
+            && dilation == 1 && stride > 1 && kernel >= stride && length >= 16
+            && Environment.GetEnvironmentVariable("FUNASRNET_LEGACY_TRANSPOSE_CONV") != "1")
+        {
+            PolyphaseConvTransposeAvx(x, w, bias, y, stride, pads[0], math);
+            return y;
+        }
         var packed = new float[inputs * outputs * kernel];
         for (int i = 0; i < inputs; ++i)
         {

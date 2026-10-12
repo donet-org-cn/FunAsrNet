@@ -100,7 +100,18 @@ public static class AudioKernels
 
         int i = 0;
         float result = 0;
-        if (simd && Vector128.IsHardwareAccelerated)
+        if (simd && Vector256.IsHardwareAccelerated)
+        {
+            ref float x = ref MemoryMarshal.GetReference(a);
+            ref float y = ref MemoryMarshal.GetReference(b);
+            var acc = Vector256<float>.Zero;
+            for (; i <= a.Length - 8; i += 8)
+            {
+                acc += Vector256.LoadUnsafe(ref x, (nuint)i) * Vector256.LoadUnsafe(ref y, (nuint)i);
+            }
+            result = Vector128.Sum(acc.GetLower() + acc.GetUpper());
+        }
+        else if (simd && Vector128.IsHardwareAccelerated)
         {
             ref float x = ref MemoryMarshal.GetReference(a);
             ref float y = ref MemoryMarshal.GetReference(b);

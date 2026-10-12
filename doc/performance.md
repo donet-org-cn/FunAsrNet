@@ -1,6 +1,6 @@
 # 性能比较与证据范围
 
-本机后续 CPU 优化已完成 138 次正式样本、30 次预热：C# ASR 比上一版耗时减少 19–33%，仍慢于同指令集原版 CPU 21–40%；TTS 减少 41–44%，仍慢于 ORT CPU 71–79%。目标尚未全面达到持平或原版一半耗时，数据及正确性见 [本机后续对比](cpu-followup-20261012.md) 和 [原始统计](benchmarks/20261012-cpu-next/summary.json)。这轮只测 Windows x64。
+继续在 i7-12700 本机优化纯 CPU。与同轮上一版 `48f2fc5` 对比，28 秒 ASR 耗时减少 **12.0%**，Huayan 减少 **18.2%**，AISHELL3 减少 **9.0%**。两条短句 ASR 只减少约 3%，提升有限。 本次 ASR 为原版 CPU 的 **1.15–1.18 倍耗时**，TTS 为 ORT CPU 的 **1.47–1.51 倍**。仍有项目超过原版 1.5 倍耗时。**尚未全面持平，也未达到原版一半耗时。** “慢 50% 以内”只是本次小样本中位数的口径，不能作为尾延迟或其他输入的保证。 最新条件、原始数据及正确性见 [本机 CPU 第三轮记录](cpu-round3-20261012.md)。前轮记录见 [CPU 后续对比](cpu-followup-20261012.md)。
 
 2026-10-12 已补做 [纯 CPU 原生对照](cpu-native-comparison-20261012.md)：修正 x64 默认交错布局的标量回退后，ASR 提速 8.47–8.99 倍，仍慢于原版 C++ CPU 1.70–1.84 倍。TTS 两批复测保留全部样本，仍慢于 ORT CPU 3.03–3.10 倍。原始记录、修正前/后构建散列与分阶段计时见 [CPU summary.json](benchmarks/20261012-cpu-native/summary.json)。下文历史结果不与新实验混算。
 
@@ -41,6 +41,7 @@ Windows ASR 计完整 Transcribe/解码调用：特征、编码、解码、复�
 - [2026-10-12 新纯 CPU summary.json](benchmarks/20261012-cpu-native/summary.json)、Windows 默认布局修正前/后及 TTS 复核的 184 次正式测量；布局与 GPU 回归单独保存。
 - [2026-10-12 新 ARM64 CPU summary.json](benchmarks/20261012-rk3588-cpu-native/summary.json)、与固定 C++ CPU 的 52 次正式 ASR 测量、温度/频率/换页和 Linux 计时包装。
 - [2026-10-12 本机 CPU 后续 summary.json](benchmarks/20261012-cpu-next/summary.json)、进一步优化前/后及同指令集原版 CPU 的 138 次正式样本。
+- [2026-10-12 本机 CPU 第三轮 summary.json](benchmarks/20261012-cpu-round3/summary.json)、注意力、卷积与激活优化后的 138 次正式样本及完整验证。
 - 每个记录目录的 `SHA256SUMS.txt` 对应本仓库证据；历史归档已确认逐字节与历史来源相同，保留原 CRLF 与历史引擎标签。新实验的 JSONL 保留全部逐轮记录；已注明的原生日志路径脱敏与换行整理不改变数值。
 
 未复制私人部署/健康快照、内部 Git 地址、证书或含个人工作路径的构建日志。Windows 证据保留系统 Vulkan 加载器路径，便于确认真实驱动；它不是通用安装说明。

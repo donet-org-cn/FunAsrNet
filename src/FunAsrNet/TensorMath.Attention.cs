@@ -31,6 +31,32 @@ public sealed partial class TensorMath
         int channel = 0;
         ref float data = ref MemoryMarshal.GetArrayDataReference(values);
         ref float dest = ref MemoryMarshal.GetReference(output);
+        if (simd && Vector256.IsHardwareAccelerated)
+        {
+            for (; channel <= output.Length - 32; channel += 32)
+            {
+                var a0 = Vector256<float>.Zero;
+                var a1 = a0;
+                var a2 = a0;
+                var a3 = a0;
+                ref float source = ref Unsafe.Add(ref data, start + channel);
+                for (int t = 0; t < scores.Length; ++t)
+                {
+                    var scale = Vector256.Create(scores[t]);
+                    a0 += Vector256.LoadUnsafe(ref source) * scale;
+                    a1 += Vector256.LoadUnsafe(ref source, 8) * scale;
+                    a2 += Vector256.LoadUnsafe(ref source, 16) * scale;
+                    a3 += Vector256.LoadUnsafe(ref source, 24) * scale;
+                    source = ref Unsafe.Add(ref source, stride);
+                }
+
+                a0.StoreUnsafe(ref dest, (nuint)channel);
+                a1.StoreUnsafe(ref dest, (nuint)(channel + 8));
+                a2.StoreUnsafe(ref dest, (nuint)(channel + 16));
+                a3.StoreUnsafe(ref dest, (nuint)(channel + 24));
+            }
+        }
+
         if (simd && Vector128.IsHardwareAccelerated)
         {
             for (; channel <= output.Length - 16; channel += 16)

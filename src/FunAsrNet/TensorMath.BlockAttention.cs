@@ -103,6 +103,11 @@ public sealed partial class TensorMath
         int frames,
         float divisor)
     {
+        if (System.Runtime.Intrinsics.X86.Avx2.IsSupported)
+        {
+            AttentionScores2x4Avx(query, qo, key, ko, stride, keyStride, size, scores, frames, divisor);
+            return;
+        }
         ref float q = ref Unsafe.Add(ref MemoryMarshal.GetArrayDataReference(query), qo);
         ref float k = ref Unsafe.Add(ref MemoryMarshal.GetArrayDataReference(key), ko);
         var a00 = Vector128<float>.Zero;
@@ -260,6 +265,10 @@ public sealed partial class TensorMath
     {
         int channel = 0;
         ref float data = ref MemoryMarshal.GetArrayDataReference(values);
+        if (Vector256.IsHardwareAccelerated)
+        {
+            channel = AttentionValues2Avx(scores, values, start, stride, output, dest, outputStride, size, frames);
+        }
         for (; channel <= size - 16; channel += 16)
         {
             var a00 = Vector128<float>.Zero;

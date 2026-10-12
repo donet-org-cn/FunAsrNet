@@ -10,6 +10,8 @@ internal static class TensorOptimizationChecks
         var random = new Random(121026);
         foreach (var shape in new[]
         {
+            (Length: 207, Groups: 1, Channels: 5, Outputs: 201, Kernel: 5, Stride: 1, Dilation: 2, Left: 4, Right: 4),
+            (Length: 131, Groups: 2, Channels: 6, Outputs: 398, Kernel: 3, Stride: 1, Dilation: 3, Left: 2, Right: 7),
             (Length: 4097, Groups: 1, Channels: 3, Outputs: 5, Kernel: 7, Stride: 1, Dilation: 3, Left: 5, Right: 9),
             (Length: 4103, Groups: 2, Channels: 6, Outputs: 10, Kernel: 4, Stride: 1, Dilation: 2, Left: 7, Right: 3),
             (Length: 33, Groups: 2, Channels: 6, Outputs: 10, Kernel: 4, Stride: 2, Dilation: 3, Left: 2, Right: 5),
