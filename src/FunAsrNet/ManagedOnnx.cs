@@ -3,12 +3,12 @@ namespace FunAsrNet;
 /// <summary>
 /// 执行固定 Huayan 和 AISHELL3 VITS 模型所需的 ONNX 算子子集，不依赖原生推理库。
 /// </summary>
-public sealed class ManagedOnnx
+public sealed partial class ManagedOnnx
 {
     private readonly OnnxModel _model;
     private readonly TensorMath _math;
     private readonly Dictionary<string, int> _uses = [];
-    private readonly TensorWorkspace _workspace = new();
+    private readonly TensorWorkspace _workspace = new(128L * 1024 * 1024);
     private Random _random = new(1);
     /// <summary>
     /// 可选的中间张量观察回调，仅供验证使用；开启后禁用临时数组复用以保留历史值。
@@ -93,7 +93,11 @@ public sealed class ManagedOnnx
             long started = NodeMeasured is null ? 0 : System.Diagnostics.Stopwatch.GetTimestamp();
             try
             {
-                output = Execute(node, x);
+                Tensor? reuse = FindReusableInput(node, x, remaining, references);
+                output = reuse is null ? Execute(node, x) :
+                    [node.Op == "LeakyRelu"
+                        ? TensorOps.LeakyReluOwned(x[0]!, node.Float("alpha", 0.01f), _math, reuse)
+                        : TensorOps.ArithmeticOwned(x[0]!, x[1]!, node.Op, _math, reuse)];
             }
             catch (Exception e)
             {

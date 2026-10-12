@@ -46,6 +46,16 @@ public static partial class TensorOps
     /// <param name="math">可选同步计算线程组；大连续结果按独立区间分配，不改变逐元素顺序。</param>
     /// <returns>拥有独立存储的结果张量，不覆盖任何共享输入。</returns>
     public static Tensor Arithmetic(Tensor a, Tensor b, string operation, TensorMath? math = null)
+        => ArithmeticOwned(a, b, operation, math, null);
+
+    /// <summary>在解释器证明输入已经结束生命期后，允许复用其完整存储作为结果。</summary>
+    /// <param name="a">只读语义的左操作数。</param>
+    /// <param name="b">只读语义的右操作数。</param>
+    /// <param name="operation">加减乘除算子名称。</param>
+    /// <param name="math">可选同步计算调度器。</param>
+    /// <param name="reuse">已确认没有其他观察者且形状等于输出的自有临时张量。</param>
+    /// <returns>完整写入的输出张量。</returns>
+    internal static Tensor ArithmeticOwned(Tensor a, Tensor b, string operation, TensorMath? math, Tensor? reuse)
     {
         Func<float, float, float> scalar = operation switch
         {
@@ -64,7 +74,7 @@ public static partial class TensorOps
         int[] shape = BroadcastShape(a.Shape, b.Shape);
         if (a.Shape.SequenceEqual(b.Shape) || a.Count == 1 || b.Count == 1)
         {
-            var y = Tensor.ForOverwrite(shape, a.Integer && b.Integer);
+            var y = reuse is null ? Tensor.ForOverwrite(shape, a.Integer && b.Integer) : new Tensor(reuse.Data, shape, a.Integer && b.Integer);
             if (math is not null && y.Count >= 65536 && Environment.GetEnvironmentVariable("FUNASRNET_SERIAL_ELEMENTWISE") != "1")
             {
                 math.For((y.Count + 65535) / 65536, block =>
@@ -88,11 +98,29 @@ public static partial class TensorOps
             int width = shape[^1];
             int[] outer = shape[..^1], sa = BroadcastStrides(a, shape.Length), sb = BroadcastStrides(b, shape.Length);
             int leftWidth = sa[^1] == 0 ? 1 : width, rightWidth = sb[^1] == 0 ? 1 : width;
-            for (int block = 0; block < result.Count / width; block++)
+            int rows = result.Count / width;
+            int rowsPerTask = Math.Max(1, 65536 / width);
+            // 大时间轴的通道偏置和掩码同样需要并行，避免广播分支退回单核。
+            if (math is not null && result.Count >= 65536 && Environment.GetEnvironmentVariable("FUNASRNET_SERIAL_ELEMENTWISE") != "1")
             {
-                var left = a.Data.AsSpan(Offset(block, outer, sa), leftWidth);
-                var right = b.Data.AsSpan(Offset(block, outer, sb), rightWidth);
-                ArithmeticBlock(left, right, result.Data.AsSpan(block * width, width), operation, scalar);
+                math.For((rows + rowsPerTask - 1) / rowsPerTask, task =>
+                {
+                    for (int block = task * rowsPerTask; block < Math.Min(rows, (task + 1) * rowsPerTask); block++)
+                    {
+                        var left = a.Data.AsSpan(Offset(block, outer, sa), leftWidth);
+                        var right = b.Data.AsSpan(Offset(block, outer, sb), rightWidth);
+                        ArithmeticBlock(left, right, result.Data.AsSpan(block * width, width), operation, scalar);
+                    }
+                });
+            }
+            else
+            {
+                for (int block = 0; block < rows; block++)
+                {
+                    var left = a.Data.AsSpan(Offset(block, outer, sa), leftWidth);
+                    var right = b.Data.AsSpan(Offset(block, outer, sb), rightWidth);
+                    ArithmeticBlock(left, right, result.Data.AsSpan(block * width, width), operation, scalar);
+                }
             }
         }
         return result;
@@ -202,8 +230,17 @@ public static partial class TensorOps
     /// <param name="math">可选线程组，大张量分块并行。</param>
     /// <returns>具有相同形状和独立存储的结果。</returns>
     public static Tensor LeakyRelu(Tensor x, float alpha, TensorMath? math = null)
+        => LeakyReluOwned(x, alpha, math, null);
+
+    /// <summary>对解释器独占且不再读取的临时数组执行可原地的激活。</summary>
+    /// <param name="x">输入张量。</param>
+    /// <param name="alpha">负值缩放系数。</param>
+    /// <param name="math">可选同步计算调度器。</param>
+    /// <param name="reuse">与输入同一存储且已通过生命期检查的张量。</param>
+    /// <returns>激活后的张量，数值语义与独立分配相同。</returns>
+    internal static Tensor LeakyReluOwned(Tensor x, float alpha, TensorMath? math, Tensor? reuse)
     {
-        var y = Tensor.ForOverwrite(x.Shape);
+        var y = reuse is null ? Tensor.ForOverwrite(x.Shape) : new Tensor(reuse.Data, x.Shape);
         if (math is not null && x.Count >= 65536 && Environment.GetEnvironmentVariable("FUNASRNET_SERIAL_ELEMENTWISE") != "1")
         {
             math.For((x.Count + 65535) / 65536, block =>

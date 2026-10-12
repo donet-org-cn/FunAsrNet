@@ -1,0 +1,15 @@
+{
+  "models": {
+    "encoder": "f92f91d01a24fbed6c863495b2ee8c6a6788144a02858b75743f0946668de8a2",
+    "decoder": "819f385dc0e035dccc3d9e7edaf6b7b044b8ba7ace63cbcbf84c7e397eecbf27",
+    "huayan": "04234ec24907e9efa7e153669e07d4e0cf6d260adc005323aa929386dae53f86",
+    "aishell3": "5511d651b7840c0a93a6bbfd4afd070a2c7f39ca1ec3ff2ecd73191519bbb852"
+  },
+  "inputs": {
+    "aishell3.i64": "66ac60d96f74dd848d71580982ac6dd0227ce53ec80fac3afca25cfa2dc012ee",
+    "huayan.i64": "feb05cdbb64fdf8045f0c08e42701ee5e24a72f7feee73c2858abce65f760569",
+    "sip-repeated-pcma.f32": "839f53e709e87ed6c74b645c5e2f871fd4af68e84b4b09698372f2d065c5b048",
+    "sip-short-pcma.f32": "8ebc139144c67bba23110e445db36b0cb9da70eeef32e5e8ad0d9dda06ce2322",
+    "sip-zh-pcmu.f32": "fb705a8368d62b25bfec86b28b897e94c61173ca5ba6c0490b5556e078471432"
+  }
+}

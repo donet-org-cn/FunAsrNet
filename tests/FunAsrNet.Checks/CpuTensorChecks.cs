@@ -30,6 +30,13 @@ internal static class CpuTensorChecks
             }
         }
         check(left.Data.AsSpan().SequenceEqual(saved), "Parallel arithmetic keeps shared input read-only");
+        var broadcastInput = new Tensor(left.Data, [3, 43693]);
+        var channelBias = new Tensor([1f, -2f, 0.125f], [3, 1]);
+        var broadcast = TensorOps.Arithmetic(broadcastInput, channelBias, "Add", new TensorMath(4));
+        for (int i = 0; i < count; i++)
+        {
+            check(broadcast.Data[i] == left.Data[i] + channelBias.Data[i / 43693], "Parallel channel broadcast crosses task and vector tails");
+        }
         float[] conditions = [0f, -0f, float.NaN, 1f, -1f, float.PositiveInfinity, 0f, 1f, 0f];
         var condition = new Tensor(conditions, [1, 1, 9]);
         var input = new Tensor(Enumerable.Range(0, 3 * 9).Select(index => index % 2 == 0 ? -0f : index * 0.25f).ToArray(), [1, 3, 9]);

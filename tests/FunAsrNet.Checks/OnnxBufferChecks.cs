@@ -77,5 +77,37 @@ internal static class OnnxBufferChecks
             }
         });
         check(true, "ONNX concurrent contexts share constants without sharing temporary buffers");
+
+        // 同形输入与标量广播都覆盖左右复用；减除能检出交换操作数的错误。
+        model.Nodes.Clear();
+        model.Outputs.Clear();
+        model.Constants["constant"] = new Tensor([0.125f], []);
+        var largeInput = new Tensor(Enumerable.Range(0, 131079).Select(i => (i % 101 - 50) * 0.25f).ToArray(), [131079]);
+        var largeInputs = new Dictionary<string, Tensor> { ["input"] = largeInput };
+        float[] largeSaved = (float[])largeInput.Data.Clone();
+        foreach (string operation in new[] { "Add", "Sub", "Mul", "Div" })
+        {
+            foreach (bool rightSide in new[] { false, true })
+            {
+                model.Nodes.Clear();
+                model.Nodes.Add(new("owned", "Add", ["input", "constant"], ["owned"], []));
+                model.Nodes.Add(new("pointwise", operation, rightSide ? ["constant", "owned"] : ["owned", "constant"], ["pointwise"], []));
+                model.Nodes.Add(new("activation", "LeakyRelu", ["pointwise"], ["activated"], new() { ["alpha"] = 0.1f }));
+                model.Outputs.Clear();
+                model.Outputs.Add("activated");
+                var optimized = new ManagedOnnx(model, new TensorMath(4));
+                var allocating = new ManagedOnnx(model, new TensorMath(4)) { ReuseBuffers = false };
+                var actual = optimized.Run(largeInputs)["activated"];
+                var expected = allocating.Run(largeInputs)["activated"];
+                for (int index = 0; index < actual.Count; index++)
+                {
+                    check(BitConverter.SingleToInt32Bits(actual.Data[index]) == BitConverter.SingleToInt32Bits(expected.Data[index]), "ONNX in-place left/right arithmetic and activation preserve exact values across parallel tails");
+                }
+                check(largeInput.Data.SequenceEqual(largeSaved), "ONNX in-place operations never overwrite caller input");
+                var savedOutput = (float[])actual.Data.Clone();
+                optimized.Run(largeInputs);
+                check(actual.Data.SequenceEqual(savedOutput), "ONNX in-place result survives next inference");
+            }
+        }
     }
 }

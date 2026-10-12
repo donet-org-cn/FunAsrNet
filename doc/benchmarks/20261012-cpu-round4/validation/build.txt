@@ -1,0 +1,18 @@
+  正在确定要还原的项目…
+  所有项目均是最新的，无法还原。
+  FunAsrNet.CodeStyle -> <repo>\tools\FunAsrNet.CodeStyle\bin\Release\net10.0\FunAsrNet.CodeStyle.dll
+  FunAsrNet.Probe -> <repo>\src\FunAsrNet.Probe\bin\Release\net10.0\FunAsrNet.Probe.dll
+  FunAsrNet -> <repo>\src\FunAsrNet\bin\Release\net10.0\FunAsrNet.dll
+  FunAsrNet.VoiceChecks -> <repo>\tests\FunAsrNet.VoiceChecks\bin\Release\net10.0\FunAsrNet.VoiceChecks.dll
+  FunAsrNet.DemoChecks -> <repo>\tests\FunAsrNet.DemoChecks\bin\Release\net10.0\FunAsrNet.DemoChecks.dll
+  FunAsrNet.Vulkan -> <repo>\src\FunAsrNet.Vulkan\bin\Release\net10.0\FunAsrNet.Vulkan.dll
+  FunAsrNet.Checks -> <repo>\tests\FunAsrNet.Checks\bin\Release\net10.0\FunAsrNet.Checks.dll
+  FunAsrNet.Cli -> <repo>\src\FunAsrNet.Cli\bin\Release\net10.0\FunAsrNet.Cli.dll
+  FunAsrNet.Benchmarks -> <repo>\tools\FunAsrNet.Benchmarks\bin\Release\net10.0\FunAsrNet.Benchmarks.dll
+  FunAsrNet.Server -> <repo>\src\FunAsrNet.Server\bin\Release\net10.0\FunAsrNet.Server.dll
+
+已成功生成。
+    0 个警告
+    0 个错误
+
+已用时间 00:00:01.62

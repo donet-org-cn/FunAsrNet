@@ -18,13 +18,17 @@ flowchart LR
 
 矩阵、量化、注意力、归一化、卷积、逐元素和布局转换由 C# 实现，根据硬件选择 SIMD/标量。F16 源权重按原值展开；Q8_0 保留权重与激活 32 元素分组，保留 F16 KV 舍入，不通过改变模型精度取得文档中的速度。
 
-“纯 .NET”指不借外置神经网络推理引擎执行默认 CPU 算子，仍依赖 .NET、操作系统及普通平台 API。ASR 默认只在 ARM64 NEON/SDOT 可用时准备对应交错权重；x64 保留行主序，使用 AVX2/FMA 浮点矩阵和 AVX2/AVX-VNNI Q8 点积，避免进入 ARM 交错布局的标量回退。平台优化程度仍不一致，最新 x64 实测见 [本机 CPU 第三轮记录](cpu-round3-20261012.md)，前轮两端快照见 [纯 CPU 对比](cpu-native-comparison-20261012.md)。
+“纯 .NET”指不借外置神经网络推理引擎执行默认 CPU 算子，仍依赖 .NET、操作系统及普通平台 API。ASR 默认只在 ARM64 NEON/SDOT 可用时准备对应交错权重；x64 保留行主序，使用 AVX2/FMA 浮点矩阵和 AVX2/AVX-VNNI Q8 点积，避免进入 ARM 交错布局的标量回退。平台优化程度仍不一致，最新 x64 实测见 [本机 CPU 第四轮记录](cpu-round4-20261012.md)，前轮两端快照见 [纯 CPU 对比](cpu-native-comparison-20261012.md)。
 
 x64 注意力使用 256 位分块和向量指数；TTS 转置卷积按采样相位计算，宽输出卷积使用八通道块。激活与卷积的浮点结果按独立参考和波形阈值验证，Q8 分组算术未改变。
+
+x64 激活量化保留标量远离零舍入，Q8 投影按四行或四帧共同归约；FP32 矩阵使用完整块专用循环与 128 项内积分段。TTS 在所有权和引用次数允许时原地计算逐元素算子，详见 [缓冲区生命期与内存代价](concurrency-and-memory.md)。
 
 ## 可选 GPU
 
 核心不引用 GPU 项目；调用者创建并释放 `VulkanFloatBackend`，首次推理前设置 `FloatBackend`。C# 管理缓存、传输、提交与栅栏；GPU 由系统驱动执行 SPIR-V。GLSL 源码和字节码嵌入 C#，运行时不需着色器编译器。
+
+`.comp` 通常是 GLSL 计算着色器源码，离线编译后的 `.spv` 是 SPIR-V 字节码，由 Vulkan 驱动提交给 GPU 执行。它与 .NET Native AOT 的 CPU 机器码不同，不能直接改善纯 CPU 推理。本项目对应源码为 `SpeechShader.cs`、`QuantizedShader.cs` 中的 GLSL 字符串，编译结果嵌入同名 `.Binary.cs`。可按 SimdPaddleOCR 的 Apache-2.0 许可参考或适配其实现，保留原许可、来源和改动说明；现有设备基础设施已这样引入。CPU 优化另行采用 C# SIMD，性能数据也分别测量。
 
 只加速部分算子，中间数据、剩余算子和部分权重仍在 CPU；不是完整图常驻或全链路零拷贝。Vulkan API/设备设施来自 SimdPaddleOCR，原许可在 Vendor 目录。`FUNASRNET_VULKAN_LIBRARY` 可设系统加载器绝对路径，默认用平台标准库名；不要硬编码某台机器的 DriverStore 路径。
 

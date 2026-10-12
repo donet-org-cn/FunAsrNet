@@ -383,6 +383,12 @@ public sealed partial class TensorMath(int threads = 4, bool simd = true)
             return;
         }
 
+        if (System.Runtime.Intrinsics.X86.Avx2.IsSupported && Environment.GetEnvironmentVariable("FUNASRNET_SCALAR_QUANTIZE") != "1")
+        {
+            QuantizeAvx(input, q, scales);
+            return;
+        }
+
         for (int b = 0; b < scales.Length; ++b)
         {
             float max = 0;

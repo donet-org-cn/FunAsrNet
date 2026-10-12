@@ -101,6 +101,11 @@ internal sealed class TensorWorkspace(long capacityBytes = 64L * 1024 * 1024)
     /// <param name="array">当前作用域可能拥有的结果数组，不接管外部存储。</param>
     internal static void Detach(float[] array) => _current?._active.Remove(array);
 
+    /// <summary>确认数组属于当前作用域，外部输入、模型常量和已返回结果均不能原地覆盖。</summary>
+    /// <param name="array">待检查的连续张量存储。</param>
+    /// <returns>仅在当前工作区仍拥有该数组时返回真。</returns>
+    internal static bool Owns(float[] array) => _current?._active.Contains(array) == true;
+
     /// <summary>
     /// 将已结束生命期的数组保留在有界缓存中。
     /// </summary>

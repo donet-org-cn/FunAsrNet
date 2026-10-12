@@ -25,6 +25,11 @@ public sealed partial class TensorMath
         var q = new sbyte[input.Length];
         var scales = new float[input.Length / 32];
         Quantize(input, q, scales);
+        if (frames == 1 && Environment.GetEnvironmentVariable("FUNASRNET_Q8_ROWS4") != "0")
+        {
+            QuantizedRows4Avx(q, scales, w, bias, output);
+            return;
+        }
         For((m + 15) / 16, block =>
         {
             ref sbyte weights = ref MemoryMarshal.GetArrayDataReference(w.Quantized!);
@@ -34,22 +39,25 @@ public sealed partial class TensorMath
                 int time = 0;
                 for (; time + 3 < frames; time += 4)
                 {
-                    float a = 0, b = 0, c = 0, d = 0;
+                    var sum = Vector128<float>.Zero;
                     for (int k = 0; k < n; k += 32)
                     {
                         var weight = Vector256.LoadUnsafe(ref weights, (nuint)(row * n + k));
-                        var absolute = Avx2.Abs(weight);
-                        float scale = w.Scales[row * blocks + k / 32];
-                        a += QuantizedBlockAvx(absolute, weight, Vector256.LoadUnsafe(ref activations, (nuint)(time * n + k))) * scale * scales[time * blocks + k / 32];
-                        b += QuantizedBlockAvx(absolute, weight, Vector256.LoadUnsafe(ref activations, (nuint)((time + 1) * n + k))) * scale * scales[(time + 1) * blocks + k / 32];
-                        c += QuantizedBlockAvx(absolute, weight, Vector256.LoadUnsafe(ref activations, (nuint)((time + 2) * n + k))) * scale * scales[(time + 2) * blocks + k / 32];
-                        d += QuantizedBlockAvx(absolute, weight, Vector256.LoadUnsafe(ref activations, (nuint)((time + 3) * n + k))) * scale * scales[(time + 3) * blocks + k / 32];
+                        var a = QuantizedPartialAvx(weight, Vector256.LoadUnsafe(ref activations, (nuint)(time * n + k)));
+                        var b = QuantizedPartialAvx(weight, Vector256.LoadUnsafe(ref activations, (nuint)((time + 1) * n + k)));
+                        var c = QuantizedPartialAvx(weight, Vector256.LoadUnsafe(ref activations, (nuint)((time + 2) * n + k)));
+                        var d = QuantizedPartialAvx(weight, Vector256.LoadUnsafe(ref activations, (nuint)((time + 3) * n + k)));
+                        var ab = Ssse3.HorizontalAdd(a.GetLower() + a.GetUpper(), b.GetLower() + b.GetUpper());
+                        var cd = Ssse3.HorizontalAdd(c.GetLower() + c.GetUpper(), d.GetLower() + d.GetUpper());
+                        var dot = Vector128.ConvertToSingle(Ssse3.HorizontalAdd(ab, cd));
+                        var xs = Vector128.Create(scales[time * blocks + k / 32], scales[(time + 1) * blocks + k / 32], scales[(time + 2) * blocks + k / 32], scales[(time + 3) * blocks + k / 32]);
+                        sum += dot * Vector128.Create(w.Scales[row * blocks + k / 32]) * xs;
                     }
-                    float offset = bias?.Values?[row] ?? 0;
-                    output[time * m + row] = offset + a;
-                    output[(time + 1) * m + row] = offset + b;
-                    output[(time + 2) * m + row] = offset + c;
-                    output[(time + 3) * m + row] = offset + d;
+                    sum = Vector128.Create(bias?.Values?[row] ?? 0) + sum;
+                    output[time * m + row] = sum.GetElement(0);
+                    output[(time + 1) * m + row] = sum.GetElement(1);
+                    output[(time + 2) * m + row] = sum.GetElement(2);
+                    output[(time + 3) * m + row] = sum.GetElement(3);
                 }
                 for (; time < frames; time++)
                 {
@@ -95,6 +103,7 @@ public sealed partial class TensorMath
     private void PackedFloatLinearAvx(float[] input, int frames, Weight w, Weight? bias, float[] output)
     {
         int n = w.Columns, m = w.Rows, tiles = (frames + 15) / 16, blocks = (m + 3) / 4;
+        int segment = n <= 256 || Environment.GetEnvironmentVariable("FUNASRNET_AVX_SEGMENT128") != "0" ? 128 : 32;
         float[] packed = ArrayPool<float>.Shared.Rent(checked(tiles * 16 * n));
         try
         {
@@ -118,8 +127,7 @@ public sealed partial class TensorMath
                 ref float wp = ref Unsafe.Add(ref MemoryMarshal.GetArrayDataReference(w.Values!), row * n);
                 Span<float> sums = stackalloc float[64];
                 sums.Clear();
-                // 短内积减少写回，长内积保持三十二项分段；不改变模型或激活精度。
-                int segment = n <= 256 ? 128 : 32;
+                // 一百二十八项分段减少中间和写回；模型和激活仍使用原 FP32 精度。
                 for (int start = 0; start < n; start += segment)
                 {
                     var a0 = Vector256<float>.Zero;
@@ -130,22 +138,45 @@ public sealed partial class TensorMath
                     var c1 = a0;
                     var d0 = a0;
                     var d1 = a0;
-                    for (int k = start; k < Math.Min(n, start + segment); k++)
+                    if (valid == 4)
                     {
-                        var x0 = Vector256.LoadUnsafe(ref xp, (nuint)(k * 16));
-                        var x1 = Vector256.LoadUnsafe(ref xp, (nuint)(k * 16 + 8));
-                        var scale = Vector256.Create(Unsafe.Add(ref wp, k));
-                        a0 = Fma.MultiplyAdd(x0, scale, a0);
-                        a1 = Fma.MultiplyAdd(x1, scale, a1);
-                        scale = Vector256.Create(valid > 1 ? Unsafe.Add(ref wp, n + k) : 0);
-                        b0 = Fma.MultiplyAdd(x0, scale, b0);
-                        b1 = Fma.MultiplyAdd(x1, scale, b1);
-                        scale = Vector256.Create(valid > 2 ? Unsafe.Add(ref wp, 2 * n + k) : 0);
-                        c0 = Fma.MultiplyAdd(x0, scale, c0);
-                        c1 = Fma.MultiplyAdd(x1, scale, c1);
-                        scale = Vector256.Create(valid > 3 ? Unsafe.Add(ref wp, 3 * n + k) : 0);
-                        d0 = Fma.MultiplyAdd(x0, scale, d0);
-                        d1 = Fma.MultiplyAdd(x1, scale, d1);
+                        for (int k = start; k < Math.Min(n, start + segment); k++)
+                        {
+                            var x0 = Vector256.LoadUnsafe(ref xp, (nuint)(k * 16));
+                            var x1 = Vector256.LoadUnsafe(ref xp, (nuint)(k * 16 + 8));
+                            var scale = Vector256.Create(Unsafe.Add(ref wp, k));
+                            a0 = Fma.MultiplyAdd(x0, scale, a0);
+                            a1 = Fma.MultiplyAdd(x1, scale, a1);
+                            scale = Vector256.Create(Unsafe.Add(ref wp, n + k));
+                            b0 = Fma.MultiplyAdd(x0, scale, b0);
+                            b1 = Fma.MultiplyAdd(x1, scale, b1);
+                            scale = Vector256.Create(Unsafe.Add(ref wp, 2 * n + k));
+                            c0 = Fma.MultiplyAdd(x0, scale, c0);
+                            c1 = Fma.MultiplyAdd(x1, scale, c1);
+                            scale = Vector256.Create(Unsafe.Add(ref wp, 3 * n + k));
+                            d0 = Fma.MultiplyAdd(x0, scale, d0);
+                            d1 = Fma.MultiplyAdd(x1, scale, d1);
+                        }
+                    }
+                    else
+                    {
+                        for (int k = start; k < Math.Min(n, start + segment); k++)
+                        {
+                            var x0 = Vector256.LoadUnsafe(ref xp, (nuint)(k * 16));
+                            var x1 = Vector256.LoadUnsafe(ref xp, (nuint)(k * 16 + 8));
+                            var scale = Vector256.Create(Unsafe.Add(ref wp, k));
+                            a0 = Fma.MultiplyAdd(x0, scale, a0);
+                            a1 = Fma.MultiplyAdd(x1, scale, a1);
+                            scale = Vector256.Create(valid > 1 ? Unsafe.Add(ref wp, n + k) : 0);
+                            b0 = Fma.MultiplyAdd(x0, scale, b0);
+                            b1 = Fma.MultiplyAdd(x1, scale, b1);
+                            scale = Vector256.Create(valid > 2 ? Unsafe.Add(ref wp, 2 * n + k) : 0);
+                            c0 = Fma.MultiplyAdd(x0, scale, c0);
+                            c1 = Fma.MultiplyAdd(x1, scale, c1);
+                            scale = Vector256.Create(valid > 3 ? Unsafe.Add(ref wp, 3 * n + k) : 0);
+                            d0 = Fma.MultiplyAdd(x0, scale, d0);
+                            d1 = Fma.MultiplyAdd(x1, scale, d1);
+                        }
                     }
                     ref float previous = ref MemoryMarshal.GetReference(sums);
                     (Vector256.LoadUnsafe(ref previous) + a0).StoreUnsafe(ref previous);

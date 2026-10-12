@@ -1,0 +1,1 @@
+{"avx2":true,"fma":true,"avxVnni":true,"neon":false,"sdot":false,"threads":4,"runtime":"10.0.12"}

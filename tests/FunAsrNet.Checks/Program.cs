@@ -19,6 +19,7 @@ void Check(bool condition, string name)
 }
 
 FunAsrNet.Checks.QuantizedAvxChecks.Run(Check);
+FunAsrNet.Checks.QuantizeRoundingChecks.Run(Check);
 FunAsrNet.Checks.ActivationChecks.Run(Check);
 FunAsrNet.Checks.CpuTensorChecks.Run(Check);
 FunAsrNet.Checks.CpuFollowupChecks.Run(Check);

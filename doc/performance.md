@@ -1,8 +1,10 @@
 # 性能比较与证据范围
 
-最新 [Native AOT 对比](aot-comparison-20261012.md) 完成 184 次正式模型测量和 40 次预热：相同入口 JIT/AOT 的短 ASR 基本持平，长 ASR 的 AOT 中位数慢 4.9%，两种 TTS 的 AOT 中位数减少 2.3%/6.4%，仍未全面追平原生 CPU。新进程至短 ASR 首个结果约从 4.7–4.9 秒降到 2.3 秒；未清空文件缓存，不代表完整 Web 服务冷启动。报告保留原有入口控制数据、所有慢样本和内存反例，仅验证 Windows CPU 基准 AOT。
+最新 [本机 CPU 第四轮记录](cpu-round4-20261012.md) 保持纯 C# 推理：三条 ASR 样例比同轮上一版减少 12%–22% 耗时，与原版 C++ CPU 的耗时比为 **0.969–1.029**，这组样例已基本持平。TTS 仍约为 ORT CPU 的 **1.46 倍耗时**；Huayan 中位数减少 1.8%、AISHELL3 增加 2.4%，没有明确速度收益。Huayan 每次托管分配减少 79.7%。258 次正式测量、42 次预热，包括固定轮数 TTS 确认组，全部慢样本保留。仅验证 Windows x64 固定样例，不能推广到其他语料、尾延迟或 RK3588。
 
-继续在 i7-12700 本机优化纯 CPU。与同轮上一版 `48f2fc5` 对比，28 秒 ASR 耗时减少 **12.0%**，Huayan 减少 **18.2%**，AISHELL3 减少 **9.0%**。两条短句 ASR 只减少约 3%，提升有限。 本次 ASR 为原版 CPU 的 **1.15–1.18 倍耗时**，TTS 为 ORT CPU 的 **1.47–1.51 倍**。仍有项目超过原版 1.5 倍耗时。**尚未全面持平，也未达到原版一半耗时。** “慢 50% 以内”只是本次小样本中位数的口径，不能作为尾延迟或其他输入的保证。 最新条件、原始数据及正确性见 [本机 CPU 第三轮记录](cpu-round3-20261012.md)。前轮记录见 [CPU 后续对比](cpu-followup-20261012.md)。
+此前 [Native AOT 对比](aot-comparison-20261012.md) 完成 184 次正式模型测量和 40 次预热：相同入口 JIT/AOT 的短 ASR 基本持平，长 ASR 的 AOT 中位数慢 4.9%，两种 TTS 的 AOT 中位数减少 2.3%/6.4%，当时仍未全面追平原生 CPU。新进程至短 ASR 首个结果约从 4.7–4.9 秒降到 2.3 秒；未清空文件缓存，不代表完整 Web 服务冷启动。该报告属于前轮源码，本轮没有重做 AOT 性能对照。
+
+历史 [本机 CPU 第三轮记录](cpu-round3-20261012.md) 与当轮上一版 `48f2fc5` 对比，28 秒 ASR 耗时减少 12.0%，Huayan 减少 18.2%，AISHELL3 减少 9.0%；当时 ASR 为原版 CPU 的 1.15–1.18 倍耗时、TTS 为 ORT CPU 的 1.47–1.51 倍。这些是历史快照，不代表最新构建。更早记录见 [CPU 后续对比](cpu-followup-20261012.md)。
 
 2026-10-12 已补做 [纯 CPU 原生对照](cpu-native-comparison-20261012.md)：修正 x64 默认交错布局的标量回退后，ASR 提速 8.47–8.99 倍，仍慢于原版 C++ CPU 1.70–1.84 倍。TTS 两批复测保留全部样本，仍慢于 ORT CPU 3.03–3.10 倍。原始记录、修正前/后构建散列与分阶段计时见 [CPU summary.json](benchmarks/20261012-cpu-native/summary.json)。下文历史结果不与新实验混算。
 
@@ -35,6 +37,7 @@ Windows ASR 计完整 Transcribe/解码调用：特征、编码、解码、复�
 
 ## 公开证据
 
+- [2026-10-12 本机 CPU 第四轮 summary.json](benchmarks/20261012-cpu-round4/summary.json)、纯 C# 量化与矩阵优化后的 258 次正式样本、TTS 确认组和完整回归。
 - [2026-10-12 AOT summary.json](benchmarks/20261012-aot/summary.json)、同入口 JIT/AOT、原有入口及原生 CPU 的 184 次正式样本、启动观测、数值检查与产物散列。
 - [RK3588 summary.json](benchmarks/20260930/summary.json)、runs 逐轮 JSONL、输入散列和波形误差结果。
 - [Windows summary.json](benchmarks/20261010-vulkan-local/summary.json)、逐轮 JSONL、CPU/GPU/原生波形校验、GPU 数值检查、环境快照与 C++ 编译特性。
