@@ -309,6 +309,15 @@ internal static unsafe partial class Vk
         public uint SubgroupSizeControl; public uint ComputeFullSubgroups;
     }
 
+    /// <summary>查询及启用打包整数点积，布局来自 Vulkan 1.3 / KHR 扩展。</summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct VkPhysicalDeviceShaderIntegerDotProductFeatures
+    {
+        public uint SType;
+        public void* PNext;
+        public uint ShaderIntegerDotProduct;
+    }
+
     [StructLayout(LayoutKind.Sequential)]
     public struct VkPipelineShaderStageRequiredSubgroupSizeCreateInfo
     {
@@ -569,6 +578,7 @@ internal static class VkConst
     public const uint StPhysicalDeviceSubgroupProperties = 1000094000u;
     public const uint StPhysicalDeviceSubgroupSizeControlPropertiesEXT = 1000225000u;
     public const uint StPhysicalDeviceSubgroupSizeControlFeaturesEXT = 1000225002u;
+    public const uint StPhysicalDeviceShaderIntegerDotProductFeatures = 1000280000u;
     public const uint StPhysicalDeviceProperties2 = 1000059000u;
     public const uint StPipelineShaderStageRequiredSubgroupSizeCreateInfo = 1000225001u;
 

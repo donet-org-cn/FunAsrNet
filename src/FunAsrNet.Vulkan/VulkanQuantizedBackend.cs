@@ -13,6 +13,7 @@ public sealed unsafe partial class VulkanFloatBackend
     private VkBuffer? _inputScales;
     private long _quantizedCalls;
     private bool _cooperativeQ8;
+    private bool _integerDotQ8;
 
     /// <summary>创建 Q8_0 管线与描述符，FP32 管线和栅栏由主实例管理。</summary>
     private void InitializeQuantized()
@@ -23,7 +24,8 @@ public sealed unsafe partial class VulkanFloatBackend
             && (_device.SubgroupOps & 0x10) != 0 && (_device.SubgroupStages & 0x20) != 0
             && size >= 8 && size <= 128 && (size & (size - 1)) == 0
             && size >= _device.SubgroupMin && size <= _device.SubgroupMax;
-        _quantizedShader = _device.NewShaderModule(_cooperativeQ8 ? CooperativeQuantizedShader.Binary() : QuantizedShader.Binary());
+        _integerDotQ8 = _cooperativeQ8 && _device.ShaderIntegerDotProduct && Environment.GetEnvironmentVariable("FUNASRNET_VULKAN_INTEGER_DOT") != "0";
+        _quantizedShader = _device.NewShaderModule(_integerDotQ8 ? CooperativeQuantizedShader.IntegerDotBinary() : _cooperativeQ8 ? CooperativeQuantizedShader.Binary() : QuantizedShader.Binary());
         _quantizedPipeline = _device.NewPipeline(_quantizedShader, 6, 16, _cooperativeQ8 ? size : 0);
         _quantizedSet = _device.NewDescriptorSet(_quantizedPipeline.SetLayout);
     }

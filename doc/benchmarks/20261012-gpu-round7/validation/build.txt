@@ -1,0 +1,19 @@
+  正在确定要还原的项目…
+  所有项目均是最新的，无法还原。
+  FunAsrNet.Compare -> E:\temp\FunAsrNet\tools\FunAsrNet.Compare\bin\Release\net10.0\FunAsrNet.Compare.dll
+  FunAsrNet.Probe -> E:\temp\FunAsrNet\src\FunAsrNet.Probe\bin\Release\net10.0\FunAsrNet.Probe.dll
+  FunAsrNet.CodeStyle -> E:\temp\FunAsrNet\tools\FunAsrNet.CodeStyle\bin\Release\net10.0\FunAsrNet.CodeStyle.dll
+  FunAsrNet -> E:\temp\FunAsrNet\src\FunAsrNet\bin\Release\net10.0\FunAsrNet.dll
+  FunAsrNet.Checks -> E:\temp\FunAsrNet\tests\FunAsrNet.Checks\bin\Release\net10.0\FunAsrNet.Checks.dll
+  FunAsrNet.DemoChecks -> E:\temp\FunAsrNet\tests\FunAsrNet.DemoChecks\bin\Release\net10.0\FunAsrNet.DemoChecks.dll
+  FunAsrNet.VoiceChecks -> E:\temp\FunAsrNet\tests\FunAsrNet.VoiceChecks\bin\Release\net10.0\FunAsrNet.VoiceChecks.dll
+  FunAsrNet.Cli -> E:\temp\FunAsrNet\src\FunAsrNet.Cli\bin\Release\net10.0\FunAsrNet.Cli.dll
+  FunAsrNet.Vulkan -> E:\temp\FunAsrNet\src\FunAsrNet.Vulkan\bin\Release\net10.0\FunAsrNet.Vulkan.dll
+  FunAsrNet.Server -> E:\temp\FunAsrNet\src\FunAsrNet.Server\bin\Release\net10.0\FunAsrNet.Server.dll
+  FunAsrNet.Benchmarks -> E:\temp\FunAsrNet\tools\FunAsrNet.Benchmarks\bin\Release\net10.0\FunAsrNet.Benchmarks.dll
+
+已成功生成。
+    0 个警告
+    0 个错误
+
+已用时间 00:00:01.92

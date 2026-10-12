@@ -1,0 +1,1556 @@
+[
+    {
+        "subject":  "sip-short-pcma",
+        "mode":  "cpu",
+        "variant":  "before",
+        "hot":  {
+                    "group":  "sip-short-pcma/before",
+                    "count":  10,
+                    "medianSeconds":  0.7111912499999999,
+                    "p95Seconds":  0.7800312,
+                    "minimumSeconds":  0.7012527,
+                    "maximumSeconds":  0.7800312
+                },
+        "load":  {
+                     "group":  "sip-short-pcma/before/load",
+                     "count":  2,
+                     "medianSeconds":  0.77838995,
+                     "p95Seconds":  0.7911851,
+                     "minimumSeconds":  0.7655948,
+                     "maximumSeconds":  0.7911851
+                 },
+        "first":  {
+                      "group":  "sip-short-pcma/before/firstInference",
+                      "count":  2,
+                      "medianSeconds":  0.80857635,
+                      "p95Seconds":  0.8130371,
+                      "minimumSeconds":  0.8041156,
+                      "maximumSeconds":  0.8130371
+                  },
+        "loadAndFirst":  {
+                             "group":  "sip-short-pcma/before/loadAndFirstInference",
+                             "count":  2,
+                             "medianSeconds":  1.5869662999999998,
+                             "p95Seconds":  1.6042222,
+                             "minimumSeconds":  1.5697104,
+                             "maximumSeconds":  1.6042222
+                         }
+    },
+    {
+        "subject":  "sip-short-pcma",
+        "mode":  "cpu",
+        "variant":  "after",
+        "hot":  {
+                    "group":  "sip-short-pcma/after",
+                    "count":  10,
+                    "medianSeconds":  0.7196101,
+                    "p95Seconds":  0.8419004,
+                    "minimumSeconds":  0.698825,
+                    "maximumSeconds":  0.8419004
+                },
+        "load":  {
+                     "group":  "sip-short-pcma/after/load",
+                     "count":  2,
+                     "medianSeconds":  0.80045855,
+                     "p95Seconds":  0.8041895,
+                     "minimumSeconds":  0.7967276,
+                     "maximumSeconds":  0.8041895
+                 },
+        "first":  {
+                      "group":  "sip-short-pcma/after/firstInference",
+                      "count":  2,
+                      "medianSeconds":  0.8206414500000001,
+                      "p95Seconds":  0.8248914,
+                      "minimumSeconds":  0.8163915,
+                      "maximumSeconds":  0.8248914
+                  },
+        "loadAndFirst":  {
+                             "group":  "sip-short-pcma/after/loadAndFirstInference",
+                             "count":  2,
+                             "medianSeconds":  1.6211,
+                             "p95Seconds":  1.6290809,
+                             "minimumSeconds":  1.6131191,
+                             "maximumSeconds":  1.6290809
+                         }
+    },
+    {
+        "subject":  "sip-short-pcma",
+        "mode":  "cpu",
+        "variant":  "native",
+        "hot":  {
+                    "group":  "sip-short-pcma/native",
+                    "count":  10,
+                    "medianSeconds":  0.77257,
+                    "p95Seconds":  0.848122,
+                    "minimumSeconds":  0.763656,
+                    "maximumSeconds":  0.848122
+                },
+        "load":  {
+                     "group":  "sip-short-pcma/native/load",
+                     "count":  2,
+                     "medianSeconds":  0.322141,
+                     "p95Seconds":  0.322887,
+                     "minimumSeconds":  0.321395,
+                     "maximumSeconds":  0.322887
+                 },
+        "first":  {
+                      "group":  "sip-short-pcma/native/firstInference",
+                      "count":  2,
+                      "medianSeconds":  0.835971,
+                      "p95Seconds":  0.838052,
+                      "minimumSeconds":  0.83389,
+                      "maximumSeconds":  0.838052
+                  },
+        "loadAndFirst":  {
+                             "group":  "sip-short-pcma/native/loadAndFirstInference",
+                             "count":  2,
+                             "medianSeconds":  1.158112,
+                             "p95Seconds":  1.160939,
+                             "minimumSeconds":  1.1552850000000001,
+                             "maximumSeconds":  1.160939
+                         }
+    },
+    {
+        "subject":  "sip-short-pcma",
+        "mode":  "gpu",
+        "variant":  "before",
+        "hot":  {
+                    "group":  "sip-short-pcma/before",
+                    "count":  10,
+                    "medianSeconds":  0.43298895000000004,
+                    "p95Seconds":  0.4596582,
+                    "minimumSeconds":  0.3969243,
+                    "maximumSeconds":  0.4596582
+                },
+        "load":  {
+                     "group":  "sip-short-pcma/before/load",
+                     "count":  2,
+                     "medianSeconds":  1.03360685,
+                     "p95Seconds":  1.0408329,
+                     "minimumSeconds":  1.0263808,
+                     "maximumSeconds":  1.0408329
+                 },
+        "first":  {
+                      "group":  "sip-short-pcma/before/firstInference",
+                      "count":  2,
+                      "medianSeconds":  2.49542895,
+                      "p95Seconds":  2.5119065,
+                      "minimumSeconds":  2.4789514,
+                      "maximumSeconds":  2.5119065
+                  },
+        "loadAndFirst":  {
+                             "group":  "sip-short-pcma/before/loadAndFirstInference",
+                             "count":  2,
+                             "medianSeconds":  3.5290358,
+                             "p95Seconds":  3.5527394,
+                             "minimumSeconds":  3.5053322000000002,
+                             "maximumSeconds":  3.5527394
+                         }
+    },
+    {
+        "subject":  "sip-short-pcma",
+        "mode":  "gpu",
+        "variant":  "after",
+        "hot":  {
+                    "group":  "sip-short-pcma/after",
+                    "count":  10,
+                    "medianSeconds":  0.3489855,
+                    "p95Seconds":  0.4015931,
+                    "minimumSeconds":  0.3434192,
+                    "maximumSeconds":  0.4015931
+                },
+        "load":  {
+                     "group":  "sip-short-pcma/after/load",
+                     "count":  2,
+                     "medianSeconds":  1.10774515,
+                     "p95Seconds":  1.1229723,
+                     "minimumSeconds":  1.092518,
+                     "maximumSeconds":  1.1229723
+                 },
+        "first":  {
+                      "group":  "sip-short-pcma/after/firstInference",
+                      "count":  2,
+                      "medianSeconds":  2.3699921,
+                      "p95Seconds":  2.4143097,
+                      "minimumSeconds":  2.3256745,
+                      "maximumSeconds":  2.4143097
+                  },
+        "loadAndFirst":  {
+                             "group":  "sip-short-pcma/after/loadAndFirstInference",
+                             "count":  2,
+                             "medianSeconds":  3.4777372499999997,
+                             "p95Seconds":  3.5068277,
+                             "minimumSeconds":  3.4486467999999997,
+                             "maximumSeconds":  3.5068277
+                         }
+    },
+    {
+        "subject":  "sip-short-pcma",
+        "mode":  "gpu",
+        "variant":  "native",
+        "hot":  {
+                    "group":  "sip-short-pcma/native",
+                    "count":  10,
+                    "medianSeconds":  0.11110500000000001,
+                    "p95Seconds":  0.132627,
+                    "minimumSeconds":  0.097427,
+                    "maximumSeconds":  0.132627
+                },
+        "load":  {
+                     "group":  "sip-short-pcma/native/load",
+                     "count":  2,
+                     "medianSeconds":  0.78188,
+                     "p95Seconds":  0.792347,
+                     "minimumSeconds":  0.771413,
+                     "maximumSeconds":  0.792347
+                 },
+        "first":  {
+                      "group":  "sip-short-pcma/native/firstInference",
+                      "count":  2,
+                      "medianSeconds":  0.25063250000000004,
+                      "p95Seconds":  0.260228,
+                      "minimumSeconds":  0.241037,
+                      "maximumSeconds":  0.260228
+                  },
+        "loadAndFirst":  {
+                             "group":  "sip-short-pcma/native/loadAndFirstInference",
+                             "count":  2,
+                             "medianSeconds":  1.0325125000000002,
+                             "p95Seconds":  1.033384,
+                             "minimumSeconds":  1.031641,
+                             "maximumSeconds":  1.033384
+                         }
+    },
+    {
+        "subject":  "sip-zh-pcmu",
+        "mode":  "cpu",
+        "variant":  "before",
+        "hot":  {
+                    "group":  "sip-zh-pcmu/before",
+                    "count":  10,
+                    "medianSeconds":  0.8383334,
+                    "p95Seconds":  1.0415219,
+                    "minimumSeconds":  0.8159403,
+                    "maximumSeconds":  1.0415219
+                },
+        "load":  {
+                     "group":  "sip-zh-pcmu/before/load",
+                     "count":  2,
+                     "medianSeconds":  0.77497365,
+                     "p95Seconds":  0.7955294,
+                     "minimumSeconds":  0.7544179,
+                     "maximumSeconds":  0.7955294
+                 },
+        "first":  {
+                      "group":  "sip-zh-pcmu/before/firstInference",
+                      "count":  2,
+                      "medianSeconds":  0.91873,
+                      "p95Seconds":  0.9218658,
+                      "minimumSeconds":  0.9155942,
+                      "maximumSeconds":  0.9218658
+                  },
+        "loadAndFirst":  {
+                             "group":  "sip-zh-pcmu/before/loadAndFirstInference",
+                             "count":  2,
+                             "medianSeconds":  1.69370365,
+                             "p95Seconds":  1.7173952,
+                             "minimumSeconds":  1.6700121,
+                             "maximumSeconds":  1.7173952
+                         }
+    },
+    {
+        "subject":  "sip-zh-pcmu",
+        "mode":  "cpu",
+        "variant":  "after",
+        "hot":  {
+                    "group":  "sip-zh-pcmu/after",
+                    "count":  10,
+                    "medianSeconds":  0.8451812000000001,
+                    "p95Seconds":  0.9617459,
+                    "minimumSeconds":  0.8291846,
+                    "maximumSeconds":  0.9617459
+                },
+        "load":  {
+                     "group":  "sip-zh-pcmu/after/load",
+                     "count":  2,
+                     "medianSeconds":  0.7592947000000001,
+                     "p95Seconds":  0.7730765,
+                     "minimumSeconds":  0.7455129,
+                     "maximumSeconds":  0.7730765
+                 },
+        "first":  {
+                      "group":  "sip-zh-pcmu/after/firstInference",
+                      "count":  2,
+                      "medianSeconds":  0.91693835,
+                      "p95Seconds":  0.9171081,
+                      "minimumSeconds":  0.9167686,
+                      "maximumSeconds":  0.9171081
+                  },
+        "loadAndFirst":  {
+                             "group":  "sip-zh-pcmu/after/loadAndFirstInference",
+                             "count":  2,
+                             "medianSeconds":  1.67623305,
+                             "p95Seconds":  1.6901846,
+                             "minimumSeconds":  1.6622815000000002,
+                             "maximumSeconds":  1.6901846
+                         }
+    },
+    {
+        "subject":  "sip-zh-pcmu",
+        "mode":  "cpu",
+        "variant":  "native",
+        "hot":  {
+                    "group":  "sip-zh-pcmu/native",
+                    "count":  10,
+                    "medianSeconds":  0.8797904999999999,
+                    "p95Seconds":  0.931328,
+                    "minimumSeconds":  0.86913,
+                    "maximumSeconds":  0.931328
+                },
+        "load":  {
+                     "group":  "sip-zh-pcmu/native/load",
+                     "count":  2,
+                     "medianSeconds":  0.328325,
+                     "p95Seconds":  0.334878,
+                     "minimumSeconds":  0.321772,
+                     "maximumSeconds":  0.334878
+                 },
+        "first":  {
+                      "group":  "sip-zh-pcmu/native/firstInference",
+                      "count":  2,
+                      "medianSeconds":  0.9941845,
+                      "p95Seconds":  1.033513,
+                      "minimumSeconds":  0.954856,
+                      "maximumSeconds":  1.033513
+                  },
+        "loadAndFirst":  {
+                             "group":  "sip-zh-pcmu/native/loadAndFirstInference",
+                             "count":  2,
+                             "medianSeconds":  1.3225095,
+                             "p95Seconds":  1.3552849999999999,
+                             "minimumSeconds":  1.2897340000000002,
+                             "maximumSeconds":  1.3552849999999999
+                         }
+    },
+    {
+        "subject":  "sip-zh-pcmu",
+        "mode":  "gpu",
+        "variant":  "before",
+        "hot":  {
+                    "group":  "sip-zh-pcmu/before",
+                    "count":  10,
+                    "medianSeconds":  0.49568095,
+                    "p95Seconds":  0.6426356,
+                    "minimumSeconds":  0.4546337,
+                    "maximumSeconds":  0.6426356
+                },
+        "load":  {
+                     "group":  "sip-zh-pcmu/before/load",
+                     "count":  2,
+                     "medianSeconds":  1.0712096500000001,
+                     "p95Seconds":  1.0981633,
+                     "minimumSeconds":  1.044256,
+                     "maximumSeconds":  1.0981633
+                 },
+        "first":  {
+                      "group":  "sip-zh-pcmu/before/firstInference",
+                      "count":  2,
+                      "medianSeconds":  2.76090715,
+                      "p95Seconds":  2.8368526,
+                      "minimumSeconds":  2.6849617,
+                      "maximumSeconds":  2.8368526
+                  },
+        "loadAndFirst":  {
+                             "group":  "sip-zh-pcmu/before/loadAndFirstInference",
+                             "count":  2,
+                             "medianSeconds":  3.8321168,
+                             "p95Seconds":  3.9350159,
+                             "minimumSeconds":  3.7292177000000004,
+                             "maximumSeconds":  3.9350159
+                         }
+    },
+    {
+        "subject":  "sip-zh-pcmu",
+        "mode":  "gpu",
+        "variant":  "after",
+        "hot":  {
+                    "group":  "sip-zh-pcmu/after",
+                    "count":  10,
+                    "medianSeconds":  0.4073205,
+                    "p95Seconds":  0.4269616,
+                    "minimumSeconds":  0.4031291,
+                    "maximumSeconds":  0.4269616
+                },
+        "load":  {
+                     "group":  "sip-zh-pcmu/after/load",
+                     "count":  2,
+                     "medianSeconds":  1.1024959,
+                     "p95Seconds":  1.1104985,
+                     "minimumSeconds":  1.0944933,
+                     "maximumSeconds":  1.1104985
+                 },
+        "first":  {
+                      "group":  "sip-zh-pcmu/after/firstInference",
+                      "count":  2,
+                      "medianSeconds":  2.79716435,
+                      "p95Seconds":  2.8880739,
+                      "minimumSeconds":  2.7062548,
+                      "maximumSeconds":  2.8880739
+                  },
+        "loadAndFirst":  {
+                             "group":  "sip-zh-pcmu/after/loadAndFirstInference",
+                             "count":  2,
+                             "medianSeconds":  3.89966025,
+                             "p95Seconds":  3.9825672,
+                             "minimumSeconds":  3.8167533000000002,
+                             "maximumSeconds":  3.9825672
+                         }
+    },
+    {
+        "subject":  "sip-zh-pcmu",
+        "mode":  "gpu",
+        "variant":  "native",
+        "hot":  {
+                    "group":  "sip-zh-pcmu/native",
+                    "count":  10,
+                    "medianSeconds":  0.115531,
+                    "p95Seconds":  0.135791,
+                    "minimumSeconds":  0.109623,
+                    "maximumSeconds":  0.135791
+                },
+        "load":  {
+                     "group":  "sip-zh-pcmu/native/load",
+                     "count":  2,
+                     "medianSeconds":  0.7683325,
+                     "p95Seconds":  0.781635,
+                     "minimumSeconds":  0.75503,
+                     "maximumSeconds":  0.781635
+                 },
+        "first":  {
+                      "group":  "sip-zh-pcmu/native/firstInference",
+                      "count":  2,
+                      "medianSeconds":  0.235582,
+                      "p95Seconds":  0.237038,
+                      "minimumSeconds":  0.234126,
+                      "maximumSeconds":  0.237038
+                  },
+        "loadAndFirst":  {
+                             "group":  "sip-zh-pcmu/native/loadAndFirstInference",
+                             "count":  2,
+                             "medianSeconds":  1.0039145,
+                             "p95Seconds":  1.018673,
+                             "minimumSeconds":  0.9891559999999999,
+                             "maximumSeconds":  1.018673
+                         }
+    },
+    {
+        "subject":  "sip-repeated-pcma",
+        "mode":  "cpu",
+        "variant":  "before",
+        "hot":  {
+                    "group":  "sip-repeated-pcma/before",
+                    "count":  10,
+                    "medianSeconds":  2.89687755,
+                    "p95Seconds":  3.0244603,
+                    "minimumSeconds":  2.8501967,
+                    "maximumSeconds":  3.0244603
+                },
+        "load":  {
+                     "group":  "sip-repeated-pcma/before/load",
+                     "count":  2,
+                     "medianSeconds":  0.7941907500000001,
+                     "p95Seconds":  0.7960301,
+                     "minimumSeconds":  0.7923514,
+                     "maximumSeconds":  0.7960301
+                 },
+        "first":  {
+                      "group":  "sip-repeated-pcma/before/firstInference",
+                      "count":  2,
+                      "medianSeconds":  2.97659305,
+                      "p95Seconds":  2.992558,
+                      "minimumSeconds":  2.9606281,
+                      "maximumSeconds":  2.992558
+                  },
+        "loadAndFirst":  {
+                             "group":  "sip-repeated-pcma/before/loadAndFirstInference",
+                             "count":  2,
+                             "medianSeconds":  3.7707838000000002,
+                             "p95Seconds":  3.7849094,
+                             "minimumSeconds":  3.7566582,
+                             "maximumSeconds":  3.7849094
+                         }
+    },
+    {
+        "subject":  "sip-repeated-pcma",
+        "mode":  "cpu",
+        "variant":  "after",
+        "hot":  {
+                    "group":  "sip-repeated-pcma/after",
+                    "count":  10,
+                    "medianSeconds":  2.8805083,
+                    "p95Seconds":  3.0537673,
+                    "minimumSeconds":  2.8348555,
+                    "maximumSeconds":  3.0537673
+                },
+        "load":  {
+                     "group":  "sip-repeated-pcma/after/load",
+                     "count":  2,
+                     "medianSeconds":  0.7678149999999999,
+                     "p95Seconds":  0.7709012,
+                     "minimumSeconds":  0.7647288,
+                     "maximumSeconds":  0.7709012
+                 },
+        "first":  {
+                      "group":  "sip-repeated-pcma/after/firstInference",
+                      "count":  2,
+                      "medianSeconds":  2.99226205,
+                      "p95Seconds":  3.0173278,
+                      "minimumSeconds":  2.9671963,
+                      "maximumSeconds":  3.0173278
+                  },
+        "loadAndFirst":  {
+                             "group":  "sip-repeated-pcma/after/loadAndFirstInference",
+                             "count":  2,
+                             "medianSeconds":  3.7600770499999996,
+                             "p95Seconds":  3.788229,
+                             "minimumSeconds":  3.7319250999999998,
+                             "maximumSeconds":  3.788229
+                         }
+    },
+    {
+        "subject":  "sip-repeated-pcma",
+        "mode":  "cpu",
+        "variant":  "native",
+        "hot":  {
+                    "group":  "sip-repeated-pcma/native",
+                    "count":  10,
+                    "medianSeconds":  3.0392824999999997,
+                    "p95Seconds":  3.418946,
+                    "minimumSeconds":  3.007719,
+                    "maximumSeconds":  3.418946
+                },
+        "load":  {
+                     "group":  "sip-repeated-pcma/native/load",
+                     "count":  2,
+                     "medianSeconds":  0.321296,
+                     "p95Seconds":  0.322607,
+                     "minimumSeconds":  0.319985,
+                     "maximumSeconds":  0.322607
+                 },
+        "first":  {
+                      "group":  "sip-repeated-pcma/native/firstInference",
+                      "count":  2,
+                      "medianSeconds":  3.3025339999999996,
+                      "p95Seconds":  3.508574,
+                      "minimumSeconds":  3.096494,
+                      "maximumSeconds":  3.508574
+                  },
+        "loadAndFirst":  {
+                             "group":  "sip-repeated-pcma/native/loadAndFirstInference",
+                             "count":  2,
+                             "medianSeconds":  3.62383,
+                             "p95Seconds":  3.828559,
+                             "minimumSeconds":  3.419101,
+                             "maximumSeconds":  3.828559
+                         }
+    },
+    {
+        "subject":  "sip-repeated-pcma",
+        "mode":  "gpu",
+        "variant":  "before",
+        "hot":  {
+                    "group":  "sip-repeated-pcma/before",
+                    "count":  10,
+                    "medianSeconds":  1.6484153,
+                    "p95Seconds":  1.7544305,
+                    "minimumSeconds":  1.5492925,
+                    "maximumSeconds":  1.7544305
+                },
+        "load":  {
+                     "group":  "sip-repeated-pcma/before/load",
+                     "count":  2,
+                     "medianSeconds":  1.0807718,
+                     "p95Seconds":  1.1085661,
+                     "minimumSeconds":  1.0529775,
+                     "maximumSeconds":  1.1085661
+                 },
+        "first":  {
+                      "group":  "sip-repeated-pcma/before/firstInference",
+                      "count":  2,
+                      "medianSeconds":  3.58859145,
+                      "p95Seconds":  3.6645174,
+                      "minimumSeconds":  3.5126655,
+                      "maximumSeconds":  3.6645174
+                  },
+        "loadAndFirst":  {
+                             "group":  "sip-repeated-pcma/before/loadAndFirstInference",
+                             "count":  2,
+                             "medianSeconds":  4.66936325,
+                             "p95Seconds":  4.7174949,
+                             "minimumSeconds":  4.6212316,
+                             "maximumSeconds":  4.7174949
+                         }
+    },
+    {
+        "subject":  "sip-repeated-pcma",
+        "mode":  "gpu",
+        "variant":  "after",
+        "hot":  {
+                    "group":  "sip-repeated-pcma/after",
+                    "count":  10,
+                    "medianSeconds":  1.34424245,
+                    "p95Seconds":  1.3661917,
+                    "minimumSeconds":  1.3170619,
+                    "maximumSeconds":  1.3661917
+                },
+        "load":  {
+                     "group":  "sip-repeated-pcma/after/load",
+                     "count":  2,
+                     "medianSeconds":  1.0911247,
+                     "p95Seconds":  1.100436,
+                     "minimumSeconds":  1.0818134,
+                     "maximumSeconds":  1.100436
+                 },
+        "first":  {
+                      "group":  "sip-repeated-pcma/after/firstInference",
+                      "count":  2,
+                      "medianSeconds":  3.48715095,
+                      "p95Seconds":  3.6939159,
+                      "minimumSeconds":  3.280386,
+                      "maximumSeconds":  3.6939159
+                  },
+        "loadAndFirst":  {
+                             "group":  "sip-repeated-pcma/after/loadAndFirstInference",
+                             "count":  2,
+                             "medianSeconds":  4.57827565,
+                             "p95Seconds":  4.7757293,
+                             "minimumSeconds":  4.380822,
+                             "maximumSeconds":  4.7757293
+                         }
+    },
+    {
+        "subject":  "sip-repeated-pcma",
+        "mode":  "gpu",
+        "variant":  "native",
+        "hot":  {
+                    "group":  "sip-repeated-pcma/native",
+                    "count":  10,
+                    "medianSeconds":  0.2631245,
+                    "p95Seconds":  0.279774,
+                    "minimumSeconds":  0.253472,
+                    "maximumSeconds":  0.279774
+                },
+        "load":  {
+                     "group":  "sip-repeated-pcma/native/load",
+                     "count":  2,
+                     "medianSeconds":  0.7862905,
+                     "p95Seconds":  0.810272,
+                     "minimumSeconds":  0.762309,
+                     "maximumSeconds":  0.810272
+                 },
+        "first":  {
+                      "group":  "sip-repeated-pcma/native/firstInference",
+                      "count":  2,
+                      "medianSeconds":  0.407962,
+                      "p95Seconds":  0.409678,
+                      "minimumSeconds":  0.406246,
+                      "maximumSeconds":  0.409678
+                  },
+        "loadAndFirst":  {
+                             "group":  "sip-repeated-pcma/native/loadAndFirstInference",
+                             "count":  2,
+                             "medianSeconds":  1.1942525000000002,
+                             "p95Seconds":  1.216518,
+                             "minimumSeconds":  1.1719870000000001,
+                             "maximumSeconds":  1.216518
+                         }
+    },
+    {
+        "subject":  "sip-official-short",
+        "mode":  "cpu",
+        "variant":  "before",
+        "hot":  {
+                    "group":  "sip-official-short/before",
+                    "count":  10,
+                    "medianSeconds":  0.66824375,
+                    "p95Seconds":  0.6807156,
+                    "minimumSeconds":  0.6543612,
+                    "maximumSeconds":  0.6807156
+                },
+        "load":  {
+                     "group":  "sip-official-short/before/load",
+                     "count":  2,
+                     "medianSeconds":  0.7716644500000001,
+                     "p95Seconds":  0.7750473,
+                     "minimumSeconds":  0.7682816,
+                     "maximumSeconds":  0.7750473
+                 },
+        "first":  {
+                      "group":  "sip-official-short/before/firstInference",
+                      "count":  2,
+                      "medianSeconds":  0.7775098,
+                      "p95Seconds":  0.7967325,
+                      "minimumSeconds":  0.7582871,
+                      "maximumSeconds":  0.7967325
+                  },
+        "loadAndFirst":  {
+                             "group":  "sip-official-short/before/loadAndFirstInference",
+                             "count":  2,
+                             "medianSeconds":  1.5491742499999999,
+                             "p95Seconds":  1.5717797999999998,
+                             "minimumSeconds":  1.5265687,
+                             "maximumSeconds":  1.5717797999999998
+                         }
+    },
+    {
+        "subject":  "sip-official-short",
+        "mode":  "cpu",
+        "variant":  "after",
+        "hot":  {
+                    "group":  "sip-official-short/after",
+                    "count":  10,
+                    "medianSeconds":  0.66960525,
+                    "p95Seconds":  0.6909272,
+                    "minimumSeconds":  0.6609495,
+                    "maximumSeconds":  0.6909272
+                },
+        "load":  {
+                     "group":  "sip-official-short/after/load",
+                     "count":  2,
+                     "medianSeconds":  0.76678125,
+                     "p95Seconds":  0.7905048,
+                     "minimumSeconds":  0.7430577,
+                     "maximumSeconds":  0.7905048
+                 },
+        "first":  {
+                      "group":  "sip-official-short/after/firstInference",
+                      "count":  2,
+                      "medianSeconds":  0.76369965,
+                      "p95Seconds":  0.7677526,
+                      "minimumSeconds":  0.7596467,
+                      "maximumSeconds":  0.7677526
+                  },
+        "loadAndFirst":  {
+                             "group":  "sip-official-short/after/loadAndFirstInference",
+                             "count":  2,
+                             "medianSeconds":  1.5304809000000001,
+                             "p95Seconds":  1.5582574,
+                             "minimumSeconds":  1.5027044,
+                             "maximumSeconds":  1.5582574
+                         }
+    },
+    {
+        "subject":  "sip-official-short",
+        "mode":  "cpu",
+        "variant":  "native",
+        "hot":  {
+                    "group":  "sip-official-short/native",
+                    "count":  10,
+                    "medianSeconds":  0.7303535,
+                    "p95Seconds":  0.784089,
+                    "minimumSeconds":  0.722487,
+                    "maximumSeconds":  0.784089
+                },
+        "load":  {
+                     "group":  "sip-official-short/native/load",
+                     "count":  2,
+                     "medianSeconds":  0.3492385,
+                     "p95Seconds":  0.377713,
+                     "minimumSeconds":  0.320764,
+                     "maximumSeconds":  0.377713
+                 },
+        "first":  {
+                      "group":  "sip-official-short/native/firstInference",
+                      "count":  2,
+                      "medianSeconds":  0.958687,
+                      "p95Seconds":  1.124018,
+                      "minimumSeconds":  0.793356,
+                      "maximumSeconds":  1.124018
+                  },
+        "loadAndFirst":  {
+                             "group":  "sip-official-short/native/loadAndFirstInference",
+                             "count":  2,
+                             "medianSeconds":  1.3079255,
+                             "p95Seconds":  1.501731,
+                             "minimumSeconds":  1.11412,
+                             "maximumSeconds":  1.501731
+                         }
+    },
+    {
+        "subject":  "sip-official-short",
+        "mode":  "gpu",
+        "variant":  "before",
+        "hot":  {
+                    "group":  "sip-official-short/before",
+                    "count":  10,
+                    "medianSeconds":  0.4058564,
+                    "p95Seconds":  0.4695494,
+                    "minimumSeconds":  0.3981615,
+                    "maximumSeconds":  0.4695494
+                },
+        "load":  {
+                     "group":  "sip-official-short/before/load",
+                     "count":  2,
+                     "medianSeconds":  1.04957985,
+                     "p95Seconds":  1.0517968,
+                     "minimumSeconds":  1.0473629,
+                     "maximumSeconds":  1.0517968
+                 },
+        "first":  {
+                      "group":  "sip-official-short/before/firstInference",
+                      "count":  2,
+                      "medianSeconds":  2.563979,
+                      "p95Seconds":  2.6853902,
+                      "minimumSeconds":  2.4425678,
+                      "maximumSeconds":  2.6853902
+                  },
+        "loadAndFirst":  {
+                             "group":  "sip-official-short/before/loadAndFirstInference",
+                             "count":  2,
+                             "medianSeconds":  3.61355885,
+                             "p95Seconds":  3.7327531,
+                             "minimumSeconds":  3.4943646,
+                             "maximumSeconds":  3.7327531
+                         }
+    },
+    {
+        "subject":  "sip-official-short",
+        "mode":  "gpu",
+        "variant":  "after",
+        "hot":  {
+                    "group":  "sip-official-short/after",
+                    "count":  10,
+                    "medianSeconds":  0.3459564,
+                    "p95Seconds":  0.3892439,
+                    "minimumSeconds":  0.3433473,
+                    "maximumSeconds":  0.3892439
+                },
+        "load":  {
+                     "group":  "sip-official-short/after/load",
+                     "count":  2,
+                     "medianSeconds":  1.0807571,
+                     "p95Seconds":  1.0886677,
+                     "minimumSeconds":  1.0728465,
+                     "maximumSeconds":  1.0886677
+                 },
+        "first":  {
+                      "group":  "sip-official-short/after/firstInference",
+                      "count":  2,
+                      "medianSeconds":  2.4601191,
+                      "p95Seconds":  2.4729302,
+                      "minimumSeconds":  2.447308,
+                      "maximumSeconds":  2.4729302
+                  },
+        "loadAndFirst":  {
+                             "group":  "sip-official-short/after/loadAndFirstInference",
+                             "count":  2,
+                             "medianSeconds":  3.5408762,
+                             "p95Seconds":  3.5615978999999998,
+                             "minimumSeconds":  3.5201545000000003,
+                             "maximumSeconds":  3.5615978999999998
+                         }
+    },
+    {
+        "subject":  "sip-official-short",
+        "mode":  "gpu",
+        "variant":  "native",
+        "hot":  {
+                    "group":  "sip-official-short/native",
+                    "count":  10,
+                    "medianSeconds":  0.09782350000000001,
+                    "p95Seconds":  0.111782,
+                    "minimumSeconds":  0.095954,
+                    "maximumSeconds":  0.111782
+                },
+        "load":  {
+                     "group":  "sip-official-short/native/load",
+                     "count":  2,
+                     "medianSeconds":  0.7917814999999999,
+                     "p95Seconds":  0.801603,
+                     "minimumSeconds":  0.78196,
+                     "maximumSeconds":  0.801603
+                 },
+        "first":  {
+                      "group":  "sip-official-short/native/firstInference",
+                      "count":  2,
+                      "medianSeconds":  0.250013,
+                      "p95Seconds":  0.255841,
+                      "minimumSeconds":  0.244185,
+                      "maximumSeconds":  0.255841
+                  },
+        "loadAndFirst":  {
+                             "group":  "sip-official-short/native/loadAndFirstInference",
+                             "count":  2,
+                             "medianSeconds":  1.0417945,
+                             "p95Seconds":  1.045788,
+                             "minimumSeconds":  1.037801,
+                             "maximumSeconds":  1.045788
+                         }
+    },
+    {
+        "subject":  "sip-official-pcma",
+        "mode":  "cpu",
+        "variant":  "before",
+        "hot":  {
+                    "group":  "sip-official-pcma/before",
+                    "count":  10,
+                    "medianSeconds":  0.66685675,
+                    "p95Seconds":  0.7515753,
+                    "minimumSeconds":  0.660734,
+                    "maximumSeconds":  0.7515753
+                },
+        "load":  {
+                     "group":  "sip-official-pcma/before/load",
+                     "count":  2,
+                     "medianSeconds":  0.7752940500000001,
+                     "p95Seconds":  0.7791456,
+                     "minimumSeconds":  0.7714425,
+                     "maximumSeconds":  0.7791456
+                 },
+        "first":  {
+                      "group":  "sip-official-pcma/before/firstInference",
+                      "count":  2,
+                      "medianSeconds":  0.7707128000000001,
+                      "p95Seconds":  0.7742906,
+                      "minimumSeconds":  0.767135,
+                      "maximumSeconds":  0.7742906
+                  },
+        "loadAndFirst":  {
+                             "group":  "sip-official-pcma/before/loadAndFirstInference",
+                             "count":  2,
+                             "medianSeconds":  1.5460068500000002,
+                             "p95Seconds":  1.5534362000000002,
+                             "minimumSeconds":  1.5385775000000002,
+                             "maximumSeconds":  1.5534362000000002
+                         }
+    },
+    {
+        "subject":  "sip-official-pcma",
+        "mode":  "cpu",
+        "variant":  "after",
+        "hot":  {
+                    "group":  "sip-official-pcma/after",
+                    "count":  10,
+                    "medianSeconds":  0.6793929000000001,
+                    "p95Seconds":  0.7142883,
+                    "minimumSeconds":  0.6646924,
+                    "maximumSeconds":  0.7142883
+                },
+        "load":  {
+                     "group":  "sip-official-pcma/after/load",
+                     "count":  2,
+                     "medianSeconds":  0.8747597500000001,
+                     "p95Seconds":  1.0049756,
+                     "minimumSeconds":  0.7445439,
+                     "maximumSeconds":  1.0049756
+                 },
+        "first":  {
+                      "group":  "sip-official-pcma/after/firstInference",
+                      "count":  2,
+                      "medianSeconds":  0.78504675,
+                      "p95Seconds":  0.7885967,
+                      "minimumSeconds":  0.7814968,
+                      "maximumSeconds":  0.7885967
+                  },
+        "loadAndFirst":  {
+                             "group":  "sip-official-pcma/after/loadAndFirstInference",
+                             "count":  2,
+                             "medianSeconds":  1.6598065000000002,
+                             "p95Seconds":  1.7935723000000001,
+                             "minimumSeconds":  1.5260407,
+                             "maximumSeconds":  1.7935723000000001
+                         }
+    },
+    {
+        "subject":  "sip-official-pcma",
+        "mode":  "cpu",
+        "variant":  "native",
+        "hot":  {
+                    "group":  "sip-official-pcma/native",
+                    "count":  10,
+                    "medianSeconds":  0.7559135,
+                    "p95Seconds":  0.885905,
+                    "minimumSeconds":  0.720435,
+                    "maximumSeconds":  0.885905
+                },
+        "load":  {
+                     "group":  "sip-official-pcma/native/load",
+                     "count":  2,
+                     "medianSeconds":  0.328662,
+                     "p95Seconds":  0.33387,
+                     "minimumSeconds":  0.323454,
+                     "maximumSeconds":  0.33387
+                 },
+        "first":  {
+                      "group":  "sip-official-pcma/native/firstInference",
+                      "count":  2,
+                      "medianSeconds":  0.8154954999999999,
+                      "p95Seconds":  0.825179,
+                      "minimumSeconds":  0.805812,
+                      "maximumSeconds":  0.825179
+                  },
+        "loadAndFirst":  {
+                             "group":  "sip-official-pcma/native/loadAndFirstInference",
+                             "count":  2,
+                             "medianSeconds":  1.1441575,
+                             "p95Seconds":  1.159049,
+                             "minimumSeconds":  1.1292659999999999,
+                             "maximumSeconds":  1.159049
+                         }
+    },
+    {
+        "subject":  "sip-official-pcma",
+        "mode":  "gpu",
+        "variant":  "before",
+        "hot":  {
+                    "group":  "sip-official-pcma/before",
+                    "count":  10,
+                    "medianSeconds":  0.4288152,
+                    "p95Seconds":  0.4775219,
+                    "minimumSeconds":  0.4013657,
+                    "maximumSeconds":  0.4775219
+                },
+        "load":  {
+                     "group":  "sip-official-pcma/before/load",
+                     "count":  2,
+                     "medianSeconds":  1.05471755,
+                     "p95Seconds":  1.0777048,
+                     "minimumSeconds":  1.0317303,
+                     "maximumSeconds":  1.0777048
+                 },
+        "first":  {
+                      "group":  "sip-official-pcma/before/firstInference",
+                      "count":  2,
+                      "medianSeconds":  2.6210102500000003,
+                      "p95Seconds":  2.7442525,
+                      "minimumSeconds":  2.497768,
+                      "maximumSeconds":  2.7442525
+                  },
+        "loadAndFirst":  {
+                             "group":  "sip-official-pcma/before/loadAndFirstInference",
+                             "count":  2,
+                             "medianSeconds":  3.6757278,
+                             "p95Seconds":  3.8219573000000002,
+                             "minimumSeconds":  3.5294983,
+                             "maximumSeconds":  3.8219573000000002
+                         }
+    },
+    {
+        "subject":  "sip-official-pcma",
+        "mode":  "gpu",
+        "variant":  "after",
+        "hot":  {
+                    "group":  "sip-official-pcma/after",
+                    "count":  10,
+                    "medianSeconds":  0.352542,
+                    "p95Seconds":  0.4218668,
+                    "minimumSeconds":  0.3417539,
+                    "maximumSeconds":  0.4218668
+                },
+        "load":  {
+                     "group":  "sip-official-pcma/after/load",
+                     "count":  2,
+                     "medianSeconds":  1.1012474,
+                     "p95Seconds":  1.1031163,
+                     "minimumSeconds":  1.0993785,
+                     "maximumSeconds":  1.1031163
+                 },
+        "first":  {
+                      "group":  "sip-official-pcma/after/firstInference",
+                      "count":  2,
+                      "medianSeconds":  2.77843865,
+                      "p95Seconds":  2.9027244,
+                      "minimumSeconds":  2.6541529,
+                      "maximumSeconds":  2.9027244
+                  },
+        "loadAndFirst":  {
+                             "group":  "sip-official-pcma/after/loadAndFirstInference",
+                             "count":  2,
+                             "medianSeconds":  3.87968605,
+                             "p95Seconds":  4.0058407,
+                             "minimumSeconds":  3.7535314,
+                             "maximumSeconds":  4.0058407
+                         }
+    },
+    {
+        "subject":  "sip-official-pcma",
+        "mode":  "gpu",
+        "variant":  "native",
+        "hot":  {
+                    "group":  "sip-official-pcma/native",
+                    "count":  10,
+                    "medianSeconds":  0.1026795,
+                    "p95Seconds":  0.110686,
+                    "minimumSeconds":  0.096713,
+                    "maximumSeconds":  0.110686
+                },
+        "load":  {
+                     "group":  "sip-official-pcma/native/load",
+                     "count":  2,
+                     "medianSeconds":  0.800791,
+                     "p95Seconds":  0.806894,
+                     "minimumSeconds":  0.794688,
+                     "maximumSeconds":  0.806894
+                 },
+        "first":  {
+                      "group":  "sip-official-pcma/native/firstInference",
+                      "count":  2,
+                      "medianSeconds":  0.2275025,
+                      "p95Seconds":  0.230919,
+                      "minimumSeconds":  0.224086,
+                      "maximumSeconds":  0.230919
+                  },
+        "loadAndFirst":  {
+                             "group":  "sip-official-pcma/native/loadAndFirstInference",
+                             "count":  2,
+                             "medianSeconds":  1.0282935,
+                             "p95Seconds":  1.03098,
+                             "minimumSeconds":  1.025607,
+                             "maximumSeconds":  1.03098
+                         }
+    },
+    {
+        "subject":  "huayan",
+        "mode":  "cpu",
+        "variant":  "before",
+        "hot":  {
+                    "group":  "huayan/before",
+                    "count":  10,
+                    "medianSeconds":  0.14213759999999998,
+                    "p95Seconds":  0.1503599,
+                    "minimumSeconds":  0.1376013,
+                    "maximumSeconds":  0.1503599
+                },
+        "load":  {
+                     "group":  "huayan/before/load",
+                     "count":  2,
+                     "medianSeconds":  0.1015466,
+                     "p95Seconds":  0.1082686,
+                     "minimumSeconds":  0.0948246,
+                     "maximumSeconds":  0.1082686
+                 },
+        "first":  {
+                      "group":  "huayan/before/firstInference",
+                      "count":  2,
+                      "medianSeconds":  0.2697752,
+                      "p95Seconds":  0.2721947,
+                      "minimumSeconds":  0.2673557,
+                      "maximumSeconds":  0.2721947
+                  },
+        "loadAndFirst":  {
+                             "group":  "huayan/before/loadAndFirstInference",
+                             "count":  2,
+                             "medianSeconds":  0.3713218,
+                             "p95Seconds":  0.37562429999999997,
+                             "minimumSeconds":  0.3670193,
+                             "maximumSeconds":  0.37562429999999997
+                         }
+    },
+    {
+        "subject":  "huayan",
+        "mode":  "cpu",
+        "variant":  "after",
+        "hot":  {
+                    "group":  "huayan/after",
+                    "count":  10,
+                    "medianSeconds":  0.1409705,
+                    "p95Seconds":  0.1456741,
+                    "minimumSeconds":  0.1368461,
+                    "maximumSeconds":  0.1456741
+                },
+        "load":  {
+                     "group":  "huayan/after/load",
+                     "count":  2,
+                     "medianSeconds":  0.0937959,
+                     "p95Seconds":  0.094111,
+                     "minimumSeconds":  0.0934808,
+                     "maximumSeconds":  0.094111
+                 },
+        "first":  {
+                      "group":  "huayan/after/firstInference",
+                      "count":  2,
+                      "medianSeconds":  0.2713759,
+                      "p95Seconds":  0.2732309,
+                      "minimumSeconds":  0.2695209,
+                      "maximumSeconds":  0.2732309
+                  },
+        "loadAndFirst":  {
+                             "group":  "huayan/after/loadAndFirstInference",
+                             "count":  2,
+                             "medianSeconds":  0.3651718,
+                             "p95Seconds":  0.3667117,
+                             "minimumSeconds":  0.3636319,
+                             "maximumSeconds":  0.3667117
+                         }
+    },
+    {
+        "subject":  "huayan",
+        "mode":  "cpu",
+        "variant":  "native",
+        "hot":  {
+                    "group":  "huayan/native",
+                    "count":  10,
+                    "medianSeconds":  0.10818275,
+                    "p95Seconds":  0.1369097,
+                    "minimumSeconds":  0.1053458,
+                    "maximumSeconds":  0.1369097
+                },
+        "load":  {
+                     "group":  "huayan/native/load",
+                     "count":  2,
+                     "medianSeconds":  0.8677916999999999,
+                     "p95Seconds":  0.9026554,
+                     "minimumSeconds":  0.832928,
+                     "maximumSeconds":  0.9026554
+                 },
+        "first":  {
+                      "group":  "huayan/native/firstInference",
+                      "count":  2,
+                      "medianSeconds":  0.1366077,
+                      "p95Seconds":  0.1375449,
+                      "minimumSeconds":  0.1356705,
+                      "maximumSeconds":  0.1375449
+                  },
+        "loadAndFirst":  {
+                             "group":  "huayan/native/loadAndFirstInference",
+                             "count":  2,
+                             "medianSeconds":  1.0043994,
+                             "p95Seconds":  1.0402003,
+                             "minimumSeconds":  0.9685985,
+                             "maximumSeconds":  1.0402003
+                         }
+    },
+    {
+        "subject":  "huayan",
+        "mode":  "gpu",
+        "variant":  "before",
+        "hot":  {
+                    "group":  "huayan/before",
+                    "count":  10,
+                    "medianSeconds":  0.16743035,
+                    "p95Seconds":  0.1804696,
+                    "minimumSeconds":  0.1590451,
+                    "maximumSeconds":  0.1804696
+                },
+        "load":  {
+                     "group":  "huayan/before/load",
+                     "count":  2,
+                     "medianSeconds":  0.33197964999999996,
+                     "p95Seconds":  0.3335277,
+                     "minimumSeconds":  0.3304316,
+                     "maximumSeconds":  0.3335277
+                 },
+        "first":  {
+                      "group":  "huayan/before/firstInference",
+                      "count":  2,
+                      "medianSeconds":  0.549106,
+                      "p95Seconds":  0.5588033,
+                      "minimumSeconds":  0.5394087,
+                      "maximumSeconds":  0.5588033
+                  },
+        "loadAndFirst":  {
+                             "group":  "huayan/before/loadAndFirstInference",
+                             "count":  2,
+                             "medianSeconds":  0.8810856499999999,
+                             "p95Seconds":  0.8892348999999999,
+                             "minimumSeconds":  0.8729364,
+                             "maximumSeconds":  0.8892348999999999
+                         }
+    },
+    {
+        "subject":  "huayan",
+        "mode":  "gpu",
+        "variant":  "after",
+        "hot":  {
+                    "group":  "huayan/after",
+                    "count":  10,
+                    "medianSeconds":  0.154065,
+                    "p95Seconds":  0.1736499,
+                    "minimumSeconds":  0.1484211,
+                    "maximumSeconds":  0.1736499
+                },
+        "load":  {
+                     "group":  "huayan/after/load",
+                     "count":  2,
+                     "medianSeconds":  0.41058315,
+                     "p95Seconds":  0.4154712,
+                     "minimumSeconds":  0.4056951,
+                     "maximumSeconds":  0.4154712
+                 },
+        "first":  {
+                      "group":  "huayan/after/firstInference",
+                      "count":  2,
+                      "medianSeconds":  0.5315643999999999,
+                      "p95Seconds":  0.5405731,
+                      "minimumSeconds":  0.5225557,
+                      "maximumSeconds":  0.5405731
+                  },
+        "loadAndFirst":  {
+                             "group":  "huayan/after/loadAndFirstInference",
+                             "count":  2,
+                             "medianSeconds":  0.94214755,
+                             "p95Seconds":  0.9462682,
+                             "minimumSeconds":  0.9380268999999999,
+                             "maximumSeconds":  0.9462682
+                         }
+    },
+    {
+        "subject":  "huayan",
+        "mode":  "gpu",
+        "variant":  "native",
+        "hot":  {
+                    "group":  "huayan/native",
+                    "count":  10,
+                    "medianSeconds":  0.0280085,
+                    "p95Seconds":  0.0394251,
+                    "minimumSeconds":  0.0264057,
+                    "maximumSeconds":  0.0394251
+                },
+        "load":  {
+                     "group":  "huayan/native/load",
+                     "count":  2,
+                     "medianSeconds":  1.0192888,
+                     "p95Seconds":  1.0735285,
+                     "minimumSeconds":  0.9650491,
+                     "maximumSeconds":  1.0735285
+                 },
+        "first":  {
+                      "group":  "huayan/native/firstInference",
+                      "count":  2,
+                      "medianSeconds":  0.41923095,
+                      "p95Seconds":  0.4203333,
+                      "minimumSeconds":  0.4181286,
+                      "maximumSeconds":  0.4203333
+                  },
+        "loadAndFirst":  {
+                             "group":  "huayan/native/loadAndFirstInference",
+                             "count":  2,
+                             "medianSeconds":  1.4385197500000002,
+                             "p95Seconds":  1.4938618000000001,
+                             "minimumSeconds":  1.3831777,
+                             "maximumSeconds":  1.4938618000000001
+                         }
+    },
+    {
+        "subject":  "aishell3",
+        "mode":  "cpu",
+        "variant":  "before",
+        "hot":  {
+                    "group":  "aishell3/before",
+                    "count":  10,
+                    "medianSeconds":  0.06691385,
+                    "p95Seconds":  0.0758251,
+                    "minimumSeconds":  0.0644048,
+                    "maximumSeconds":  0.0758251
+                },
+        "load":  {
+                     "group":  "aishell3/before/load",
+                     "count":  2,
+                     "medianSeconds":  0.07165484999999999,
+                     "p95Seconds":  0.0754967,
+                     "minimumSeconds":  0.067813,
+                     "maximumSeconds":  0.0754967
+                 },
+        "first":  {
+                      "group":  "aishell3/before/firstInference",
+                      "count":  2,
+                      "medianSeconds":  0.2096674,
+                      "p95Seconds":  0.215396,
+                      "minimumSeconds":  0.2039388,
+                      "maximumSeconds":  0.215396
+                  },
+        "loadAndFirst":  {
+                             "group":  "aishell3/before/loadAndFirstInference",
+                             "count":  2,
+                             "medianSeconds":  0.28132225,
+                             "p95Seconds":  0.283209,
+                             "minimumSeconds":  0.2794355,
+                             "maximumSeconds":  0.283209
+                         }
+    },
+    {
+        "subject":  "aishell3",
+        "mode":  "cpu",
+        "variant":  "after",
+        "hot":  {
+                    "group":  "aishell3/after",
+                    "count":  10,
+                    "medianSeconds":  0.06680185,
+                    "p95Seconds":  0.082868,
+                    "minimumSeconds":  0.0646355,
+                    "maximumSeconds":  0.082868
+                },
+        "load":  {
+                     "group":  "aishell3/after/load",
+                     "count":  2,
+                     "medianSeconds":  0.06845984999999999,
+                     "p95Seconds":  0.0743335,
+                     "minimumSeconds":  0.0625862,
+                     "maximumSeconds":  0.0743335
+                 },
+        "first":  {
+                      "group":  "aishell3/after/firstInference",
+                      "count":  2,
+                      "medianSeconds":  0.20519645,
+                      "p95Seconds":  0.2099385,
+                      "minimumSeconds":  0.2004544,
+                      "maximumSeconds":  0.2099385
+                  },
+        "loadAndFirst":  {
+                             "group":  "aishell3/after/loadAndFirstInference",
+                             "count":  2,
+                             "medianSeconds":  0.27365629999999996,
+                             "p95Seconds":  0.28427199999999997,
+                             "minimumSeconds":  0.2630406,
+                             "maximumSeconds":  0.28427199999999997
+                         }
+    },
+    {
+        "subject":  "aishell3",
+        "mode":  "cpu",
+        "variant":  "native",
+        "hot":  {
+                    "group":  "aishell3/native",
+                    "count":  10,
+                    "medianSeconds":  0.0464585,
+                    "p95Seconds":  0.0541293,
+                    "minimumSeconds":  0.0445603,
+                    "maximumSeconds":  0.0541293
+                },
+        "load":  {
+                     "group":  "aishell3/native/load",
+                     "count":  2,
+                     "medianSeconds":  0.5510816000000001,
+                     "p95Seconds":  0.5732094,
+                     "minimumSeconds":  0.5289538,
+                     "maximumSeconds":  0.5732094
+                 },
+        "first":  {
+                      "group":  "aishell3/native/firstInference",
+                      "count":  2,
+                      "medianSeconds":  0.0750416,
+                      "p95Seconds":  0.0756296,
+                      "minimumSeconds":  0.0744536,
+                      "maximumSeconds":  0.0756296
+                  },
+        "loadAndFirst":  {
+                             "group":  "aishell3/native/loadAndFirstInference",
+                             "count":  2,
+                             "medianSeconds":  0.6261232,
+                             "p95Seconds":  0.647663,
+                             "minimumSeconds":  0.6045834,
+                             "maximumSeconds":  0.647663
+                         }
+    },
+    {
+        "subject":  "aishell3",
+        "mode":  "gpu",
+        "variant":  "before",
+        "hot":  {
+                    "group":  "aishell3/before",
+                    "count":  10,
+                    "medianSeconds":  0.0906218,
+                    "p95Seconds":  0.1039218,
+                    "minimumSeconds":  0.0873344,
+                    "maximumSeconds":  0.1039218
+                },
+        "load":  {
+                     "group":  "aishell3/before/load",
+                     "count":  2,
+                     "medianSeconds":  0.29112515000000005,
+                     "p95Seconds":  0.3026615,
+                     "minimumSeconds":  0.2795888,
+                     "maximumSeconds":  0.3026615
+                 },
+        "first":  {
+                      "group":  "aishell3/before/firstInference",
+                      "count":  2,
+                      "medianSeconds":  0.39024369999999997,
+                      "p95Seconds":  0.3913589,
+                      "minimumSeconds":  0.3891285,
+                      "maximumSeconds":  0.3913589
+                  },
+        "loadAndFirst":  {
+                             "group":  "aishell3/before/loadAndFirstInference",
+                             "count":  2,
+                             "medianSeconds":  0.68136885,
+                             "p95Seconds":  0.69179,
+                             "minimumSeconds":  0.6709477,
+                             "maximumSeconds":  0.69179
+                         }
+    },
+    {
+        "subject":  "aishell3",
+        "mode":  "gpu",
+        "variant":  "after",
+        "hot":  {
+                    "group":  "aishell3/after",
+                    "count":  10,
+                    "medianSeconds":  0.08712030000000001,
+                    "p95Seconds":  0.1003671,
+                    "minimumSeconds":  0.0837472,
+                    "maximumSeconds":  0.1003671
+                },
+        "load":  {
+                     "group":  "aishell3/after/load",
+                     "count":  2,
+                     "medianSeconds":  0.37809855,
+                     "p95Seconds":  0.3812827,
+                     "minimumSeconds":  0.3749144,
+                     "maximumSeconds":  0.3812827
+                 },
+        "first":  {
+                      "group":  "aishell3/after/firstInference",
+                      "count":  2,
+                      "medianSeconds":  0.407047,
+                      "p95Seconds":  0.4272045,
+                      "minimumSeconds":  0.3868895,
+                      "maximumSeconds":  0.4272045
+                  },
+        "loadAndFirst":  {
+                             "group":  "aishell3/after/loadAndFirstInference",
+                             "count":  2,
+                             "medianSeconds":  0.78514555,
+                             "p95Seconds":  0.8084872,
+                             "minimumSeconds":  0.7618039,
+                             "maximumSeconds":  0.8084872
+                         }
+    },
+    {
+        "subject":  "aishell3",
+        "mode":  "gpu",
+        "variant":  "native",
+        "hot":  {
+                    "group":  "aishell3/native",
+                    "count":  10,
+                    "medianSeconds":  0.0257084,
+                    "p95Seconds":  0.0380828,
+                    "minimumSeconds":  0.0217912,
+                    "maximumSeconds":  0.0380828
+                },
+        "load":  {
+                     "group":  "aishell3/native/load",
+                     "count":  2,
+                     "medianSeconds":  0.67199075,
+                     "p95Seconds":  0.6759982,
+                     "minimumSeconds":  0.6679833,
+                     "maximumSeconds":  0.6759982
+                 },
+        "first":  {
+                      "group":  "aishell3/native/firstInference",
+                      "count":  2,
+                      "medianSeconds":  0.41887155,
+                      "p95Seconds":  0.4310768,
+                      "minimumSeconds":  0.4066663,
+                      "maximumSeconds":  0.4310768
+                  },
+        "loadAndFirst":  {
+                             "group":  "aishell3/native/loadAndFirstInference",
+                             "count":  2,
+                             "medianSeconds":  1.0908623,
+                             "p95Seconds":  1.0990601,
+                             "minimumSeconds":  1.0826645,
+                             "maximumSeconds":  1.0990601
+                         }
+    }
+]

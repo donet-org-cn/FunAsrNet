@@ -248,6 +248,45 @@ if (args[0] == "gpu-check")
         }
     }
 
+    foreach (var shape in new[] { (M: 1, K: 19, H: 32, N: 7), (M: 33, K: 65, H: 64, N: 35), (M: 3, K: 19, H: 32, N: 19), (M: 3, K: 513, H: 512, N: 513), (M: 1, K: 513, H: 512, N: 509) })
+    {
+        var first = new Weight("relu-first", [shape.K, shape.H]) { Values = Enumerable.Range(0, shape.K * shape.H).Select(_ => (float)(random.NextDouble() - 0.5)).ToArray() };
+        var second = new Weight("relu-second", [shape.H, shape.N]) { Values = Enumerable.Range(0, shape.H * shape.N).Select(_ => (float)(random.NextDouble() - 0.5)).ToArray() };
+        var firstBias = new Weight("relu-first-bias", [shape.H]) { Values = Enumerable.Range(0, shape.H).Select(_ => (float)(random.NextDouble() - 0.5)).ToArray() };
+        var secondBias = new Weight("relu-second-bias", [shape.N]) { Values = Enumerable.Range(0, shape.N).Select(_ => (float)(random.NextDouble() - 0.5)).ToArray() };
+        float[] input = Enumerable.Range(0, shape.M * shape.K).Select(_ => (float)(random.NextDouble() - 0.5)).ToArray();
+        var math = new TensorMath(4) { FloatBackend = gpu };
+        foreach (bool withBias in new[] { false, true })
+        {
+            var intermediate = math.Linear(input, shape.M, first, withBias ? firstBias : null);
+            for (int index = 0; index < intermediate.Length; index++)
+            {
+                intermediate[index] = intermediate[index] < 0 ? 0 : intermediate[index];
+            }
+            var expected = math.Linear(intermediate, shape.M, second, withBias ? secondBias : null);
+            var actual = new float[shape.M * shape.N];
+            if (!gpu.TryReluProjection(input, shape.M, first, withBias ? firstBias : null, second, withBias ? secondBias : null, actual))
+            {
+                throw new InvalidDataException("GPU 前馈链未执行。");
+            }
+            for (int index = 0; index < actual.Length; index++)
+            {
+                if (BitConverter.SingleToInt32Bits(actual[index]) != BitConverter.SingleToInt32Bits(expected[index]))
+                {
+                    throw new InvalidDataException("GPU 前馈链与两次独立提交的位结果不同。");
+                }
+                checks++;
+            }
+        }
+        first.IsTransient = true;
+        var untouched = Enumerable.Repeat(123f, shape.M * shape.N).ToArray();
+        if (gpu.TryReluProjection(input, shape.M, first, null, second, null, untouched) || untouched.Any(value => value != 123f))
+        {
+            throw new InvalidDataException("GPU 不支持前馈链时应保持输出不变。");
+        }
+        checks++;
+    }
+
     Emit(new
     {
         kind = "gpu-check",

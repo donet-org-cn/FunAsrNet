@@ -40,6 +40,10 @@ GGUF F16/Q8 读取使用有界池缓冲分块解包，避免保留整个源张�
 
 ONNX 动态 MatMul 和临时打包的转置卷积矩阵标记 `Weight.IsTransient`，Vulkan 使用可复用上传缓冲，避免每次申请长期显存缓存及额外上传提交；稳定模型权重仍有界驻留。此标记不改变 CPU 计算。新旧 GPU Q8 位结果、动态矩阵重复写入/扩容、完整 ASR 文本和 TTS 波形分别验证。
 
+编码器可经 `IReluProjectionBackend` 将两层 FP32 投影和中间 ReLU 放入同一次提交，使用独立描述符及计算屏障，只有最终结果回读。缓存同时保护两层权重，形状、布局或缓存容量不支持时沿用逐算子路径；CPU 的工作区释放顺序不变。FP32 内核将累加器明确存入四个向量并展开内层循环，保留原 K 次序及 FMA/分离乘加语义。支持整数点积的 GPU 使用打包四字节点积，仍保留 Q8 分组缩放顺序。
+
+`FUNASRNET_VULKAN_INTEGER_DOT=0` 可关闭整数点积，`FUNASRNET_VULKAN_RELU_CHAIN=0` 可关闭连续投影。Windows 默认在栅栏上最多主动轮询 100 微秒，再进入阻塞等待；这会增加等待期间的 CPU 占用以换取较低唤醒开销。`FUNASRNET_VULKAN_SPIN_US=0` 可关闭，允许 0–500，其他系统默认 0。计时仍包含全部上传、回读和等待；完整 CPU/GPU 与初始化对比见 [第七轮报告](gpu-round7-20261012.md)。
+
 开发对照由 [FunAsrNet.Compare](../tools/FunAsrNet.Compare/README.md) 用 C# 串行编排。原 Python 脚本从当前版本移除；原始历史数据和来源 manifest 保留。
 
 ## 会话与限制

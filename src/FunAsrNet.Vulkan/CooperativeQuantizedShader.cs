@@ -8,6 +8,9 @@ internal static partial class CooperativeQuantizedShader
         #version 450
         #extension GL_KHR_shader_subgroup_basic : require
         #extension GL_KHR_shader_subgroup_shuffle : require
+        #ifdef INTEGER_DOT
+        #extension GL_EXT_integer_dot_product : require
+        #endif
         layout(local_size_x=128) in;
         layout(set=0,binding=0) readonly buffer Input { uint xq[]; };
         layout(set=0,binding=1) readonly buffer Weight { uint wq[]; };
@@ -26,8 +29,12 @@ internal static partial class CooperativeQuantizedShader
             for(uint block=0;block<blocks;block++) {
                 uint a=valid ? xq[frame*(p.K/4)+block*8+word] : 0;
                 uint b=valid ? wq[row*(p.K/4)+block*8+word] : 0;
+                #ifdef INTEGER_DOT
+                int sum=dotPacked4x8EXT(int(a),int(b));
+                #else
                 int sum=0;
                 for(uint item=0;item<4;item++) sum+=byteAt(a,item)*byteAt(b,item);
+                #endif
                 sum+=subgroupShuffleXor(sum,1);
                 sum+=subgroupShuffleXor(sum,2);
                 sum+=subgroupShuffleXor(sum,4);

@@ -4,7 +4,7 @@ using FunAsrNet.Vulkan.Native;
 namespace FunAsrNet.Vulkan;
 
 /// <summary>使用系统 Vulkan 驱动执行 FP32 大矩阵与一维卷积，实例内同步且缓存容量有界。</summary>
-public sealed unsafe partial class VulkanFloatBackend : IFloatComputeBackend, IQuantizedComputeBackend, IGroupedComputeBackend, IDisposable
+public sealed unsafe partial class VulkanFloatBackend : IFloatComputeBackend, IQuantizedComputeBackend, IGroupedComputeBackend, IReluProjectionBackend, IDisposable
 {
     private readonly object _gate = new();
     private readonly VkDevice _device;
@@ -17,6 +17,8 @@ public sealed unsafe partial class VulkanFloatBackend : IFloatComputeBackend, IQ
     private long _sequence, _cacheBytes, _hits, _uploads, _downloads, _linearCalls, _convolutionCalls;
     private double _seconds;
     private bool _disposed;
+    private readonly int _fenceSpinMicroseconds = int.TryParse(Environment.GetEnvironmentVariable("FUNASRNET_VULKAN_SPIN_US"), out int spin)
+        ? Math.Clamp(spin, 0, 500) : OperatingSystem.IsWindows() ? 100 : 0;
 
     /// <summary>只读权重的驻留缓冲和最近使用顺序。</summary>
     /// <param name="buffer">已经完成上传的设备缓冲。</param>
@@ -94,9 +96,12 @@ public sealed unsafe partial class VulkanFloatBackend : IFloatComputeBackend, IQ
                 precision = "FP32 + original Q8_0",
                 linearCalls = _linearCalls,
                 convolutionCalls = _convolutionCalls,
+                reluProjectionCalls = _reluProjectionCalls,
+                computeSubmissions = _computeSubmissions,
                 quantizedCalls = _quantizedCalls,
-                quantizedKernel = _cooperativeQ8 ? "subgroup-eight-lane" : "scalar-row",
+                quantizedKernel = _integerDotQ8 ? "subgroup-eight-lane-integer-dot" : _cooperativeQ8 ? "subgroup-eight-lane" : "scalar-row",
                 subgroupSize = _device.SubgroupSize,
+                fenceSpinMicroseconds = _fenceSpinMicroseconds,
                 cacheBytes = _cacheBytes,
                 cacheHits = _hits,
                 uploadedBytes = _uploads,
@@ -353,16 +358,41 @@ public sealed unsafe partial class VulkanFloatBackend : IFloatComputeBackend, IQ
     /// <param name="output">同步后的 CPU 输出数组。</param>
     private void DispatchAndRead(VkPipeline pipeline, nint descriptorSet, uint* parameters, uint parameterBytes, uint groupsX, uint groupsY, float[] output)
     {
-        ulong outputBytes = checked((ulong)output.Length * sizeof(float));
+        BeginCompute();
+        RecordDispatch(pipeline, descriptorSet, parameters, parameterBytes, groupsX, groupsY);
+        FinishRead(output);
+    }
+
+    /// <summary>开始记录计算命令，保证此前上传的输入可供着色器读取。</summary>
+    private void BeginCompute()
+    {
         Vk.Check(Vk.vkResetCommandBuffer(_command, 0), "reset compute command");
         var begin = new Vk.VkCommandBufferBeginInfo { SType = VkConst.StCommandBufferBeginInfo };
         Vk.Check(Vk.vkBeginCommandBuffer(_command, &begin), "begin compute command");
         var uploadBarrier = new Vk.VkMemoryBarrier { SType = VkConst.StMemoryBarrier, SrcAccessMask = VkConst.AccessHostWrite | VkConst.AccessTransferWrite, DstAccessMask = VkConst.AccessShaderRead };
         Vk.vkCmdPipelineBarrier(_command, VkConst.PipelineStageHost | VkConst.PipelineStageTransfer, VkConst.PipelineStageComputeShader, 0, 1, &uploadBarrier, 0, null, 0, null);
+    }
+
+    /// <summary>在当前命令内记录一次计算，描述符在提交完成前不得修改。</summary>
+    /// <param name="pipeline">计算管线。</param>
+    /// <param name="descriptorSet">本次计算独立使用的描述符集合。</param>
+    /// <param name="parameters">推送参数指针。</param>
+    /// <param name="parameterBytes">推送参数字节数。</param>
+    /// <param name="groupsX">第一维工作组数。</param>
+    /// <param name="groupsY">第二维工作组数。</param>
+    private void RecordDispatch(VkPipeline pipeline, nint descriptorSet, uint* parameters, uint parameterBytes, uint groupsX, uint groupsY)
+    {
         Vk.vkCmdBindPipeline(_command, VkConst.BindPointCompute, pipeline.Pipeline);
         Vk.vkCmdBindDescriptorSets(_command, VkConst.BindPointCompute, pipeline.Layout, 0, 1, &descriptorSet, 0, null);
         Vk.vkCmdPushConstants(_command, pipeline.Layout, VkConst.StageComputeShader, 0, parameterBytes, parameters);
         Vk.vkCmdDispatch(_command, groupsX, groupsY, 1);
+    }
+
+    /// <summary>提交已记录的计算，等待最终结果回读；中间张量无需经过 CPU。</summary>
+    /// <param name="output">最后一个计算写入的 CPU 输出数组。</param>
+    private void FinishRead(float[] output)
+    {
+        ulong outputBytes = checked((ulong)output.Length * sizeof(float));
         var computeBarrier = new Vk.VkMemoryBarrier { SType = VkConst.StMemoryBarrier, SrcAccessMask = VkConst.AccessShaderWrite, DstAccessMask = VkConst.AccessTransferRead };
         Vk.vkCmdPipelineBarrier(_command, VkConst.PipelineStageComputeShader, VkConst.PipelineStageTransfer, 0, 1, &computeBarrier, 0, null, 0, null);
         var copy = new Vk.VkBufferCopy { Size = outputBytes };
@@ -371,6 +401,14 @@ public sealed unsafe partial class VulkanFloatBackend : IFloatComputeBackend, IQ
         Vk.vkCmdPipelineBarrier(_command, VkConst.PipelineStageTransfer, VkConst.PipelineStageHost, 0, 1, &readBarrier, 0, null, 0, null);
         Vk.Check(Vk.vkEndCommandBuffer(_command), "end compute command");
         _device.Submit(_command, _fence);
+        if (_fenceSpinMicroseconds > 0)
+        {
+            long deadline = Stopwatch.GetTimestamp() + Stopwatch.Frequency * _fenceSpinMicroseconds / 1000000;
+            while (Vk.vkGetFenceStatus(_device.Device, _fence) == VkResult.NotReady && Stopwatch.GetTimestamp() < deadline)
+            {
+                Thread.SpinWait(8);
+            }
+        }
         _device.WaitFence(_fence);
         void* address = _readback.Map();
         try
@@ -384,6 +422,7 @@ public sealed unsafe partial class VulkanFloatBackend : IFloatComputeBackend, IQ
         }
 
         _downloads += (long)outputBytes;
+        _computeSubmissions++;
     }
 
     /// <summary>等待 GPU 空闲并释放本实例拥有的缓存、管线和设备；可重复调用。</summary>
@@ -409,6 +448,7 @@ public sealed unsafe partial class VulkanFloatBackend : IFloatComputeBackend, IQ
             _cacheBytes = 0;
             _input?.Free();
             _transientWeight?.Free();
+            DisposeReluProjection();
             _output?.Free();
             _readback?.Free();
             _device.FreeDescriptorSet(_set);

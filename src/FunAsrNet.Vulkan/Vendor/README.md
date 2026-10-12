@@ -6,4 +6,6 @@
 
 第三方绑定保留上游说明，由来源和本机实际 GPU 验证核对；中文注释检查不重写这些第三方成员。项目自有代码仍执行统一的中文注释与格式检查。
 
-本轮补充查询并启用 `subgroupSizeControl` / `computeFullSubgroups` 的实际特性，只有支持时创建要求完整子组的 Q8 管线。可复用的主机可见输入和回读缓冲持久映射，释放时解除映射；原有 flush/invalidate 与栅栏仍保留。
+补充查询并启用 `subgroupSizeControl` / `computeFullSubgroups` 的实际特性，只有支持时创建要求完整子组的 Q8 管线。可复用的主机可见输入和回读缓冲持久映射，释放时解除映射；原有 flush/invalidate 与栅栏仍保留。
+
+第七轮进一步查询 `VK_KHR_shader_integer_dot_product` 和 `shaderIntegerDotProduct`，仅在扩展及特性均支持时加入设备启用链。对应打包有符号点积使用原 Q8 字节，不启用浮点低精度或饱和累加；缺少特性继续使用原子组/标量着色器。

@@ -21,6 +21,7 @@ internal unsafe sealed class VkDevice : IDisposable
     public bool SubgroupSizeControl;   // VK_EXT_subgroup_size_control
     public bool ComputeSubgroupSize;   // ...and requiredSubgroupSizeStages covers compute
     public bool ComputeFullSubgroups; // queried and enabled, required by cooperative Q8
+    public bool ShaderIntegerDotProduct; // queried and enabled VK_KHR_shader_integer_dot_product
     public bool Coop16x16x16;          // fp16 A/B, fp32 C/result, subgroup scope 16x16x16
     public bool Coop8x16x16;           // same types, MxNxK 8x16x16 (Arc)
     public uint SubgroupMin = 1, SubgroupMax = 128;
@@ -189,7 +190,7 @@ internal unsafe sealed class VkDevice : IDisposable
             byte* wantPush = stackalloc byte[] { (byte)'V', (byte)'K', (byte)'_', (byte)'K', (byte)'H', (byte)'R',
             (byte)'_', (byte)'p', (byte)'u', (byte)'s', (byte)'h', (byte)'_', (byte)'d', (byte)'e', (byte)'s', (byte)'c',
             (byte)'r', (byte)'i', (byte)'p', (byte)'t', (byte)'o', (byte)'r', 0 };
-            bool hasPush = false, hasCoop = false, hasSgc = false, hasF16Int8 = false;
+            bool hasPush = false, hasCoop = false, hasSgc = false, hasF16Int8 = false, hasIntegerDot = false;
             string? prioExt = null;
             for (int i = 0; i < (int)next; i++)
             {
@@ -206,6 +207,8 @@ internal unsafe sealed class VkDevice : IDisposable
                     hasSgc = true;
                 else if (en == "VK_KHR_shader_float16_int8")
                     hasF16Int8 = true;
+                else if (en == "VK_KHR_shader_integer_dot_product")
+                    hasIntegerDot = true;
             }
             // SIMD_OCR_VK_NOPUSH=1: exercise the descriptor-pool fallback on devices that have push
             if (Environment.GetEnvironmentVariable("SIMD_OCR_VK_NOPUSH") == "1")
@@ -287,6 +290,20 @@ internal unsafe sealed class VkDevice : IDisposable
             }
             d.SubgroupSizeControl = sgcEn.SubgroupSizeControl != 0;
             d.ComputeFullSubgroups = sgcEn.ComputeFullSubgroups != 0;
+            Vk.VkPhysicalDeviceShaderIntegerDotProductFeatures integerDotEn = new()
+            {
+                SType = VkConst.StPhysicalDeviceShaderIntegerDotProductFeatures,
+            };
+            if (hasIntegerDot)
+            {
+                Vk.VkPhysicalDeviceFeatures2 query = new()
+                {
+                    SType = VkConst.StPhysicalDeviceFeatures2,
+                    PNext = &integerDotEn,
+                };
+                Vk.vkGetPhysicalDeviceFeatures2(d.PhysDevice, &query);
+            }
+            d.ShaderIntegerDotProduct = integerDotEn.ShaderIntegerDotProduct != 0;
             Vk.VkPhysicalDeviceShaderFloat16Int8Features f16en = new()
             {
                 SType = VkConst.StPhysicalDeviceShaderFloat16Int8Features,
@@ -297,6 +314,11 @@ internal unsafe sealed class VkDevice : IDisposable
             f16en.PNext = d.CoopMatrix ? &coopEn : hasSgc ? &sgcEn : null;
             s16en.PNext = hasF16Int8 && d.ShaderFloat16 ? &f16en : f16en.PNext;
             coopEn.PNext = hasSgc ? &sgcEn : null;
+            if (d.ShaderIntegerDotProduct)
+            {
+                integerDotEn.PNext = s16en.PNext;
+                s16en.PNext = &integerDotEn;
+            }
             Vk.VkPhysicalDeviceFeatures feats = new();
             if (d.Storage16Bit)
                 feats.ShaderInt16 = 1;
@@ -312,7 +334,10 @@ internal unsafe sealed class VkDevice : IDisposable
             (byte)'_', (byte)'s', (byte)'h', (byte)'a', (byte)'d', (byte)'e', (byte)'r', (byte)'_', (byte)'f',
             (byte)'l', (byte)'o', (byte)'a', (byte)'t', (byte)'1', (byte)'6', (byte)'_', (byte)'i', (byte)'n',
             (byte)'t', (byte)'8', 0 };
-            byte** extsToEnable = stackalloc byte*[5];
+            // Five compute extensions plus the optional global queue priority extension.
+            byte** extsToEnable = stackalloc byte*[6];
+            byte* wantIntegerDot = stackalloc byte[34];
+            System.Text.Encoding.UTF8.GetBytes("VK_KHR_shader_integer_dot_product\0", new Span<byte>(wantIntegerDot, 34));
             uint nExt = 0;
             if (hasPush)
                 extsToEnable[nExt++] = wantPush;
@@ -322,6 +347,8 @@ internal unsafe sealed class VkDevice : IDisposable
                 extsToEnable[nExt++] = wantSgc;
             if (hasF16Int8 && d.ShaderFloat16)
                 extsToEnable[nExt++] = wantF16;
+            if (d.ShaderIntegerDotProduct)
+                extsToEnable[nExt++] = wantIntegerDot;
             Vk.VkDeviceCreateInfo dci = new()
             {
                 SType = VkConst.StDeviceCreateInfo,

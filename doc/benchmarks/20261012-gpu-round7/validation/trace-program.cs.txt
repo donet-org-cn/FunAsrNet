@@ -1,0 +1,26 @@
+using System.Diagnostics;
+using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Runtime.Loader;
+using System.Security.Cryptography;
+using System.Text.Json;
+
+Environment.SetEnvironmentVariable("FUNASRNET_DISABLE_PROMPT_CACHE", "1");
+if (OperatingSystem.IsWindows()) { Process.GetCurrentProcess().ProcessorAffinity = (nint)0x55; }
+string root = Path.GetFullPath(args[0]);
+var core = AssemblyLoadContext.Default.LoadFromAssemblyPath(Path.Combine(root, "FunAsrNet.dll"));
+var vk = AssemblyLoadContext.Default.LoadFromAssemblyPath(Path.Combine(root, "FunAsrNet.Vulkan.dll"));
+var type = core.GetType("FunAsrNet.FunAsr", true)!;
+object engine = Activator.CreateInstance(type, Path.GetFullPath("artifacts/local-models/funasr-encoder-f16.gguf"), Path.GetFullPath("artifacts/local-models/qwen3-0.6b-q8_0.gguf"), 4, true)!;
+using var backend = (IDisposable)Activator.CreateInstance(vk.GetType("FunAsrNet.Vulkan.VulkanFloatBackend", true)!, 2048L * 1024 * 1024, 0u)!;
+type.GetProperty("FloatBackend")!.SetValue(engine, backend);
+var traces = new Dictionary<string, string>();
+type.GetProperty("Trace")!.SetValue(engine, (Action<string, float[]>)((name, values) => traces.Add(traces.Count + ":" + name, Convert.ToHexStringLower(SHA256.HashData(MemoryMarshal.AsBytes(values.AsSpan()))))));
+var invoke = type.GetMethod("Transcribe")!.CreateDelegate<Transcribe>(engine);
+foreach (string input in args.Skip(1))
+{
+    traces.Clear();
+    var result = invoke(MemoryMarshal.Cast<byte, float>(File.ReadAllBytes(input)), 128);
+    Console.WriteLine(JsonSerializer.Serialize(new { input, result, trace = traces }));
+}
+delegate object Transcribe(ReadOnlySpan<float> pcm, int maxTokens);

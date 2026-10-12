@@ -21,6 +21,8 @@ CPU/GPU 顺序为 before/after/native/native/after/before，统一四线程、Wi
 
 `commands.json`、逐次 UTF-8 JSONL/stderr 和 `summary.json` 保留轮数、散列、中位数、最近秩 P95、各版本转写。轮数不符、优化前后 ASR 转写变化、TTS 波形校验不通过均报错；原版与 C# 的转写差异单独展示。GPU/CPU 计算精度及剩余 CPU 操作应以对应报告为准。
 
+CPU/GPU 的 `summary.json` 还包含 `startupPhases`：`load` 是基准内模型/后端初始化，`firstInference` 是每个新进程的首次调用，`loadAndFirstInference` 先对同一进程的二者求和再统计。每版本通常只有两个启动样本，不能把热态调用数当成启动样本数。没有清空文件缓存或驱动缓存，不含进程启动和 Web 服务就绪；Vulkan 延迟上传的权重计入首次调用，原版按各自初始化边界记录。两种后端的加载数字不能脱离首次调用单独解读。
+
 `load` 计时为新进程内两个 `Gguf` 构造器，不含进程启动、模型执行、GPU 首次上传或服务就绪；不清空操作系统文件缓存。完整 ASR 基准另记录 `load` 和预热记录，不能混用这些边界。`FUNASRNET_PROFILE_LOAD=1` 可在直接运行基准时诊断 GGUF 元数据、读取和 Q8 展开耗时；对比入口会清除继承的 `FUNASRNET_*` 实验选项。
 
 旧报告中的 Python 编排已移除，历史原始测量和 source manifest 保留。当前工具产生新的汇总格式；复核历史数值直接使用原始 JSONL，不将今天的新测量冒充历史复现。

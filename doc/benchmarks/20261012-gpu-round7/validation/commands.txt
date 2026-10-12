@@ -1,0 +1,22 @@
+dotnet build FunAsrNet.sln -c Release -p:NuGetAudit=false
+dotnet tests/FunAsrNet.Checks/bin/Release/net10.0/FunAsrNet.Checks.dll
+DOTNET_EnableAVX2=0: dotnet tests/FunAsrNet.Checks/bin/Release/net10.0/FunAsrNet.Checks.dll
+dotnet tools/FunAsrNet.Benchmarks/bin/Release/net10.0/FunAsrNet.Benchmarks.dll gpu-check
+FUNASRNET_VULKAN_INTEGER_DOT=0 FUNASRNET_VULKAN_SPIN_US=0: same gpu-check
+FUNASRNET_VULKAN_SUBGROUP_Q8=0: same gpu-check
+HYMT_VK_VERBOSE=1: dotnet tools/FunAsrNet.Benchmarks/bin/Release/net10.0/FunAsrNet.Benchmarks.dll gpu-info
+dotnet tools/FunAsrNet.CodeStyle/bin/Release/net10.0/FunAsrNet.CodeStyle.dll .
+
+Trace diagnostic (excluded from performance samples):
+Create artifacts/gpu-round7/trace/Trace.csproj from trace-project.xml and Program.cs from trace-program.cs.txt.
+dotnet build artifacts/gpu-round7/trace/Trace.csproj -c Release -p:NuGetAudit=false
+dotnet artifacts/gpu-round7/trace/bin/Release/net10.0/Trace.dll artifacts/gpu-round7/before artifacts/native-gpu/inputs/sip-short-pcma.f32 artifacts/native-gpu/inputs/sip-repeated-pcma.f32
+dotnet artifacts/gpu-round7/trace/bin/Release/net10.0/Trace.dll tools/FunAsrNet.Benchmarks/bin/Release/net10.0 artifacts/native-gpu/inputs/sip-short-pcma.f32 artifacts/native-gpu/inputs/sip-repeated-pcma.f32
+Compare trace dictionaries per input, including entry names and counts: 14 + 39 snapshots, zero SHA-256 mismatches.
+
+Shader compilation (glslang 16.6.0):
+Extract Source raw string from SpeechShader.cs to speech.comp, and CooperativeQuantizedShader.cs to q8.comp.
+glslang -V --target-env vulkan1.1 -S comp speech.comp -o speech.spv
+glslang -V --target-env vulkan1.1 -S comp q8.comp -o q8-standard.spv
+glslang -V --target-env vulkan1.1 -S comp q8.comp -o q8-dot.spv -DINTEGER_DOT=1
+Embed byte-for-byte Base64 in corresponding Binary / IntegerDotBinary method. Runtime does not invoke glslang.

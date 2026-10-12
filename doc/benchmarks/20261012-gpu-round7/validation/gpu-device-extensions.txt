@@ -1,0 +1,20 @@
+[vk] qfamily 0: flags=0xf count=16 tsBits=64
+[vk] qfamily 1: flags=0xc count=2 tsBits=64
+[vk] qfamily 2: flags=0xe count=8 tsBits=64 <- selected
+[vk] qfamily 3: flags=0x2c count=1 tsBits=32
+[vk] qfamily 4: flags=0x4c count=1 tsBits=32
+[vk] qfamily 5: flags=0x10c count=1 tsBits=64
+[vk] devext push=True coop=True sgc=True sgRange=32-32 sgcCompute=True lds=49152 prio=VK_KHR_global_priority
+[vk] queue family=2 globalPriority=0
+[vk] coopmat 16x16x16 at=0 bt=0 ct=0 rt=0 scope=3
+[vk] coopmat 16x8x16 at=0 bt=0 ct=0 rt=0 scope=3
+[vk] coopmat 16x8x8 at=0 bt=0 ct=0 rt=0 scope=3
+[vk] coopmat 16x16x16 at=0 bt=0 ct=1 rt=1 scope=3
+[vk] coopmat 16x8x16 at=0 bt=0 ct=1 rt=1 scope=3
+[vk] coopmat 16x8x8 at=0 bt=0 ct=1 rt=1 scope=3
+[vk] coopmat 16x16x32 at=7 bt=7 ct=9 rt=9 scope=3
+[vk] coopmat 16x16x32 at=3 bt=3 ct=5 rt=5 scope=3
+[vk] coopmat 16x8x32 at=7 bt=7 ct=9 rt=9 scope=3
+[vk] coopmat 16x8x32 at=3 bt=3 ct=5 rt=5 scope=3
+[vk] coopmat 16x16x16 at=1000141000 bt=1000141000 ct=1 rt=1 scope=3
+[vk] push_descriptor ext=True fn=0x7FF817569CE0

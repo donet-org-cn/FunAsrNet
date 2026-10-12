@@ -55,6 +55,7 @@ internal static class Comparison
         var records = new Dictionary<string, List<JsonObject>>(StringComparer.Ordinal);
         var texts = new Dictionary<string, HashSet<string>>(StringComparer.Ordinal);
         var variantTexts = new Dictionary<string, HashSet<string>>(StringComparer.Ordinal);
+        var phases = new Dictionary<string, List<double>>(StringComparer.Ordinal);
         int measured = 0, warmup = 0;
         string[] subjects = mode == "load" ? ["models"] : Value(options, "subjects", "sip-short-pcma,sip-zh-pcmu,sip-repeated-pcma,huayan,aishell3").Split(',');
         string[] order = mode == "aot" ? ["current", "jit", "aot", "native", "native", "aot", "jit", "current"] : mode == "load" ? ["before", "after", "after", "before"] : ["before", "after", "native", "native", "after", "before"];
@@ -131,15 +132,28 @@ internal static class Comparison
                 await SaveAsync(Path.Combine(output, "commands.json"), commands);
                 await ExecuteAsync(command, Path.Combine(output, name + ".jsonl"), Path.Combine(output, name + ".stderr"));
                 int samples = 0, warmups = 0;
+                double? loadSeconds = null;
                 foreach (string line in await File.ReadAllLinesAsync(Path.Combine(output, name + ".jsonl")))
                 {
                     var row = JsonNode.Parse(line)!.AsObject();
+                    if (kind != "load" && row["kind"]?.GetValue<string>() == "load")
+                    {
+                        if (loadSeconds is not null)
+                        {
+                            throw new InvalidDataException("重复的初始化记录：" + name);
+                        }
+                        loadSeconds = row["seconds"]!.GetValue<double>();
+                        AddPhase(phases, subject + "/" + variant + "/load", loadSeconds.Value);
+                    }
                     if (row["kind"]?.GetValue<string>() != kind)
                     {
                         continue;
                     }
                     if (kind != "load" && row["warmup"]!.GetValue<bool>())
                     {
+                        double first = row["seconds"]!.GetValue<double>();
+                        AddPhase(phases, subject + "/" + variant + "/firstInference", first);
+                        AddPhase(phases, subject + "/" + variant + "/loadAndFirstInference", (loadSeconds ?? throw new InvalidDataException("首次调用前缺少加载记录：" + name)) + first);
                         warmup++;
                         warmups++;
                         continue;
@@ -206,7 +220,13 @@ internal static class Comparison
             inputHashes[Path.GetFileName(file)] = Digest(file);
         }
         await SaveAsync(Path.Combine(output, "commands.json"), commands);
-        await SaveAsync(Path.Combine(output, "summary.json"), new JsonObject { ["mode"] = mode, ["threads"] = 4, ["affinity"] = "0x55", ["measured"] = measured, ["warmup"] = warmup, ["groups"] = groups, ["asrTextChecks"] = textChecks, ["binarySha256"] = binaries, ["modelSha256"] = modelHashes, ["inputSha256"] = inputHashes });
+        var phaseGroups = new JsonArray();
+        foreach (var entry in phases)
+        {
+            double[] seconds = entry.Value.Order().ToArray();
+            phaseGroups.Add(new JsonObject { ["group"] = entry.Key, ["count"] = seconds.Length, ["medianSeconds"] = Median(seconds), ["p95Seconds"] = seconds[(int)Math.Ceiling(seconds.Length * 0.95) - 1], ["minimumSeconds"] = seconds[0], ["maximumSeconds"] = seconds[^1] });
+        }
+        await SaveAsync(Path.Combine(output, "summary.json"), new JsonObject { ["mode"] = mode, ["threads"] = 4, ["affinity"] = "0x55", ["measured"] = measured, ["warmup"] = warmup, ["groups"] = groups, ["startupPhases"] = phaseGroups, ["asrTextChecks"] = textChecks, ["binarySha256"] = binaries, ["modelSha256"] = modelHashes, ["inputSha256"] = inputHashes });
         Console.WriteLine(groups.ToJsonString(Json));
         foreach (string subject in subjects.Where(name => name.StartsWith("sip-", StringComparison.Ordinal)))
         {
@@ -215,6 +235,23 @@ internal static class Comparison
                 throw new InvalidDataException("优化前后转写发生变化，不能接受性能结果：" + subject);
             }
         }
+    }
+
+    /// <summary>记录新进程内的加载、首次调用及二者之和，避免与热态样本混合。</summary>
+    /// <param name="phases">按项目、版本、阶段分类的计时。</param>
+    /// <param name="key">阶段名称。</param>
+    /// <param name="seconds">本进程实测秒数。</param>
+    private static void AddPhase(Dictionary<string, List<double>> phases, string key, double seconds)
+    {
+        if (!double.IsFinite(seconds) || seconds < 0)
+        {
+            throw new InvalidDataException("无效的阶段耗时：" + key);
+        }
+        if (!phases.TryGetValue(key, out var list))
+        {
+            phases.Add(key, list = []);
+        }
+        list.Add(seconds);
     }
 
     /// <summary>从字典读取选项，缺失时采用固定协议默认值。</summary>

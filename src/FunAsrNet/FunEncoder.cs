@@ -155,13 +155,7 @@ public sealed class FunEncoder
         x = Norm(x, "audio_encoder.tp_norm");
         TensorWorkspace.Release(previous);
         Trace?.Invoke("tp_norm", x);
-        previous = x;
-        x = Linear(x, frames, "audio_adaptor.linear1");
-        TensorWorkspace.Release(previous);
-        Relu(x);
-        previous = x;
-        x = Linear(x, frames, "audio_adaptor.linear2");
-        TensorWorkspace.Release(previous);
+        x = ReluProjection(x, frames, "audio_adaptor.linear1", "audio_adaptor.linear2");
         for (int i = 0; i < _adaptorLayers; ++i)
         {
             string p = $"audio_adaptor.blocks.{i}.";
@@ -268,15 +262,37 @@ public sealed class FunEncoder
     private float[] FeedForward(float[] x, int frames, string p)
     {
         var h = Norm(x, p + "norm2");
-        var previous = h;
-        h = Linear(h, frames, p + "feed_forward.w_1");
-        TensorWorkspace.Release(previous);
-        Relu(h);
-        previous = h;
-        h = Linear(h, frames, p + "feed_forward.w_2");
-        TensorWorkspace.Release(previous);
+        h = ReluProjection(h, frames, p + "feed_forward.w_1", p + "feed_forward.w_2");
         TensorMath.Add(h, x);
         return h;
+    }
+
+    /// <summary>优先让连续投影在同一次设备提交完成，CPU 保留逐算子执行。</summary>
+    /// <param name="input">只读输入，本方法在不再使用时释放工作区引用。</param>
+    /// <param name="frames">输入行数。</param>
+    /// <param name="first">第一层名称前缀。</param>
+    /// <param name="second">第二层名称前缀。</param>
+    /// <returns>独立的最终输出。</returns>
+    private float[] ReluProjection(float[] input, int frames, string first, string second)
+    {
+        if (_math.FloatBackend is IReluProjectionBackend backend)
+        {
+            long started = _math.LinearMeasured is null ? 0 : System.Diagnostics.Stopwatch.GetTimestamp();
+            var output = TensorWorkspace.Allocate(checked(frames * _model[second + ".weight"].Rows));
+            if (backend.TryReluProjection(input, frames, _model[first + ".weight"], _model[first + ".bias"], _model[second + ".weight"], _model[second + ".bias"], output))
+            {
+                _math.LinearMeasured?.Invoke($"EncReluProjection {frames} {first}", System.Diagnostics.Stopwatch.GetElapsedTime(started).TotalMilliseconds);
+                TensorWorkspace.Release(input);
+                return output;
+            }
+            TensorWorkspace.Release(output);
+        }
+        var intermediate = Linear(input, frames, first);
+        TensorWorkspace.Release(input);
+        Relu(intermediate);
+        var result = Linear(intermediate, frames, second);
+        TensorWorkspace.Release(intermediate);
+        return result;
     }
 
     /// <summary>
