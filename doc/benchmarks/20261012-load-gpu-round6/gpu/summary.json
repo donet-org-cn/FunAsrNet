@@ -1,0 +1,196 @@
+{
+  "mode": "gpu",
+  "threads": 4,
+  "affinity": "0x55",
+  "measured": 150,
+  "warmup": 30,
+  "groups": [
+    {
+      "group": "sip-short-pcma/before",
+      "count": 10,
+      "medianSeconds": 0.49497979999999997,
+      "p95Seconds": 0.5607803,
+      "minimumSeconds": 0.4869806,
+      "maximumSeconds": 0.5607803
+    },
+    {
+      "group": "sip-short-pcma/after",
+      "count": 10,
+      "medianSeconds": 0.42660975,
+      "p95Seconds": 0.5223178,
+      "minimumSeconds": 0.4059851,
+      "maximumSeconds": 0.5223178
+    },
+    {
+      "group": "sip-short-pcma/native",
+      "count": 10,
+      "medianSeconds": 0.10676050000000001,
+      "p95Seconds": 0.124022,
+      "minimumSeconds": 0.096731,
+      "maximumSeconds": 0.124022
+    },
+    {
+      "group": "sip-zh-pcmu/before",
+      "count": 10,
+      "medianSeconds": 0.5534908000000001,
+      "p95Seconds": 0.5690205,
+      "minimumSeconds": 0.5452799,
+      "maximumSeconds": 0.5690205
+    },
+    {
+      "group": "sip-zh-pcmu/after",
+      "count": 10,
+      "medianSeconds": 0.48041085,
+      "p95Seconds": 0.5674944,
+      "minimumSeconds": 0.4543575,
+      "maximumSeconds": 0.5674944
+    },
+    {
+      "group": "sip-zh-pcmu/native",
+      "count": 10,
+      "medianSeconds": 0.1249985,
+      "p95Seconds": 0.136813,
+      "minimumSeconds": 0.111203,
+      "maximumSeconds": 0.136813
+    },
+    {
+      "group": "sip-repeated-pcma/before",
+      "count": 10,
+      "medianSeconds": 1.9261845000000002,
+      "p95Seconds": 1.9743724,
+      "minimumSeconds": 1.886313,
+      "maximumSeconds": 1.9743724
+    },
+    {
+      "group": "sip-repeated-pcma/after",
+      "count": 10,
+      "medianSeconds": 1.64030455,
+      "p95Seconds": 1.8501824,
+      "minimumSeconds": 1.5710962,
+      "maximumSeconds": 1.8501824
+    },
+    {
+      "group": "sip-repeated-pcma/native",
+      "count": 10,
+      "medianSeconds": 0.2749095,
+      "p95Seconds": 0.286486,
+      "minimumSeconds": 0.255495,
+      "maximumSeconds": 0.286486
+    },
+    {
+      "group": "huayan/before",
+      "count": 10,
+      "medianSeconds": 0.2288014,
+      "p95Seconds": 0.2624706,
+      "minimumSeconds": 0.2229368,
+      "maximumSeconds": 0.2624706
+    },
+    {
+      "group": "huayan/after",
+      "count": 10,
+      "medianSeconds": 0.17546050000000002,
+      "p95Seconds": 0.2084664,
+      "minimumSeconds": 0.1622582,
+      "maximumSeconds": 0.2084664
+    },
+    {
+      "group": "huayan/native",
+      "count": 10,
+      "medianSeconds": 0.028780800000000002,
+      "p95Seconds": 0.0349984,
+      "minimumSeconds": 0.0267131,
+      "maximumSeconds": 0.0349984
+    },
+    {
+      "group": "aishell3/before",
+      "count": 10,
+      "medianSeconds": 0.1304492,
+      "p95Seconds": 0.1405085,
+      "minimumSeconds": 0.124837,
+      "maximumSeconds": 0.1405085
+    },
+    {
+      "group": "aishell3/after",
+      "count": 10,
+      "medianSeconds": 0.09524955,
+      "p95Seconds": 0.1052023,
+      "minimumSeconds": 0.0897547,
+      "maximumSeconds": 0.1052023
+    },
+    {
+      "group": "aishell3/native",
+      "count": 10,
+      "medianSeconds": 0.0246292,
+      "p95Seconds": 0.0356314,
+      "minimumSeconds": 0.0210705,
+      "maximumSeconds": 0.0356314
+    }
+  ],
+  "asrTextChecks": {
+    "sip-short-pcma": {
+      "exactMatch": true,
+      "textsByVariant": {
+        "before": [
+          "\u6211\u60F3\u95EE\u6211\u5728\u6EE8\u6D77\u65B0\u533A\u6709\u623F"
+        ],
+        "after": [
+          "\u6211\u60F3\u95EE\u6211\u5728\u6EE8\u6D77\u65B0\u533A\u6709\u623F"
+        ],
+        "native": [
+          "\u6211\u60F3\u95EE\u6211\u5728\u6EE8\u6D77\u65B0\u533A\u6709\u623F"
+        ]
+      }
+    },
+    "sip-zh-pcmu": {
+      "exactMatch": true,
+      "textsByVariant": {
+        "before": [
+          "\u83DC\u996D\u65F6\u95F4\u65E9\u4E0A\u4E5D\u70B9\u81F3\u4E0B\u5348\u4E94\u70B9\u3002"
+        ],
+        "after": [
+          "\u83DC\u996D\u65F6\u95F4\u65E9\u4E0A\u4E5D\u70B9\u81F3\u4E0B\u5348\u4E94\u70B9\u3002"
+        ],
+        "native": [
+          "\u83DC\u996D\u65F6\u95F4\u65E9\u4E0A\u4E5D\u70B9\u81F3\u4E0B\u5348\u4E94\u70B9\u3002"
+        ]
+      }
+    },
+    "sip-repeated-pcma": {
+      "exactMatch": true,
+      "textsByVariant": {
+        "before": [
+          "\u6211\u60F3\u95EE\u6211\u5728\u6EE8\u6D77\u65B0\u533A\u6709\u623F\u3002\u6211\u60F3\u95EE\u6211\u5728\u6EE8\u6D77\u65B0\u533A\u6709\u623F\u3002\u6211\u60F3\u95EE\u6211\u5728\u6EE8\u6D77\u65B0\u533A\u6709\u623F\u3002\u6211\u60F3\u95EE\u6211\u5728\u6EE8\u6D77\u65B0\u533A\u6709\u623F\u3002"
+        ],
+        "after": [
+          "\u6211\u60F3\u95EE\u6211\u5728\u6EE8\u6D77\u65B0\u533A\u6709\u623F\u3002\u6211\u60F3\u95EE\u6211\u5728\u6EE8\u6D77\u65B0\u533A\u6709\u623F\u3002\u6211\u60F3\u95EE\u6211\u5728\u6EE8\u6D77\u65B0\u533A\u6709\u623F\u3002\u6211\u60F3\u95EE\u6211\u5728\u6EE8\u6D77\u65B0\u533A\u6709\u623F\u3002"
+        ],
+        "native": [
+          "\u6211\u60F3\u95EE\u6211\u5728\u6EE8\u6D77\u65B0\u533A\u6709\u623F\u3002\u6211\u60F3\u95EE\u6211\u5728\u6EE8\u6D77\u65B0\u533A\u6709\u623F\u3002\u6211\u60F3\u95EE\u6211\u5728\u6EE8\u6D77\u65B0\u533A\u6709\u623F\u3002\u6211\u60F3\u95EE\u6211\u5728\u6EE8\u6D77\u65B0\u533A\u6709\u623F\u3002"
+        ]
+      }
+    }
+  },
+  "binarySha256": {
+    "E:\\temp\\FunAsrNet\\artifacts\\load-gpu-round6\\before\\FunAsrNet.Benchmarks.dll": "eebff13e08bcce2ceb11a6f5fa7b671804471f67fde27d5e4f25999a41298583",
+    "E:\\temp\\FunAsrNet\\artifacts\\load-gpu-round6\\before\\FunAsrNet.dll": "eefa678f1947bec933de2c06b1baf15e58b3d83874411ae2c6db7f5a1b222996",
+    "E:\\temp\\FunAsrNet\\artifacts\\load-gpu-round6\\before\\FunAsrNet.Vulkan.dll": "5351959f6c317f7a4eef778a1af04bf3e6500ba435b67f01e11374d813e90679",
+    "E:\\temp\\FunAsrNet\\tools\\FunAsrNet.Benchmarks\\bin\\Release\\net10.0\\FunAsrNet.Benchmarks.dll": "c76bcf0098ced7dcb87e28c3543f40b69a44b5216679f12027371520cad051f5",
+    "E:\\temp\\FunAsrNet\\tools\\FunAsrNet.Benchmarks\\bin\\Release\\net10.0\\FunAsrNet.dll": "2c16a4a10ccfc5a7fae1f60c77014fcd8f7052d152502e1c3eceb3ab909c5bd9",
+    "E:\\temp\\FunAsrNet\\tools\\FunAsrNet.Benchmarks\\bin\\Release\\net10.0\\FunAsrNet.Vulkan.dll": "9b541202c3cc709c5dc03a7411820202d5a90f06c433a893f9f050d6a2fa87ea",
+    "E:\\temp\\FunAsrNet\\artifacts\\native-gpu\\build\\funasr-native-gpu-reference.exe": "012893ed99030b62088b289bb114bda495e66db3d12548c29d8bda50a4df315f",
+    "E:\\temp\\FunAsrNet\\tools\\FunAsrNet.NativeGpuReference\\bin\\Release\\net10.0\\FunAsrNet.NativeGpuReference.dll": "5bfa26fc0321277138d6c13ebe0112847e41c87717b075ad19babc852bded778"
+  },
+  "modelSha256": {
+    "funasr-encoder-f16.gguf": "f92f91d01a24fbed6c863495b2ee8c6a6788144a02858b75743f0946668de8a2",
+    "qwen3-0.6b-q8_0.gguf": "819f385dc0e035dccc3d9e7edaf6b7b044b8ba7ace63cbcbf84c7e397eecbf27",
+    "zh_CN-huayan-medium.onnx": "04234ec24907e9efa7e153669e07d4e0cf6d260adc005323aa929386dae53f86",
+    "aishell3/model.onnx": "5511d651b7840c0a93a6bbfd4afd070a2c7f39ca1ec3ff2ecd73191519bbb852"
+  },
+  "inputSha256": {
+    "aishell3.i64": "66ac60d96f74dd848d71580982ac6dd0227ce53ec80fac3afca25cfa2dc012ee",
+    "huayan.i64": "feb05cdbb64fdf8045f0c08e42701ee5e24a72f7feee73c2858abce65f760569",
+    "sip-repeated-pcma.f32": "839f53e709e87ed6c74b645c5e2f871fd4af68e84b4b09698372f2d065c5b048",
+    "sip-short-pcma.f32": "8ebc139144c67bba23110e445db36b0cb9da70eeef32e5e8ad0d9dda06ce2322",
+    "sip-zh-pcmu.f32": "fb705a8368d62b25bfec86b28b897e94c61173ca5ba6c0490b5556e078471432"
+  }
+}

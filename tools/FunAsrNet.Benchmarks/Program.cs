@@ -69,6 +69,18 @@ int[] Frequencies() => new[] { 4, 6 }
 if (args[0] == "gpu-check")
 {
     using var gpu = new VulkanFloatBackend(4L * 1024 * 1024) { MinimumOperations = 0 };
+    string? subgroupOption = Environment.GetEnvironmentVariable("FUNASRNET_VULKAN_SUBGROUP_Q8");
+    VulkanFloatBackend scalarGpu;
+    try
+    {
+        Environment.SetEnvironmentVariable("FUNASRNET_VULKAN_SUBGROUP_Q8", "0");
+        scalarGpu = new VulkanFloatBackend(4L * 1024 * 1024) { MinimumOperations = 0 };
+    }
+    finally
+    {
+        Environment.SetEnvironmentVariable("FUNASRNET_VULKAN_SUBGROUP_Q8", subgroupOption);
+    }
+    using var scalarLifetime = scalarGpu;
     var random = new Random(6103060);
     int checks = 0;
     foreach (int width in new[] { 32, 96, 1024 })
@@ -89,6 +101,7 @@ if (args[0] == "gpu-check")
                 float[] input = Enumerable.Range(0, frames * width).Select(_ => (float)(random.NextDouble() - 0.5)).ToArray();
                 float[] expected = new TensorMath(1, false).Linear(input, frames, weight);
                 float[] actual = new TensorMath(4) { FloatBackend = gpu }.Linear(input, frames, weight);
+                float[] scalar = new TensorMath(4) { FloatBackend = scalarGpu }.Linear(input, frames, weight);
                 for (int index = 0; index < actual.Length; index++)
                 {
                     if (!float.IsFinite(actual[index]) || Math.Abs(expected[index] - actual[index]) > 0.0002 * Math.Max(1, Math.Abs(expected[index])))
@@ -96,6 +109,11 @@ if (args[0] == "gpu-check")
                         throw new InvalidDataException($"Q8 GPU 参考误差：{index} {expected[index]} / {actual[index]}");
                     }
 
+                    checks++;
+                    if (BitConverter.SingleToInt32Bits(scalar[index]) != BitConverter.SingleToInt32Bits(actual[index]))
+                    {
+                        throw new InvalidDataException("GPU Q8 新旧着色器位结果不一致。");
+                    }
                     checks++;
                 }
             }
@@ -203,6 +221,29 @@ if (args[0] == "gpu-check")
                         }
                     }
                 }
+            }
+        }
+    }
+
+    foreach (int width in new[] { 19, 65, 513, 19 })
+    {
+        var dynamicWeight = new Weight("gpu-dynamic", [width, 35]) { Values = new float[width * 35], IsTransient = true };
+        float[] input = Enumerable.Range(0, width * 7).Select(_ => (float)(random.NextDouble() - 0.5)).ToArray();
+        for (int iteration = 0; iteration < 3; iteration++)
+        {
+            for (int index = 0; index < dynamicWeight.Values.Length; index++)
+            {
+                dynamicWeight.Values[index] = (float)(random.NextDouble() - 0.5);
+            }
+            float[] expected = new TensorMath(1, false).Linear(input, 7, dynamicWeight);
+            float[] actual = new TensorMath(4) { FloatBackend = gpu }.Linear(input, 7, dynamicWeight);
+            for (int index = 0; index < actual.Length; index++)
+            {
+                if (!float.IsFinite(actual[index]) || Math.Abs(expected[index] - actual[index]) > 0.0002 * Math.Max(1, Math.Abs(expected[index])))
+                {
+                    throw new InvalidDataException("GPU 临时权重重复上传或扩容后误差。");
+                }
+                checks++;
             }
         }
     }

@@ -13,7 +13,7 @@ public sealed unsafe partial class VulkanFloatBackend : IFloatComputeBackend, IQ
     private readonly long _cacheLimit;
     private readonly Dictionary<Array, Resident> _weights = new(ReferenceEqualityComparer.Instance);
     private readonly float[] _zero = [0];
-    private VkBuffer? _input, _output, _readback;
+    private VkBuffer? _input, _output, _readback, _transientWeight;
     private long _sequence, _cacheBytes, _hits, _uploads, _downloads, _linearCalls, _convolutionCalls;
     private double _seconds;
     private bool _disposed;
@@ -95,6 +95,8 @@ public sealed unsafe partial class VulkanFloatBackend : IFloatComputeBackend, IQ
                 linearCalls = _linearCalls,
                 convolutionCalls = _convolutionCalls,
                 quantizedCalls = _quantizedCalls,
+                quantizedKernel = _cooperativeQ8 ? "subgroup-eight-lane" : "scalar-row",
+                subgroupSize = _device.SubgroupSize,
                 cacheBytes = _cacheBytes,
                 cacheHits = _hits,
                 uploadedBytes = _uploads,
@@ -154,7 +156,7 @@ public sealed unsafe partial class VulkanFloatBackend : IFloatComputeBackend, IQ
                     parameters[12] |= 4;
                 }
             }
-            Execute(input, weight.Values, ordered ?? weight.Values, bias?.Values ?? _zero, output, parameters);
+            Execute(input, weight.Values, ordered ?? weight.Values, bias?.Values ?? _zero, output, parameters, weight.IsTransient);
             _linearCalls++;
             _seconds += Stopwatch.GetElapsedTime(started).TotalSeconds;
             return true;
@@ -287,6 +289,7 @@ public sealed unsafe partial class VulkanFloatBackend : IFloatComputeBackend, IQ
             buffer?.Free();
             buffer = null;
             buffer = _device.NewStorageBuffer(bytes, hostVisible, preferHost);
+            buffer.KeepMapped = hostVisible;
         }
     }
 
@@ -297,7 +300,8 @@ public sealed unsafe partial class VulkanFloatBackend : IFloatComputeBackend, IQ
     /// <param name="bias">只读偏置或单元素零数组。</param>
     /// <param name="output">CPU 结果数组，在栅栏完成后写入。</param>
     /// <param name="parameters">十三个 uint 推送参数，布局与 SPIR-V 一致。</param>
-    private void Execute(float[] input, float[] weightKey, float[] weightValues, float[] bias, float[] output, uint* parameters)
+    /// <param name="transientWeight">动态矩阵直接上传到可复用缓冲，不占用只读权重缓存。</param>
+    private void Execute(float[] input, float[] weightKey, float[] weightValues, float[] bias, float[] output, uint* parameters, bool transientWeight = false)
     {
         ulong inputBytes = checked((ulong)input.Length * sizeof(float));
         ulong outputBytes = checked((ulong)output.Length * sizeof(float));
@@ -306,7 +310,22 @@ public sealed unsafe partial class VulkanFloatBackend : IFloatComputeBackend, IQ
             throw new NotSupportedException("单次提交的权重与偏置超过缓存上限。");
         }
 
-        var weights = ResidentWeight(weightKey, weightValues);
+        VkBuffer weights;
+        if (transientWeight)
+        {
+            ulong weightBytes = checked((ulong)weightValues.Length * sizeof(float));
+            EnsureBuffer(ref _transientWeight, weightBytes, true);
+            fixed (float* source = weightValues)
+            {
+                _device.Upload(_transientWeight!, source, weightBytes);
+            }
+            weights = _transientWeight!;
+            _uploads += (long)weightBytes;
+        }
+        else
+        {
+            weights = ResidentWeight(weightKey, weightValues);
+        }
         var biases = ResidentWeight(bias, bias, weightKey);
         EnsureBuffer(ref _input, inputBytes, true);
         EnsureBuffer(ref _output, outputBytes, false);
@@ -389,6 +408,7 @@ public sealed unsafe partial class VulkanFloatBackend : IFloatComputeBackend, IQ
             _combinedScaleFirst.Clear();
             _cacheBytes = 0;
             _input?.Free();
+            _transientWeight?.Free();
             _output?.Free();
             _readback?.Free();
             _device.FreeDescriptorSet(_set);

@@ -1,0 +1,86 @@
+{
+  "load-models-0-before": [
+    "dotnet",
+    "E:\\temp\\FunAsrNet\\tools\\FunAsrNet.Compare\\bin\\Release\\net10.0\\FunAsrNet.Compare.dll",
+    "load-probe",
+    "E:\\temp\\FunAsrNet\\artifacts\\load-gpu-round6\\before\\FunAsrNet.dll",
+    "E:\\temp\\FunAsrNet\\artifacts\\local-models"
+  ],
+  "load-models-1-after": [
+    "dotnet",
+    "E:\\temp\\FunAsrNet\\tools\\FunAsrNet.Compare\\bin\\Release\\net10.0\\FunAsrNet.Compare.dll",
+    "load-probe",
+    "E:\\temp\\FunAsrNet\\tools\\FunAsrNet.Benchmarks\\bin\\Release\\net10.0\\FunAsrNet.dll",
+    "E:\\temp\\FunAsrNet\\artifacts\\local-models"
+  ],
+  "load-models-2-after": [
+    "dotnet",
+    "E:\\temp\\FunAsrNet\\tools\\FunAsrNet.Compare\\bin\\Release\\net10.0\\FunAsrNet.Compare.dll",
+    "load-probe",
+    "E:\\temp\\FunAsrNet\\tools\\FunAsrNet.Benchmarks\\bin\\Release\\net10.0\\FunAsrNet.dll",
+    "E:\\temp\\FunAsrNet\\artifacts\\local-models"
+  ],
+  "load-models-3-before": [
+    "dotnet",
+    "E:\\temp\\FunAsrNet\\tools\\FunAsrNet.Compare\\bin\\Release\\net10.0\\FunAsrNet.Compare.dll",
+    "load-probe",
+    "E:\\temp\\FunAsrNet\\artifacts\\load-gpu-round6\\before\\FunAsrNet.dll",
+    "E:\\temp\\FunAsrNet\\artifacts\\local-models"
+  ],
+  "load-models-4-before": [
+    "dotnet",
+    "E:\\temp\\FunAsrNet\\tools\\FunAsrNet.Compare\\bin\\Release\\net10.0\\FunAsrNet.Compare.dll",
+    "load-probe",
+    "E:\\temp\\FunAsrNet\\artifacts\\load-gpu-round6\\before\\FunAsrNet.dll",
+    "E:\\temp\\FunAsrNet\\artifacts\\local-models"
+  ],
+  "load-models-5-after": [
+    "dotnet",
+    "E:\\temp\\FunAsrNet\\tools\\FunAsrNet.Compare\\bin\\Release\\net10.0\\FunAsrNet.Compare.dll",
+    "load-probe",
+    "E:\\temp\\FunAsrNet\\tools\\FunAsrNet.Benchmarks\\bin\\Release\\net10.0\\FunAsrNet.dll",
+    "E:\\temp\\FunAsrNet\\artifacts\\local-models"
+  ],
+  "load-models-6-after": [
+    "dotnet",
+    "E:\\temp\\FunAsrNet\\tools\\FunAsrNet.Compare\\bin\\Release\\net10.0\\FunAsrNet.Compare.dll",
+    "load-probe",
+    "E:\\temp\\FunAsrNet\\tools\\FunAsrNet.Benchmarks\\bin\\Release\\net10.0\\FunAsrNet.dll",
+    "E:\\temp\\FunAsrNet\\artifacts\\local-models"
+  ],
+  "load-models-7-before": [
+    "dotnet",
+    "E:\\temp\\FunAsrNet\\tools\\FunAsrNet.Compare\\bin\\Release\\net10.0\\FunAsrNet.Compare.dll",
+    "load-probe",
+    "E:\\temp\\FunAsrNet\\artifacts\\load-gpu-round6\\before\\FunAsrNet.dll",
+    "E:\\temp\\FunAsrNet\\artifacts\\local-models"
+  ],
+  "load-models-8-before": [
+    "dotnet",
+    "E:\\temp\\FunAsrNet\\tools\\FunAsrNet.Compare\\bin\\Release\\net10.0\\FunAsrNet.Compare.dll",
+    "load-probe",
+    "E:\\temp\\FunAsrNet\\artifacts\\load-gpu-round6\\before\\FunAsrNet.dll",
+    "E:\\temp\\FunAsrNet\\artifacts\\local-models"
+  ],
+  "load-models-9-after": [
+    "dotnet",
+    "E:\\temp\\FunAsrNet\\tools\\FunAsrNet.Compare\\bin\\Release\\net10.0\\FunAsrNet.Compare.dll",
+    "load-probe",
+    "E:\\temp\\FunAsrNet\\tools\\FunAsrNet.Benchmarks\\bin\\Release\\net10.0\\FunAsrNet.dll",
+    "E:\\temp\\FunAsrNet\\artifacts\\local-models"
+  ],
+  "load-models-10-after": [
+    "dotnet",
+    "E:\\temp\\FunAsrNet\\tools\\FunAsrNet.Compare\\bin\\Release\\net10.0\\FunAsrNet.Compare.dll",
+    "load-probe",
+    "E:\\temp\\FunAsrNet\\tools\\FunAsrNet.Benchmarks\\bin\\Release\\net10.0\\FunAsrNet.dll",
+    "E:\\temp\\FunAsrNet\\artifacts\\local-models"
+  ],
+  "load-models-11-before": [
+    "dotnet",
+    "E:\\temp\\FunAsrNet\\tools\\FunAsrNet.Compare\\bin\\Release\\net10.0\\FunAsrNet.Compare.dll",
+    "load-probe",
+    "E:\\temp\\FunAsrNet\\artifacts\\load-gpu-round6\\before\\FunAsrNet.dll",
+    "E:\\temp\\FunAsrNet\\artifacts\\local-models"
+  ]
+}

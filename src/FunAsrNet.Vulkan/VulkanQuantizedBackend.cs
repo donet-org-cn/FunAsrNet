@@ -12,12 +12,19 @@ public sealed unsafe partial class VulkanFloatBackend
     private nint _quantizedShader, _quantizedSet;
     private VkBuffer? _inputScales;
     private long _quantizedCalls;
+    private bool _cooperativeQ8;
 
     /// <summary>创建 Q8_0 管线与描述符，FP32 管线和栅栏由主实例管理。</summary>
     private void InitializeQuantized()
     {
-        _quantizedShader = _device.NewShaderModule(QuantizedShader.Binary());
-        _quantizedPipeline = _device.NewPipeline(_quantizedShader, 6, 16);
+        uint size = _device.SubgroupSize;
+        _cooperativeQ8 = Environment.GetEnvironmentVariable("FUNASRNET_VULKAN_SUBGROUP_Q8") != "0"
+            && _device.SubgroupSizeControl && _device.ComputeSubgroupSize && _device.ComputeFullSubgroups
+            && (_device.SubgroupOps & 0x10) != 0 && (_device.SubgroupStages & 0x20) != 0
+            && size >= 8 && size <= 128 && (size & (size - 1)) == 0
+            && size >= _device.SubgroupMin && size <= _device.SubgroupMax;
+        _quantizedShader = _device.NewShaderModule(_cooperativeQ8 ? CooperativeQuantizedShader.Binary() : QuantizedShader.Binary());
+        _quantizedPipeline = _device.NewPipeline(_quantizedShader, 6, 16, _cooperativeQ8 ? size : 0);
         _quantizedSet = _device.NewDescriptorSet(_quantizedPipeline.SetLayout);
     }
 
@@ -108,7 +115,8 @@ public sealed unsafe partial class VulkanFloatBackend
                 {
                     parameters[3] |= 2;
                 }
-                DispatchAndRead(_quantizedPipeline!, _quantizedSet, parameters, 16, ((uint)rows + 127) / 128, (uint)frames, output);
+                uint rowsPerGroup = _cooperativeQ8 ? 16u : 128u;
+                DispatchAndRead(_quantizedPipeline!, _quantizedSet, parameters, 16, ((uint)rows + rowsPerGroup - 1) / rowsPerGroup, (uint)frames, output);
                 _quantizedCalls++;
                 _seconds += Stopwatch.GetElapsedTime(started).TotalSeconds;
             }

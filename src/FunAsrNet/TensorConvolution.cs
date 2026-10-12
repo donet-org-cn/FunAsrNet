@@ -55,7 +55,7 @@ public static partial class TensorOps
             // 右侧矩阵没有批维时，所有左侧行共享权重，一次调度并直接读取连续输入。
             int frames = b.Rank == 2 ? batches * m : m;
             float[] input = b.Rank == 2 ? a.Data : a.Data.AsSpan(ao, m * k).ToArray();
-            var result = math.Linear(input, frames, new Weight("MatMul", [k, n]) { Values = weights });
+            var result = math.Linear(input, frames, new Weight("MatMul", [k, n]) { Values = weights, IsTransient = true });
             result.CopyTo(y.Data, batch * m * n);
             TensorWorkspace.Release(result);
         }
@@ -261,7 +261,8 @@ public static partial class TensorOps
 
         var weight = new Weight(node.Name, [inputs, outputs * kernel])
         {
-            Values = packed
+            Values = packed,
+            IsTransient = true
         };
         for (int b = 0; b < batches; ++b)
         {

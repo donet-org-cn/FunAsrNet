@@ -16,8 +16,8 @@ internal static partial class SpeechShader
             uint batches; uint channels; uint inputLength; uint outLength;
             uint kernel; uint stride; uint dilation; uint padLeft; uint hasBias;
         } p;
-        shared float A[32][16];
-        shared float B[32][16];
+        shared float A[32][33];
+        shared float B[32][33];
         float loadA(uint row, uint column) {
             if (row >= p.M || column >= p.K) return 0.0;
             if (p.mode == 0) return x[row * p.K + column];
@@ -35,24 +35,24 @@ internal static partial class SpeechShader
             uint m0=gl_WorkGroupID.x*32, n0=gl_WorkGroupID.y*32;
             float sum[16];
             for(uint i=0;i<16;i++) sum[i]=0.0;
-            for(uint k0=0;k0<p.K;k0+=16) {
-                for(uint item=tid;item<512;item+=64) {
-                    uint row=item/16, col=item%16;
-                    A[row][col]=loadA(m0+row,k0+col);
-                    B[row][col]=(n0+row<p.N && k0+col<p.K) ? w[(n0+row)*p.K+k0+col] : 0.0;
+            for(uint k0=0;k0<p.K;k0+=32) {
+                for(uint item=tid;item<1024;item+=64) {
+                    uint row=item/32, col=item%32;
+                    A[col][row]=loadA(m0+row,k0+col);
+                    B[col][row]=(n0+row<p.N && k0+col<p.K) ? w[(n0+row)*p.K+k0+col] : 0.0;
                 }
                 barrier();
-                for(uint k=0;k<16;k++) {
+                for(uint k=0;k<32;k++) {
                     for(uint mi=0;mi<4;mi++) {
-                        float av=A[ly*4+mi][k];
+                        float av=A[k][ly*4+mi];
                         for(uint ni=0;ni<4;ni++) {
                             uint index=mi*4+ni;
                             if((p.hasBias&4)!=0) {
-                                precise float product=av*B[lx*4+ni][k];
+                                precise float product=av*B[k][lx*4+ni];
                                 precise float separate=sum[index]+product;
                                 sum[index]=separate;
                             } else {
-                                sum[index]=fma(av,B[lx*4+ni][k],sum[index]);
+                                sum[index]=fma(av,B[k][lx*4+ni],sum[index]);
                             }
                         }
                     }

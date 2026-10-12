@@ -1,0 +1,274 @@
+{
+  "mode": "cpu",
+  "threads": 4,
+  "affinity": "0x55",
+  "measured": 126,
+  "warmup": 42,
+  "groups": [
+    {
+      "group": "sip-short-pcma/before",
+      "count": 6,
+      "medianSeconds": 0.7129008,
+      "p95Seconds": 0.7906646,
+      "minimumSeconds": 0.7043075,
+      "maximumSeconds": 0.7906646
+    },
+    {
+      "group": "sip-short-pcma/after",
+      "count": 6,
+      "medianSeconds": 0.71803515,
+      "p95Seconds": 0.73411,
+      "minimumSeconds": 0.7102594,
+      "maximumSeconds": 0.73411
+    },
+    {
+      "group": "sip-short-pcma/native",
+      "count": 6,
+      "medianSeconds": 0.7759864999999999,
+      "p95Seconds": 0.798418,
+      "minimumSeconds": 0.759707,
+      "maximumSeconds": 0.798418
+    },
+    {
+      "group": "sip-zh-pcmu/before",
+      "count": 6,
+      "medianSeconds": 0.8260218500000001,
+      "p95Seconds": 0.8381001,
+      "minimumSeconds": 0.8076149,
+      "maximumSeconds": 0.8381001
+    },
+    {
+      "group": "sip-zh-pcmu/after",
+      "count": 6,
+      "medianSeconds": 0.8426909,
+      "p95Seconds": 0.8537532,
+      "minimumSeconds": 0.8337221,
+      "maximumSeconds": 0.8537532
+    },
+    {
+      "group": "sip-zh-pcmu/native",
+      "count": 6,
+      "medianSeconds": 0.8961405,
+      "p95Seconds": 1.030298,
+      "minimumSeconds": 0.874004,
+      "maximumSeconds": 1.030298
+    },
+    {
+      "group": "sip-repeated-pcma/before",
+      "count": 6,
+      "medianSeconds": 2.8882347,
+      "p95Seconds": 2.9816149,
+      "minimumSeconds": 2.8774085,
+      "maximumSeconds": 2.9816149
+    },
+    {
+      "group": "sip-repeated-pcma/after",
+      "count": 6,
+      "medianSeconds": 2.9026731,
+      "p95Seconds": 3.0676943,
+      "minimumSeconds": 2.8548067,
+      "maximumSeconds": 3.0676943
+    },
+    {
+      "group": "sip-repeated-pcma/native",
+      "count": 6,
+      "medianSeconds": 3.041477,
+      "p95Seconds": 3.191946,
+      "minimumSeconds": 3.024822,
+      "maximumSeconds": 3.191946
+    },
+    {
+      "group": "sip-official-short/before",
+      "count": 6,
+      "medianSeconds": 0.6750787,
+      "p95Seconds": 0.7696936,
+      "minimumSeconds": 0.6567243,
+      "maximumSeconds": 0.7696936
+    },
+    {
+      "group": "sip-official-short/after",
+      "count": 6,
+      "medianSeconds": 0.66784,
+      "p95Seconds": 0.6840147,
+      "minimumSeconds": 0.661825,
+      "maximumSeconds": 0.6840147
+    },
+    {
+      "group": "sip-official-short/native",
+      "count": 6,
+      "medianSeconds": 0.7307425000000001,
+      "p95Seconds": 0.746769,
+      "minimumSeconds": 0.726158,
+      "maximumSeconds": 0.746769
+    },
+    {
+      "group": "sip-official-pcma/before",
+      "count": 6,
+      "medianSeconds": 0.6690159499999999,
+      "p95Seconds": 0.7334286,
+      "minimumSeconds": 0.6614526,
+      "maximumSeconds": 0.7334286
+    },
+    {
+      "group": "sip-official-pcma/after",
+      "count": 6,
+      "medianSeconds": 0.67255195,
+      "p95Seconds": 0.6805958,
+      "minimumSeconds": 0.6666909,
+      "maximumSeconds": 0.6805958
+    },
+    {
+      "group": "sip-official-pcma/native",
+      "count": 6,
+      "medianSeconds": 0.735072,
+      "p95Seconds": 0.783999,
+      "minimumSeconds": 0.724408,
+      "maximumSeconds": 0.783999
+    },
+    {
+      "group": "huayan/before",
+      "count": 6,
+      "medianSeconds": 0.1451586,
+      "p95Seconds": 0.147503,
+      "minimumSeconds": 0.1400085,
+      "maximumSeconds": 0.147503
+    },
+    {
+      "group": "huayan/after",
+      "count": 6,
+      "medianSeconds": 0.14247125,
+      "p95Seconds": 0.1508599,
+      "minimumSeconds": 0.1392479,
+      "maximumSeconds": 0.1508599
+    },
+    {
+      "group": "huayan/native",
+      "count": 6,
+      "medianSeconds": 0.10778489999999999,
+      "p95Seconds": 0.1105824,
+      "minimumSeconds": 0.1057517,
+      "maximumSeconds": 0.1105824
+    },
+    {
+      "group": "aishell3/before",
+      "count": 6,
+      "medianSeconds": 0.0679974,
+      "p95Seconds": 0.0796314,
+      "minimumSeconds": 0.065253,
+      "maximumSeconds": 0.0796314
+    },
+    {
+      "group": "aishell3/after",
+      "count": 6,
+      "medianSeconds": 0.0665642,
+      "p95Seconds": 0.079135,
+      "minimumSeconds": 0.0659461,
+      "maximumSeconds": 0.079135
+    },
+    {
+      "group": "aishell3/native",
+      "count": 6,
+      "medianSeconds": 0.045768249999999996,
+      "p95Seconds": 0.0479991,
+      "minimumSeconds": 0.0450878,
+      "maximumSeconds": 0.0479991
+    }
+  ],
+  "asrTextChecks": {
+    "sip-short-pcma": {
+      "exactMatch": true,
+      "textsByVariant": {
+        "before": [
+          "\u6211\u60F3\u95EE\u6211\u5728\u6EE8\u6D77\u65B0\u533A\u6709\u623F\u3002"
+        ],
+        "after": [
+          "\u6211\u60F3\u95EE\u6211\u5728\u6EE8\u6D77\u65B0\u533A\u6709\u623F\u3002"
+        ],
+        "native": [
+          "\u6211\u60F3\u95EE\u6211\u5728\u6EE8\u6D77\u65B0\u533A\u6709\u623F\u3002"
+        ]
+      }
+    },
+    "sip-zh-pcmu": {
+      "exactMatch": true,
+      "textsByVariant": {
+        "before": [
+          "\u83DC\u996D\u65F6\u95F4\u65E9\u4E0A\u4E5D\u70B9\u81F3\u4E0B\u5348\u4E94\u70B9\u3002"
+        ],
+        "after": [
+          "\u83DC\u996D\u65F6\u95F4\u65E9\u4E0A\u4E5D\u70B9\u81F3\u4E0B\u5348\u4E94\u70B9\u3002"
+        ],
+        "native": [
+          "\u83DC\u996D\u65F6\u95F4\u65E9\u4E0A\u4E5D\u70B9\u81F3\u4E0B\u5348\u4E94\u70B9\u3002"
+        ]
+      }
+    },
+    "sip-repeated-pcma": {
+      "exactMatch": true,
+      "textsByVariant": {
+        "before": [
+          "\u6211\u60F3\u95EE\u6211\u5728\u6EE8\u6D77\u65B0\u533A\u6709\u623F\u3002\u6211\u60F3\u95EE\u6211\u5728\u6EE8\u6D77\u65B0\u533A\u6709\u623F\u3002\u6211\u60F3\u95EE\u6211\u5728\u6EE8\u6D77\u65B0\u533A\u6709\u623F\u3002\u6211\u60F3\u95EE\u6211\u5728\u6EE8\u6D77\u65B0\u533A\u6709\u623F\u3002"
+        ],
+        "after": [
+          "\u6211\u60F3\u95EE\u6211\u5728\u6EE8\u6D77\u65B0\u533A\u6709\u623F\u3002\u6211\u60F3\u95EE\u6211\u5728\u6EE8\u6D77\u65B0\u533A\u6709\u623F\u3002\u6211\u60F3\u95EE\u6211\u5728\u6EE8\u6D77\u65B0\u533A\u6709\u623F\u3002\u6211\u60F3\u95EE\u6211\u5728\u6EE8\u6D77\u65B0\u533A\u6709\u623F\u3002"
+        ],
+        "native": [
+          "\u6211\u60F3\u95EE\u6211\u5728\u6EE8\u6D77\u65B0\u533A\u6709\u623F\u3002\u6211\u60F3\u95EE\u6211\u5728\u6EE8\u6D77\u65B0\u533A\u6709\u623F\u3002\u6211\u60F3\u95EE\u6211\u5728\u6EE8\u6D77\u65B0\u533A\u6709\u623F\u3002\u6211\u60F3\u95EE\u6211\u5728\u6EE8\u6D77\u65B0\u533A\u6709\u623F\u3002"
+        ]
+      }
+    },
+    "sip-official-short": {
+      "exactMatch": true,
+      "textsByVariant": {
+        "before": [
+          "\u6211\u60F3\u95EE\u6211\u5728\u6EE8\u6D77\u65B0\u533A\u6709\u623F"
+        ],
+        "after": [
+          "\u6211\u60F3\u95EE\u6211\u5728\u6EE8\u6D77\u65B0\u533A\u6709\u623F"
+        ],
+        "native": [
+          "\u6211\u60F3\u95EE\u6211\u5728\u6EE8\u6D77\u65B0\u533A\u6709\u623F"
+        ]
+      }
+    },
+    "sip-official-pcma": {
+      "exactMatch": true,
+      "textsByVariant": {
+        "before": [
+          "\u6211\u60F3\u95EE\u6211\u5728\u6EE8\u6D77\u65B0\u533A\u6709\u623F"
+        ],
+        "after": [
+          "\u6211\u60F3\u95EE\u6211\u5728\u6EE8\u6D77\u65B0\u533A\u6709\u623F"
+        ],
+        "native": [
+          "\u6211\u60F3\u95EE\u6211\u5728\u6EE8\u6D77\u65B0\u533A\u6709\u623F"
+        ]
+      }
+    }
+  },
+  "binarySha256": {
+    "E:\\temp\\FunAsrNet\\artifacts\\load-gpu-round6\\before\\FunAsrNet.Benchmarks.dll": "eebff13e08bcce2ceb11a6f5fa7b671804471f67fde27d5e4f25999a41298583",
+    "E:\\temp\\FunAsrNet\\artifacts\\load-gpu-round6\\before\\FunAsrNet.dll": "eefa678f1947bec933de2c06b1baf15e58b3d83874411ae2c6db7f5a1b222996",
+    "E:\\temp\\FunAsrNet\\artifacts\\load-gpu-round6\\before\\FunAsrNet.Vulkan.dll": "5351959f6c317f7a4eef778a1af04bf3e6500ba435b67f01e11374d813e90679",
+    "E:\\temp\\FunAsrNet\\tools\\FunAsrNet.Benchmarks\\bin\\Release\\net10.0\\FunAsrNet.Benchmarks.dll": "c76bcf0098ced7dcb87e28c3543f40b69a44b5216679f12027371520cad051f5",
+    "E:\\temp\\FunAsrNet\\tools\\FunAsrNet.Benchmarks\\bin\\Release\\net10.0\\FunAsrNet.dll": "2c16a4a10ccfc5a7fae1f60c77014fcd8f7052d152502e1c3eceb3ab909c5bd9",
+    "E:\\temp\\FunAsrNet\\tools\\FunAsrNet.Benchmarks\\bin\\Release\\net10.0\\FunAsrNet.Vulkan.dll": "9b541202c3cc709c5dc03a7411820202d5a90f06c433a893f9f050d6a2fa87ea",
+    "E:\\temp\\FunAsrNet\\artifacts\\native-cpu\\build-vnni\\funasr-native-cpu-reference.exe": "217da1d28db2ae4718c12d92f4dc23fdb66e2a71b980ec2d6905658e8e4a6d09",
+    "E:\\temp\\FunAsrNet\\tools\\FunAsrNet.NativeReference\\bin\\Release\\net10.0\\FunAsrNet.NativeReference.dll": "3c3486259f842c93f11d8368ac0c0e9f3bb7d72ef9df53153af574af16e37f43"
+  },
+  "modelSha256": {
+    "funasr-encoder-f16.gguf": "f92f91d01a24fbed6c863495b2ee8c6a6788144a02858b75743f0946668de8a2",
+    "qwen3-0.6b-q8_0.gguf": "819f385dc0e035dccc3d9e7edaf6b7b044b8ba7ace63cbcbf84c7e397eecbf27",
+    "zh_CN-huayan-medium.onnx": "04234ec24907e9efa7e153669e07d4e0cf6d260adc005323aa929386dae53f86",
+    "aishell3/model.onnx": "5511d651b7840c0a93a6bbfd4afd070a2c7f39ca1ec3ff2ecd73191519bbb852"
+  },
+  "inputSha256": {
+    "aishell3.i64": "66ac60d96f74dd848d71580982ac6dd0227ce53ec80fac3afca25cfa2dc012ee",
+    "huayan.i64": "feb05cdbb64fdf8045f0c08e42701ee5e24a72f7feee73c2858abce65f760569",
+    "sip-official-pcma.f32": "3ce8d1e2e027cdd55927903791e2f9e0daf5bb00f58c56932943bc48d07d9838",
+    "sip-official-short.f32": "ae2fda8ce95f85cad76bfb8e5fc885006ef723c366142255763f5a1541affbab",
+    "sip-repeated-pcma.f32": "839f53e709e87ed6c74b645c5e2f871fd4af68e84b4b09698372f2d065c5b048",
+    "sip-short-pcma.f32": "8ebc139144c67bba23110e445db36b0cb9da70eeef32e5e8ad0d9dda06ce2322",
+    "sip-zh-pcmu.f32": "fb705a8368d62b25bfec86b28b897e94c61173ca5ba6c0490b5556e078471432"
+  }
+}

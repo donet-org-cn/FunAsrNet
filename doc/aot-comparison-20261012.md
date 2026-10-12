@@ -76,12 +76,12 @@ $env:FUNASRNET_DISABLE_PROMPT_CACHE = '1'
 
 本机首次恢复因审计源不可达失败；正式构建使用已缓存的 10.0.12 编译包，并在命令上加 `-p:NuGetAudit=false`，未改全局 NuGet 设置。普通 JIT 和 AOT 发布目录独立；解决方案默认发布方式不变。
 
-完整交错协议脚本为 [run-comparison.py](../tools/FunAsrNet.AotBenchmarks/run-comparison.py)，从仓库根目录运行：
+历史 Python 编排已清理，当前使用 [C# 对比入口](../tools/FunAsrNet.Compare/README.md) 发起新的热态对照，从仓库根目录运行：
 
 ```powershell
-python tools/FunAsrNet.AotBenchmarks/run-comparison.py --output artifacts/aot-comparison/repeat-01
+dotnet run --project tools/FunAsrNet.Compare -c Release -- aot --output artifacts/aot-comparison/repeat-01
 ```
 
-脚本需要本机模型、相同 f32/i64 输入和已构建的原生参照；输出目录必须尚不存在，避免覆盖证据。可用参数指定路径。原生构建方法见 [CPU 后续对比](cpu-followup-20261012.md)。输入与权重未公开分发，不能声称公开仓库一键复现全部实验。
+工具需要本机模型、相同 f32/i64 输入和已构建的原生参照；输出目录必须尚不存在，避免覆盖证据。可用参数指定路径。此入口不自动重跑本历史报告中的额外启动和 prime 实验；历史 manifest 中已删除脚本的散列仍保留，原始测量不改写。原生构建方法见 [CPU 后续对比](cpu-followup-20261012.md)。输入与权重未公开分发，不能声称公开仓库一键复现全部实验。
 
 源基础提交为 `6fa904a`，本轮源码、模型、输入和二进制散列见 [manifest.json](benchmarks/20261012-aot/manifest.json)，统计、各次调用和正确性见 [summary.json](benchmarks/20261012-aot/summary.json)，证据校验见 [SHA256SUMS.txt](benchmarks/20261012-aot/SHA256SUMS.txt)。现有服务和持续推理优化仍应以各自实测为准。

@@ -20,6 +20,7 @@ internal unsafe sealed class VkDevice : IDisposable
     public bool CoopMatrix;            // VK_KHR_cooperative_matrix (feature + ext enabled)
     public bool SubgroupSizeControl;   // VK_EXT_subgroup_size_control
     public bool ComputeSubgroupSize;   // ...and requiredSubgroupSizeStages covers compute
+    public bool ComputeFullSubgroups; // queried and enabled, required by cooperative Q8
     public bool Coop16x16x16;          // fp16 A/B, fp32 C/result, subgroup scope 16x16x16
     public bool Coop8x16x16;           // same types, MxNxK 8x16x16 (Arc)
     public uint SubgroupMin = 1, SubgroupMax = 128;
@@ -274,9 +275,18 @@ internal unsafe sealed class VkDevice : IDisposable
             Vk.VkPhysicalDeviceSubgroupSizeControlFeaturesEXT sgcEn = new()
             {
                 SType = VkConst.StPhysicalDeviceSubgroupSizeControlFeaturesEXT,
-                SubgroupSizeControl = hasSgc ? 1u : 0u,
             };
-            d.SubgroupSizeControl = hasSgc;
+            if (hasSgc)
+            {
+                Vk.VkPhysicalDeviceFeatures2 sgcQuery = new()
+                {
+                    SType = VkConst.StPhysicalDeviceFeatures2,
+                    PNext = &sgcEn
+                };
+                Vk.vkGetPhysicalDeviceFeatures2(d.PhysDevice, &sgcQuery);
+            }
+            d.SubgroupSizeControl = sgcEn.SubgroupSizeControl != 0;
+            d.ComputeFullSubgroups = sgcEn.ComputeFullSubgroups != 0;
             Vk.VkPhysicalDeviceShaderFloat16Int8Features f16en = new()
             {
                 SType = VkConst.StPhysicalDeviceShaderFloat16Int8Features,
@@ -700,6 +710,7 @@ internal unsafe sealed class VkDevice : IDisposable
                 Module = shaderModule,
                 PName = name,
                 PNext = requiredSubgroupSize != 0 && SubgroupSizeControl ? &sgc : null,
+                Flags = requiredSubgroupSize != 0 && SubgroupSizeControl && ComputeFullSubgroups ? 2u : 0u,
             },
             Layout = layout,
         };
@@ -1020,16 +1031,29 @@ internal unsafe sealed class VkBuffer
     public IntPtr Dev, Buffer, Memory;
     public ulong Size;
     public uint Flags;
+    public bool KeepMapped;
+    private void* _mapped;
 
     public bool HostCoherent => (Flags & VkConst.MemHostCoherent) != 0;
 
     public void* Map()
     {
-        void* p;
-        Vk.Check(Vk.vkMapMemory(Dev, Memory, 0, Size, 0, &p), "vkMapMemory");
-        return p;
+        if (_mapped == null)
+        {
+            void* p;
+            Vk.Check(Vk.vkMapMemory(Dev, Memory, 0, Size, 0, &p), "vkMapMemory");
+            _mapped = p;
+        }
+        return _mapped;
     }
-    public void Unmap() => Vk.vkUnmapMemory(Dev, Memory);
+    public void Unmap()
+    {
+        if (!KeepMapped && _mapped != null)
+        {
+            Vk.vkUnmapMemory(Dev, Memory);
+            _mapped = null;
+        }
+    }
 
     public void Flush(ulong offset, ulong size)
     {
@@ -1060,6 +1084,8 @@ internal unsafe sealed class VkBuffer
 
     public void Free()
     {
+        KeepMapped = false;
+        Unmap();
         if (Buffer != IntPtr.Zero)
         {
             Vk.vkDestroyBuffer(Dev, Buffer, null);

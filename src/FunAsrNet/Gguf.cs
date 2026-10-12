@@ -1,5 +1,6 @@
 using System.Text;
 using System.Runtime.InteropServices;
+using System.Buffers;
 
 namespace FunAsrNet;
 
@@ -41,6 +42,9 @@ public sealed class Gguf
     /// <param name="path">输入或输出文件的路径。</param>
     public Gguf(string path)
     {
+        bool profile = Environment.GetEnvironmentVariable("FUNASRNET_PROFILE_LOAD") == "1";
+        var timer = profile ? System.Diagnostics.Stopwatch.StartNew() : null;
+        long readTicks = 0, unpackTicks = 0, allocateTicks = 0;
         using var stream = File.OpenRead(path);
         using var reader = new BinaryReader(stream, Encoding.UTF8);
         if (reader.ReadUInt32() != 0x46554747)
@@ -86,6 +90,10 @@ public sealed class Gguf
         }
 
         long dataStart = (stream.Position + alignment - 1) / alignment * alignment;
+        if (profile)
+        {
+            Console.Error.WriteLine($"GGUF metadata {Path.GetFileName(path)}: {timer!.Elapsed.TotalSeconds:F6}s");
+        }
         foreach (var d in descriptors)
         {
             int count = 1;
@@ -103,11 +111,23 @@ public sealed class Gguf
             }
             else if (d.Type == 1)
             {
-                byte[] raw = new byte[checked(count * 2)];
-                stream.ReadExactly(raw);
-                var half = MemoryMarshal.Cast<byte, Half>(raw);
                 weight.Values = GC.AllocateUninitializedArray<float>(count);
-                TensorMath.ConvertHalfToSingle(half, weight.Values);
+                byte[] raw = ArrayPool<byte>.Shared.Rent(128 * 1024);
+                try
+                {
+                    for (int offset = 0; offset < count;)
+                    {
+                        int items = Math.Min(count - offset, raw.Length / 2);
+                        var bytes = raw.AsSpan(0, items * 2);
+                        stream.ReadExactly(bytes);
+                        TensorMath.ConvertHalfToSingle(MemoryMarshal.Cast<byte, Half>(bytes), weight.Values.AsSpan(offset, items));
+                        offset += items;
+                    }
+                }
+                finally
+                {
+                    ArrayPool<byte>.Shared.Return(raw);
+                }
             }
             else if (d.Type == 8)
             {
@@ -117,14 +137,38 @@ public sealed class Gguf
                 }
 
                 int blocks = count / 32;
-                byte[] raw = new byte[checked(blocks * 34)];
-                stream.ReadExactly(raw);
+                long tick = profile ? System.Diagnostics.Stopwatch.GetTimestamp() : 0;
                 weight.Quantized = GC.AllocateUninitializedArray<sbyte>(count);
-                weight.Scales = new float[blocks];
-                for (int b = 0; b < blocks; ++b)
+                weight.Scales = GC.AllocateUninitializedArray<float>(blocks);
+                if (profile)
                 {
-                    weight.Scales[b] = (float)BitConverter.UInt16BitsToHalf(BitConverter.ToUInt16(raw, b * 34));
-                    MemoryMarshal.Cast<byte, sbyte>(raw.AsSpan(b * 34 + 2, 32)).CopyTo(weight.Quantized.AsSpan(b * 32));
+                    allocateTicks += System.Diagnostics.Stopwatch.GetTimestamp() - tick;
+                }
+                byte[] raw = ArrayPool<byte>.Shared.Rent(34 * 4096);
+                try
+                {
+                    for (int offset = 0; offset < blocks;)
+                    {
+                        int batch = Math.Min(blocks - offset, raw.Length / 34);
+                        var bytes = raw.AsSpan(0, batch * 34);
+                        tick = profile ? System.Diagnostics.Stopwatch.GetTimestamp() : 0;
+                        stream.ReadExactly(bytes);
+                        if (profile)
+                        {
+                            readTicks += System.Diagnostics.Stopwatch.GetTimestamp() - tick;
+                            tick = System.Diagnostics.Stopwatch.GetTimestamp();
+                        }
+                        TensorMath.UnpackQ8Model(bytes, weight.Quantized.AsSpan(offset * 32, batch * 32), weight.Scales.AsSpan(offset, batch));
+                        if (profile)
+                        {
+                            unpackTicks += System.Diagnostics.Stopwatch.GetTimestamp() - tick;
+                        }
+                        offset += batch;
+                    }
+                }
+                finally
+                {
+                    ArrayPool<byte>.Shared.Return(raw);
                 }
             }
             else
@@ -133,6 +177,10 @@ public sealed class Gguf
             }
 
             Tensors.Add(d.Name, weight);
+        }
+        if (profile)
+        {
+            Console.Error.WriteLine($"GGUF total {Path.GetFileName(path)}: {timer!.Elapsed.TotalSeconds:F6}s; Q8 read/allocate/unpack {readTicks / (double)System.Diagnostics.Stopwatch.Frequency:F6}/{allocateTicks / (double)System.Diagnostics.Stopwatch.Frequency:F6}/{unpackTicks / (double)System.Diagnostics.Stopwatch.Frequency:F6}s");
         }
     }
 
@@ -211,6 +259,8 @@ public sealed partial class Weight(string name, int[] shape)
     /// 模型中的唯一权重名称。
     /// </summary>
     public string Name { get; } = name;
+    /// <summary>是否仅供本次投影使用；GPU 应复用临时上传缓冲，而非把动态矩阵保留在权重缓存。</summary>
+    public bool IsTransient { get; internal set; }
     /// <summary>
     /// 张量维度数组；视图共享时不得通过修改维度破坏其他使用者。
     /// </summary>
