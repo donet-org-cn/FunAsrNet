@@ -13,7 +13,7 @@
 5. 从 NuGet 公开地址下载两个包，逐 ZIP 成员比对内容。NuGet 添加的 .signature.p7s 仓库签名单独排除，程序集、元数据等均须一致。
 6. 核对成功后创建非预发布的 GitHub Release，并附带包、符号、清单和公开下载验证记录。
 
-只支持正式 major.minor.patch。推送 v1.0.0 一类标签会发布；手工 workflow_dispatch 默认 publish=false，只验证。开启发布时，标签必须存在、指向本次运行的同一提交，且该提交位于 main 历史中。不要移动已经发布的标签或复用 NuGet 版本。
+只支持正式 major.minor.patch。推送 v1.0.1 一类标签会发布；手工 workflow_dispatch 默认 publish=false，只验证。开启发布时，标签必须存在、指向本次运行的同一提交，且该提交位于 main 历史中。不要移动已经发布的标签或复用 NuGet 版本。
 
 GitHub 托管 runner 不承诺有可用 GPU；GPU 设备数值验证与完整模型性能证据由本机报告提供，流水线不会将无 GPU 的安装测试写成 GPU 正确性测试。
 
@@ -39,8 +39,8 @@ GitHub 托管 runner 不承诺有可用 GPU；GPU 设备数值验证与完整模
 ```powershell
 dotnet build FunAsrNet.sln -c Release
 dotnet run --project tests/FunAsrNet.Checks -c Release --no-build
-./tools/PackRelease.ps1 -Version 1.0.0
-./tools/TestPackages.ps1 -Version 1.0.0 -Packages artifacts/packages/1.0.0
+./tools/PackRelease.ps1 -Version 1.0.1
+./tools/TestPackages.ps1 -Version 1.0.1 -Packages artifacts/packages/1.0.1
 ```
 
 若维护机器安装的 SDK 低于 global.json，而该源码已在相应 SDK 验证，可向两个打包脚本显式传入 -DotNetSdk 'C:/Program Files/dotnet/sdk/10.0.204/dotnet.dll'。正式 CI 使用 setup-dotnet 提供的 10.0.x，并遵循 global.json。

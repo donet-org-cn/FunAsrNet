@@ -136,11 +136,20 @@ public static partial class TensorOps
     {
         switch (operation)
         {
-            case "Add": ArithmeticBlockCore<AddOperation>(left, right, output, scalar); break;
-            case "Sub": ArithmeticBlockCore<SubtractOperation>(left, right, output, scalar); break;
-            case "Mul": ArithmeticBlockCore<MultiplyOperation>(left, right, output, scalar); break;
-            case "Div": ArithmeticBlockCore<DivideOperation>(left, right, output, scalar); break;
-            default: throw new InvalidOperationException("未验证的逐元素运算。");
+            case "Add":
+                ArithmeticBlockCore<AddOperation>(left, right, output, scalar);
+                break;
+            case "Sub":
+                ArithmeticBlockCore<SubtractOperation>(left, right, output, scalar);
+                break;
+            case "Mul":
+                ArithmeticBlockCore<MultiplyOperation>(left, right, output, scalar);
+                break;
+            case "Div":
+                ArithmeticBlockCore<DivideOperation>(left, right, output, scalar);
+                break;
+            default:
+                throw new InvalidOperationException("未验证的逐元素运算。");
         }
     }
 
@@ -213,16 +222,24 @@ public static partial class TensorOps
     }
 
     /// <summary>加法内核的编译期类型标记。</summary>
-    private readonly struct AddOperation { }
+    private readonly struct AddOperation
+    {
+    }
 
     /// <summary>减法内核的编译期类型标记。</summary>
-    private readonly struct SubtractOperation { }
+    private readonly struct SubtractOperation
+    {
+    }
 
     /// <summary>乘法内核的编译期类型标记。</summary>
-    private readonly struct MultiplyOperation { }
+    private readonly struct MultiplyOperation
+    {
+    }
 
     /// <summary>除法内核的编译期类型标记。</summary>
-    private readonly struct DivideOperation { }
+    private readonly struct DivideOperation
+    {
+    }
 
     /// <summary>向量化 LeakyRelu，保留负零和 NaN 的标量分支语义。</summary>
     /// <param name="x">只读 FP32 输入张量。</param>

@@ -10,8 +10,8 @@ Independent C#/.NET 10 speech inference for fixed Fun-ASR speech recognition and
 | `FunAsrNet.Vulkan` | Optional Vulkan GPU backend; depends on `FunAsrNet` |
 
 ```shell
-dotnet add package FunAsrNet --version 1.0.0
-dotnet add package FunAsrNet.Vulkan --version 1.0.0
+dotnet add package FunAsrNet --version 1.0.1
+dotnet add package FunAsrNet.Vulkan --version 1.0.1
 ```
 
 Requires .NET 10 or later. The CPU package has no native inference dependency. The GPU package requires a compatible installed Vulkan driver; it does not bundle a driver, CUDA, ONNX Runtime or model weights.

@@ -8,7 +8,7 @@ on:
       version:
         description: 'Stable version from Directory.Build.props'
         required: true
-        default: '1.0.0'
+        default: '1.0.1'
       publish:
         description: 'Publish the verified tag to NuGet.org and GitHub Releases'
         type: boolean

@@ -92,7 +92,10 @@ internal static class OnnxBufferChecks
                 model.Nodes.Clear();
                 model.Nodes.Add(new("owned", "Add", ["input", "constant"], ["owned"], []));
                 model.Nodes.Add(new("pointwise", operation, rightSide ? ["constant", "owned"] : ["owned", "constant"], ["pointwise"], []));
-                model.Nodes.Add(new("activation", "LeakyRelu", ["pointwise"], ["activated"], new() { ["alpha"] = 0.1f }));
+                model.Nodes.Add(new("activation", "LeakyRelu", ["pointwise"], ["activated"], new()
+                {
+                    ["alpha"] = 0.1f
+                }));
                 model.Outputs.Clear();
                 model.Outputs.Add("activated");
                 var optimized = new ManagedOnnx(model, new TensorMath(4));

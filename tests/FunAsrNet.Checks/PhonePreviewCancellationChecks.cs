@@ -220,8 +220,14 @@ internal static class PhonePreviewCancellationChecks
         model.Metadata.Add("vad.fsmn_layers", 0);
         model.Metadata.Add("vad.proj_dim", 1);
         model.Metadata.Add("vad.lorder", 1);
-        model.Tensors.Add("cmvn.shift", new("cmvn.shift", [400]) { Values = new float[400] });
-        model.Tensors.Add("cmvn.scale", new("cmvn.scale", [400]) { Values = new float[400] });
+        model.Tensors.Add("cmvn.shift", new("cmvn.shift", [400])
+        {
+            Values = new float[400]
+        });
+        model.Tensors.Add("cmvn.scale", new("cmvn.scale", [400])
+        {
+            Values = new float[400]
+        });
         AddLinear(model, "encoder.in_linear1.linear", 400, 1);
         AddLinear(model, "encoder.in_linear2.linear", 1, 1);
         AddLinear(model, "encoder.out_linear1.linear", 1, 1);
@@ -237,8 +243,14 @@ internal static class PhonePreviewCancellationChecks
     /// <param name="rows">输出宽度。</param>
     private static void AddLinear(Gguf model, string name, int width, int rows)
     {
-        model.Tensors.Add(name + ".weight", new(name + ".weight", [width, rows]) { Values = new float[width * rows] });
-        model.Tensors.Add(name + ".bias", new(name + ".bias", [rows]) { Values = new float[rows] });
+        model.Tensors.Add(name + ".weight", new(name + ".weight", [width, rows])
+        {
+            Values = new float[width * rows]
+        });
+        model.Tensors.Add(name + ".bias", new(name + ".bias", [rows])
+        {
+            Values = new float[rows]
+        });
     }
 
     /// <summary>输入指定秒数的有效音频，每次不超过服务允许的一秒。</summary>

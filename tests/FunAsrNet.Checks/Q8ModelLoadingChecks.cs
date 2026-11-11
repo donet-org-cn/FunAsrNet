@@ -97,7 +97,10 @@ internal static class Q8ModelLoadingChecks
                 stream.SetLength(stream.Length - 3);
             }
             bool rejected = false;
-            try { _ = new Gguf(path); }
+            try
+            {
+                _ = new Gguf(path);
+            }
             catch (EndOfStreamException) { rejected = true; }
             check(rejected, "GGUF truncated final Q8 block is rejected");
         }

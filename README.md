@@ -57,7 +57,7 @@ dotnet run --project src/FunAsrNet.Cli -c Release -- tts --model models/aishell3
 通过 NuGet 安装核心库；同一推理实例须串行使用。
 
 ```shell
-dotnet add package FunAsrNet --version 1.0.0
+dotnet add package FunAsrNet --version 1.0.1
 ```
 
 也可直接引用 `src/FunAsrNet/FunAsrNet.csproj`。正式包与 Release 流程见 [发布说明](doc/releases.md)。
@@ -78,7 +78,7 @@ AudioFile.WriteWave("speech.wav", speech, tts.NativeSampleRate);
 GPU 另外安装 `FunAsrNet.Vulkan`（或引用同名源码项目），首次推理前设置：
 
 ```shell
-dotnet add package FunAsrNet.Vulkan --version 1.0.0
+dotnet add package FunAsrNet.Vulkan --version 1.0.1
 ```
 
 ```csharp

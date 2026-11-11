@@ -26,8 +26,10 @@ internal static class CpuFollowupChecks
             var weight = new Tensor(Enumerable.Range(0, inputs * outputs * shape.Kernel).Select(_ => (float)(random.NextDouble() - 0.5)).ToArray(), [inputs, outputs, shape.Kernel]);
             var node = new OnnxNode("phase-oracle", "ConvTranspose", [], [], new()
             {
-                ["strides"] = new long[] { shape.Stride }, ["pads"] = new long[] { shape.Left, shape.Right },
-                ["dilations"] = new long[] { shape.Dilation }, ["output_padding"] = new long[] { shape.Extra }
+                ["strides"] = new long[] { shape.Stride },
+                ["pads"] = new long[] { shape.Left, shape.Right },
+                ["dilations"] = new long[] { shape.Dilation },
+                ["output_padding"] = new long[] { shape.Extra }
             });
             foreach (bool withBias in new[] { false, true })
             {

@@ -337,7 +337,16 @@ internal static class Comparison
         object encoder = constructor.Invoke([Path.Combine(models, "funasr-encoder-f16.gguf")]);
         double encoderSeconds = clock.Elapsed.TotalSeconds;
         object decoder = constructor.Invoke([Path.Combine(models, "qwen3-0.6b-q8_0.gguf")]);
-        Console.WriteLine(JsonSerializer.Serialize(new { kind = "load", seconds = clock.Elapsed.TotalSeconds, encoderSeconds, decoderSeconds = clock.Elapsed.TotalSeconds - encoderSeconds, allocatedBytes = GC.GetTotalAllocatedBytes(true) - allocated, peakRssBytes = Process.GetCurrentProcess().PeakWorkingSet64, coreSha256 = Digest(core) }));
+        Console.WriteLine(JsonSerializer.Serialize(new
+        {
+            kind = "load",
+            seconds = clock.Elapsed.TotalSeconds,
+            encoderSeconds,
+            decoderSeconds = clock.Elapsed.TotalSeconds - encoderSeconds,
+            allocatedBytes = GC.GetTotalAllocatedBytes(true) - allocated,
+            peakRssBytes = Process.GetCurrentProcess().PeakWorkingSet64,
+            coreSha256 = Digest(core)
+        }));
         GC.KeepAlive(encoder);
         GC.KeepAlive(decoder);
     }

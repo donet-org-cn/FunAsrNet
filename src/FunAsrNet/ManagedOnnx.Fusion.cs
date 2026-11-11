@@ -6,7 +6,10 @@ public sealed partial class ManagedOnnx
     private readonly Dictionary<int, float?> _convFusions = [];
 
     /// <summary>本次运行实际完成的相邻卷积融合数量，供内部验证使用。</summary>
-    internal int ConvFusionsExecuted { get; private set; }
+    internal int ConvFusionsExecuted
+    {
+        get; private set;
+    }
 
     /// <summary>只规划未作为模型输出且唯一消费者紧邻的卷积，保留原加法操作数顺序。</summary>
     private void BuildConvFusionPlans()

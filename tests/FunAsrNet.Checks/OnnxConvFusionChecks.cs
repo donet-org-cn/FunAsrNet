@@ -94,14 +94,22 @@ internal static class OnnxConvFusionChecks
                 var model = CreateModel("Add", 1);
                 switch (rejection)
                 {
-                    case "model-output": model.Outputs.Add("convolution"); break;
+                    case "model-output":
+                        model.Outputs.Add("convolution");
+                        break;
                     case "other-consumer":
                         model.Nodes.Add(new("other-consumer", "Identity", ["convolution"], ["other"], []));
                         model.Outputs.Add("other");
                         break;
-                    case "repeat-input": model.Nodes[3] = new("repeat-input", "Add", ["convolution", "convolution"], ["result"], []); break;
-                    case "reversed-add": model.Nodes[3] = new("reversed-add", "Add", ["residual", "convolution"], ["result"], []); break;
-                    case "non-adjacent": model.Nodes.Insert(3, new("gap", "Identity", ["alias"], ["gap"], [])); break;
+                    case "repeat-input":
+                        model.Nodes[3] = new("repeat-input", "Add", ["convolution", "convolution"], ["result"], []);
+                        break;
+                    case "reversed-add":
+                        model.Nodes[3] = new("reversed-add", "Add", ["residual", "convolution"], ["result"], []);
+                        break;
+                    case "non-adjacent":
+                        model.Nodes.Insert(3, new("gap", "Identity", ["alias"], ["gap"], []));
+                        break;
                 }
                 var inputs = CreateInputs(1);
                 Environment.SetEnvironmentVariable("FUNASRNET_FUSE_CONV", "0");
@@ -149,7 +157,10 @@ internal static class OnnxConvFusionChecks
         }));
         model.Nodes.Add(operation == "Add"
             ? new("residual", "Add", ["convolution", "residual"], ["result"], [])
-            : new("activation", "LeakyRelu", ["convolution"], ["result"], new() { ["alpha"] = 0.1f }));
+            : new("activation", "LeakyRelu", ["convolution"], ["result"], new()
+            {
+                ["alpha"] = 0.1f
+            }));
         model.Nodes.Add(new("final", "Add", ["result", "zero"], ["final"], []));
         model.Outputs.AddRange(["alias", "final"]);
         return model;
@@ -197,7 +208,10 @@ internal static class OnnxConvFusionChecks
         public string Name => "declining-test";
 
         /// <summary>已经收到的原始卷积分派次数。</summary>
-        internal int ConvolutionCalls { get; private set; }
+        internal int ConvolutionCalls
+        {
+            get; private set;
+        }
 
         /// <summary>拒绝处理线性计算，并保持调用方输出原样。</summary>
         /// <param name="input">只读输入数组。</param>
