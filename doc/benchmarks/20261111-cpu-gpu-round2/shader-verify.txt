@@ -1,0 +1,31 @@
+Glslang Version: 11:16.6.0
+ESSL Version: OpenGL ES GLSL 3.20 glslang Khronos. 16.6.0
+GLSL Version: 4.60 glslang Khronos. 16.6.0
+SPIR-V Version 0x00010600, Revision 1
+GLSL.std.450 Version 100, Revision 1
+Khronos Tool ID 8
+SPIR-V Generator Version 11
+GL_KHR_vulkan_glsl version 100
+ARB_GL_gl_spirv version 100
+Verified SpeechShader.Binary
+
+Algorithm       Hash                                                                   Path
+---------       ----                                                                   ----
+SHA256          52317E6A5C64E8FF5C173424B223D15D3AC5F565AF5AB0C117FCEFCB4B452FB0       E:\temp\FunAsrNet\artifacts\cpu-…
+Verified QuantizedShader.Binary
+SHA256          C20851A07305CCF6929C3AFC593A62E62240F6D6287B738BC1A4255ED4B63DD3       E:\temp\FunAsrNet\artifacts\cpu-…
+Verified CooperativeQuantizedShader.Binary
+SHA256          94B2805998162D00FA5696E5BE0407E9C38F29E4A1A21BD6251613F0F14462F2       E:\temp\FunAsrNet\artifacts\cpu-…
+Verified CooperativeQuantizedShader.IntegerDotBinary
+SHA256          AB21845788F58E8E5EF064ABAC26F77D7446E4B9376EA8CCC6D4A10625D9E142       E:\temp\FunAsrNet\artifacts\cpu-…
+Verified FloatVectorShader.WideBinary
+SHA256          E8C082F27CDB90F752FBF3ED5BC0499EAB35F8C7BDFA4E25400F8845238943F3       E:\temp\FunAsrNet\artifacts\cpu-…
+Verified AttentionTiledShader.Binary
+SHA256          A445657A5AF7208EEE5C1ECB622C023EB785CAAE0F67E40E3C497B0652D0BABF       E:\temp\FunAsrNet\artifacts\cpu-…
+Verified AttentionShader.Binary
+SHA256          BFCABD22EF670D28C0D3ADCA4F4F25C68998A39586C0D36E4E7EE6D7F76FC731       E:\temp\FunAsrNet\artifacts\cpu-…
+Verified FloatLinearShader.Binary
+SHA256          F7BB3B2A80B1E24D8B5B579AFA18A0F1B8409C0F5E6D3D40552EBBD9C67852B7       E:\temp\FunAsrNet\artifacts\cpu-…
+Verified FloatVectorShader.Binary
+SHA256          B6778C5C3C5EDF2401846760E44E68EB650E8B50DEB756B7B11760C04B290304       E:\temp\FunAsrNet\artifacts\cpu-…
+

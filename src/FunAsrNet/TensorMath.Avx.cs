@@ -22,60 +22,80 @@ public sealed partial class TensorMath
         {
             throw new ArgumentException("Invalid row-major Q8 dimensions");
         }
-        var q = new sbyte[input.Length];
-        var scales = new float[input.Length / 32];
-        Quantize(input, q, scales);
-        if (frames == 1 && Environment.GetEnvironmentVariable("FUNASRNET_Q8_ROWS4") != "0")
+        var q = ArrayPool<sbyte>.Shared.Rent(Math.Max(1, input.Length));
+        var scales = ArrayPool<float>.Shared.Rent(Math.Max(1, input.Length / 32));
+        try
         {
-            QuantizedRows4Avx(q, scales, w, bias, output);
-            return;
-        }
-        For((m + 15) / 16, block =>
-        {
-            ref sbyte weights = ref MemoryMarshal.GetArrayDataReference(w.Quantized!);
-            ref sbyte activations = ref MemoryMarshal.GetArrayDataReference(q);
-            for (int row = block * 16; row < Math.Min(m, (block + 1) * 16); row++)
+            Quantize(input, q.AsSpan(0, input.Length), scales.AsSpan(0, input.Length / 32));
+            if (AvxVnni.IsSupported && frames >= 8 && m >= 16)
             {
-                int time = 0;
-                for (; time + 3 < frames; time += 4)
+                var packed = ArrayPool<VnniInputBlock>.Shared.Rent(frames / 4 * blocks);
+                try
                 {
-                    var sum = Vector128<float>.Zero;
-                    for (int k = 0; k < n; k += 32)
-                    {
-                        var weight = Vector256.LoadUnsafe(ref weights, (nuint)(row * n + k));
-                        var a = QuantizedPartialAvx(weight, Vector256.LoadUnsafe(ref activations, (nuint)(time * n + k)));
-                        var b = QuantizedPartialAvx(weight, Vector256.LoadUnsafe(ref activations, (nuint)((time + 1) * n + k)));
-                        var c = QuantizedPartialAvx(weight, Vector256.LoadUnsafe(ref activations, (nuint)((time + 2) * n + k)));
-                        var d = QuantizedPartialAvx(weight, Vector256.LoadUnsafe(ref activations, (nuint)((time + 3) * n + k)));
-                        var ab = Ssse3.HorizontalAdd(a.GetLower() + a.GetUpper(), b.GetLower() + b.GetUpper());
-                        var cd = Ssse3.HorizontalAdd(c.GetLower() + c.GetUpper(), d.GetLower() + d.GetUpper());
-                        var dot = Vector128.ConvertToSingle(Ssse3.HorizontalAdd(ab, cd));
-                        var xs = Vector128.Create(scales[time * blocks + k / 32], scales[(time + 1) * blocks + k / 32], scales[(time + 2) * blocks + k / 32], scales[(time + 3) * blocks + k / 32]);
-                        sum += dot * Vector128.Create(w.Scales[row * blocks + k / 32]) * xs;
-                    }
-                    sum = Vector128.Create(bias?.Values?[row] ?? 0) + sum;
-                    output[time * m + row] = sum.GetElement(0);
-                    output[(time + 1) * m + row] = sum.GetElement(1);
-                    output[(time + 2) * m + row] = sum.GetElement(2);
-                    output[(time + 3) * m + row] = sum.GetElement(3);
+                    PackVnniInput(q, scales, frames, blocks, packed);
+                    For((m + 15) / 16, task => QuantizedVnniRows(q, scales, packed, frames, w, bias, output, task * 16, Math.Min(m, (task + 1) * 16)));
                 }
-                for (; time < frames; time++)
+                finally
                 {
-                    float sum = 0;
-                    for (int k = 0; k < n; k += 32)
-                    {
-                        var weight = Vector256.LoadUnsafe(ref weights, (nuint)(row * n + k));
-                        var activation = Vector256.LoadUnsafe(ref activations, (nuint)(time * n + k));
-                        // 激活量化严格限制到 [-127,127]，权重可含 -128。
-                        // 取权重绝对值并把符号给激活，避免对 -128 求负溢出；
-                        // 两项乘积和最大为 2*128*127=32512，不触发短整数饱和。
-                        int dot = QuantizedBlockAvx(Avx2.Abs(weight), weight, activation);
-                        sum += dot * w.Scales![row * blocks + k / 32] * scales[time * blocks + k / 32];
-                    }
-                    output[time * m + row] = (bias?.Values?[row] ?? 0) + sum;
+                    ArrayPool<VnniInputBlock>.Shared.Return(packed);
                 }
+                return;
             }
-        });
+            if (frames == 1 && Environment.GetEnvironmentVariable("FUNASRNET_Q8_ROWS4") != "0")
+            {
+                QuantizedRows4Avx(q, scales, w, bias, output);
+                return;
+            }
+            For((m + 15) / 16, block =>
+            {
+                ref sbyte weights = ref MemoryMarshal.GetArrayDataReference(w.Quantized!);
+                ref sbyte activations = ref MemoryMarshal.GetArrayDataReference(q);
+                for (int row = block * 16; row < Math.Min(m, (block + 1) * 16); row++)
+                {
+                    int time = 0;
+                    for (; time + 3 < frames; time += 4)
+                    {
+                        var sum = Vector128<float>.Zero;
+                        for (int k = 0; k < n; k += 32)
+                        {
+                            var weight = Vector256.LoadUnsafe(ref weights, (nuint)(row * n + k));
+                            var a = QuantizedPartialAvx(weight, Vector256.LoadUnsafe(ref activations, (nuint)(time * n + k)));
+                            var b = QuantizedPartialAvx(weight, Vector256.LoadUnsafe(ref activations, (nuint)((time + 1) * n + k)));
+                            var c = QuantizedPartialAvx(weight, Vector256.LoadUnsafe(ref activations, (nuint)((time + 2) * n + k)));
+                            var d = QuantizedPartialAvx(weight, Vector256.LoadUnsafe(ref activations, (nuint)((time + 3) * n + k)));
+                            var dot = QuantizedReduce4Avx(a, b, c, d);
+                            var xs = Vector128.Create(scales[time * blocks + k / 32], scales[(time + 1) * blocks + k / 32], scales[(time + 2) * blocks + k / 32], scales[(time + 3) * blocks + k / 32]);
+                            sum += dot * Vector128.Create(w.Scales[row * blocks + k / 32]) * xs;
+                        }
+                        sum = Vector128.Create(bias?.Values?[row] ?? 0) + sum;
+                        output[time * m + row] = sum.GetElement(0);
+                        output[(time + 1) * m + row] = sum.GetElement(1);
+                        output[(time + 2) * m + row] = sum.GetElement(2);
+                        output[(time + 3) * m + row] = sum.GetElement(3);
+                    }
+                    for (; time < frames; time++)
+                    {
+                        float sum = 0;
+                        for (int k = 0; k < n; k += 32)
+                        {
+                            var weight = Vector256.LoadUnsafe(ref weights, (nuint)(row * n + k));
+                            var activation = Vector256.LoadUnsafe(ref activations, (nuint)(time * n + k));
+                            // 激活量化严格限制到 [-127,127]，权重可含 -128。
+                            // 取权重绝对值并把符号给激活，避免对 -128 求负溢出；
+                            // 两项乘积和最大为 2*128*127=32512，不触发短整数饱和。
+                            int dot = QuantizedBlockAvx(Avx2.Abs(weight), weight, activation);
+                            sum += dot * w.Scales![row * blocks + k / 32] * scales[time * blocks + k / 32];
+                        }
+                        output[time * m + row] = (bias?.Values?[row] ?? 0) + sum;
+                    }
+                }
+            });
+        }
+        finally
+        {
+            ArrayPool<sbyte>.Shared.Return(q);
+            ArrayPool<float>.Shared.Return(scales);
+        }
     }
 
     /// <summary>对三十二项作精确整数点积；激活来自限制为 [-127,127] 的量化器。</summary>
@@ -102,6 +122,11 @@ public sealed partial class TensorMath
     /// <param name="output">调用方提供的帧主序结果，各任务写入独立区间。</param>
     private void PackedFloatLinearAvx(float[] input, int frames, Weight w, Weight? bias, float[] output)
     {
+        if (w.Rows >= 12 && Environment.GetEnvironmentVariable("FUNASRNET_AVX_ROWS6") != "0")
+        {
+            PackedFloatLinearSixAvx(input, frames, w, bias, output);
+            return;
+        }
         if (w.Rows % 4 == 0 && Environment.GetEnvironmentVariable("FUNASRNET_AVX_UNROLL") != "0")
         {
             PackedFloatLinearUnrolledAvx(input, frames, w, bias, output);

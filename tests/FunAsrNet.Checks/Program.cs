@@ -3,6 +3,12 @@ using System.Runtime.InteropServices;
 using System.Runtime.Intrinsics.Arm;
 using FunAsrNet;
 
+if (args.SequenceEqual(new[] { "--frontend-benchmark" }))
+{
+    FunAsrNet.Checks.FrontendKernelChecks.Benchmark();
+    return;
+}
+
 int checks = 0;
 // <summary>
 // 断言测试条件成立，否则抛出包含检查说明的异常。
@@ -18,7 +24,11 @@ void Check(bool condition, string name)
     }
 }
 
+FunAsrNet.Checks.FrontendKernelChecks.Run(Check);
 FunAsrNet.Checks.QuantizedAvxChecks.Run(Check);
+FunAsrNet.Checks.FloatRowsAvxChecks.Run(Check);
+FunAsrNet.Checks.FloatTileChecks.Run(Check);
+FunAsrNet.Checks.DecoderAttentionChecks.Run(Check);
 FunAsrNet.Checks.QuantizeRoundingChecks.Run(Check);
 FunAsrNet.Checks.LayoutChecks.Run(Check);
 FunAsrNet.Checks.QuantizedGroupAvxChecks.Run(Check);

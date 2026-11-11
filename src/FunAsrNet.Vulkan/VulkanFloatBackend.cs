@@ -4,7 +4,7 @@ using FunAsrNet.Vulkan.Native;
 namespace FunAsrNet.Vulkan;
 
 /// <summary>使用系统 Vulkan 驱动执行 FP32 大矩阵与一维卷积，实例内同步且缓存容量有界。</summary>
-public sealed unsafe partial class VulkanFloatBackend : IFloatComputeBackend, IQuantizedComputeBackend, IGroupedComputeBackend, IReluProjectionBackend, IDisposable
+public sealed unsafe partial class VulkanFloatBackend : IFloatComputeBackend, IQuantizedComputeBackend, IGroupedComputeBackend, IReluProjectionBackend, IAttentionComputeBackend, IDisposable
 {
     private readonly object _gate = new();
     private readonly VkDevice _device;
@@ -95,11 +95,16 @@ public sealed unsafe partial class VulkanFloatBackend : IFloatComputeBackend, IQ
                 loader = Vk.LoadedLibrary,
                 precision = "FP32 + original Q8_0",
                 linearCalls = _linearCalls,
+                floatGroupCalls = _floatGroupCalls,
+                attentionCalls = _attentionCalls,
+                floatLinearDispatches = _floatLinearDispatches,
+                floatVectorDispatches = _floatVectorDispatches,
+                floatWideVectorDispatches = _floatWideVectorDispatches,
                 convolutionCalls = _convolutionCalls,
                 reluProjectionCalls = _reluProjectionCalls,
                 computeSubmissions = _computeSubmissions,
                 quantizedCalls = _quantizedCalls,
-                quantizedKernel = _integerDotQ8 ? "subgroup-eight-lane-integer-dot" : _cooperativeQ8 ? "subgroup-eight-lane" : "scalar-row",
+                quantizedKernel = _integerDotQ8 ? "subgroup-eight-block-integer-dot" : _cooperativeQ8 ? "subgroup-eight-block" : "scalar-row",
                 subgroupSize = _device.SubgroupSize,
                 fenceSpinMicroseconds = _fenceSpinMicroseconds,
                 cacheBytes = _cacheBytes,
@@ -382,6 +387,7 @@ public sealed unsafe partial class VulkanFloatBackend : IFloatComputeBackend, IQ
     /// <param name="groupsY">第二维工作组数。</param>
     private void RecordDispatch(VkPipeline pipeline, nint descriptorSet, uint* parameters, uint parameterBytes, uint groupsX, uint groupsY)
     {
+        SelectFloatPipeline(ref pipeline, parameters, ref groupsX, ref groupsY);
         Vk.vkCmdBindPipeline(_command, VkConst.BindPointCompute, pipeline.Pipeline);
         Vk.vkCmdBindDescriptorSets(_command, VkConst.BindPointCompute, pipeline.Layout, 0, 1, &descriptorSet, 0, null);
         Vk.vkCmdPushConstants(_command, pipeline.Layout, VkConst.StageComputeShader, 0, parameterBytes, parameters);
@@ -458,6 +464,8 @@ public sealed unsafe partial class VulkanFloatBackend : IFloatComputeBackend, IQ
             Vk.vkDestroyPipelineLayout(_device.Device, _pipeline.Layout, null);
             Vk.vkDestroyDescriptorSetLayout(_device.Device, _pipeline.SetLayout, null);
             Vk.vkDestroyShaderModule(_device.Device, _shader, null);
+            DisposeAttention();
+            DisposeFloatPipelines();
             DisposeQuantized();
             _device.Dispose();
         }

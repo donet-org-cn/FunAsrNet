@@ -1,0 +1,99 @@
+{
+  "date": "2026-11-11",
+  "baseline": "本轮开始时的工作区快照，已包含前序 FFT/RoPE/Greedy、四帧 AVX-VNNI 与 .NET 11 指数优化；不是仓库 HEAD。",
+  "runtime": "10.0.15",
+  "sdk": "10.0.204",
+  "cpu": "Intel Core i7-12700",
+  "gpu": "NVIDIA GeForce RTX 3060 12 GiB",
+  "driver": "610.88",
+  "affinity": "0x55",
+  "threads": 4,
+  "promptCache": false,
+  "maxTokens": 128,
+  "weightCacheGiB": 4,
+  "order": "ABBA, 1 warmup + 3 formal calls per process, 2 processes per variant/input/mode",
+  "formalCalls": 96,
+  "nativeConfirmationCalls": 24,
+  "files": [
+    {
+      "path": "before/FunAsrNet.dll",
+      "bytes": 226816,
+      "sha256": "5fcdd8f71da397b23c0a447fccb59158711787cb28b8b405cbe431d7b759494f"
+    },
+    {
+      "path": "before/FunAsrNet.Vulkan.dll",
+      "bytes": 168960,
+      "sha256": "347560353f0e4cbcc85b1e6ee4bf6a78c4703a44f38b9cc4837aa26fa32b39bd"
+    },
+    {
+      "path": "before/AsrRunner.dll",
+      "bytes": 18432,
+      "sha256": "466e6d374d25aab0f680a8d5f786136c2116ffd95e2efef8ee4944c1df760f14"
+    },
+    {
+      "path": "after/FunAsrNet.dll",
+      "bytes": 229888,
+      "sha256": "d1cdc0f92c6365eb35a8a727349c55f84332993f09a4df50606ac8ef1465a923"
+    },
+    {
+      "path": "after/FunAsrNet.Vulkan.dll",
+      "bytes": 226304,
+      "sha256": "2db2c6c9a1bc595983e22ff2603c4b92cb757f4909445d8379931da026ede0e1"
+    },
+    {
+      "path": "after/AsrRunner.dll",
+      "bytes": 18432,
+      "sha256": "466e6d374d25aab0f680a8d5f786136c2116ffd95e2efef8ee4944c1df760f14"
+    },
+    {
+      "path": "../cpp-asr-20261111/inputs/sample-6s.f32",
+      "bytes": 384000,
+      "sha256": "ae2fda8ce95f85cad76bfb8e5fc885006ef723c366142255763f5a1541affbab"
+    },
+    {
+      "path": "../cpp-asr-20261111/inputs/sample-repeated-24s.f32",
+      "bytes": 1536000,
+      "sha256": "25601fdc18034f5df7f172fcfac2a1d6b09b8e0dabd49dcfe7a77ffb65eca8ac"
+    },
+    {
+      "path": "../cpp-asr-20261111/native-cpu/build/funasr-native-cpu-reference.exe",
+      "bytes": 3646976,
+      "sha256": "6a10fea5c5410dda97a739e8681c3930d9b5fdd2624727970e5120ea8c316278"
+    }
+  ],
+  "checkpoint": {
+    "url": "https://modelscope.cn/models/FunAudioLLM/Fun-ASR-Nano-2512",
+    "revision": "db823224e5c2510001b4a3d3ed97f430bd52ac88",
+    "sha256": "81fec8616083c69377f3ceef36aba3655660ee0ca69a5d4a1e9810cd340ca499"
+  },
+  "native": {
+    "funAsr": "0339018ba74a7defa3b6b6a96718d17b816be77b",
+    "llamaCpp": "8086439a4cea94c71a5dfb8fe4ad1546aebd640f",
+    "compiler": "MSVC 19.44.35230",
+    "features": "CPU-only, AVX2/FMA/F16C/AVX-VNNI/OpenMP"
+  },
+  "notes": [
+    "权重精度、运行时、输入、线程、最大 token、提示词缓存状态在同一对照组内相同。",
+    "原始 BF16/FP32 权重无损展开为 FP32 GGUF，保留现有 F16 KV 缓存舍入；未测 PyTorch/BF16 原图。",
+    "完整 GPU 调用包括上传、同步、回读与 CPU 算子；不是单 kernel 时间。",
+    "FP32 单帧 GPU 的归约树改变，采用数值容差和真实文本验证；Q8 内核、批量 FP32 GPU 及成对 GQA 检查严格位一致。",
+    "没有重新测量 C++ CUDA/Vulkan 原生 GPU，不将本轮加速理解为胜过原生 GPU。"
+  ],
+  "quantizedModels": [
+    {
+      "path": "../cpp-asr-20261111/models/funasr-encoder-f16.gguf",
+      "bytes": 469331008,
+      "sha256": "f92f91d01a24fbed6c863495b2ee8c6a6788144a02858b75743f0946668de8a2"
+    },
+    {
+      "path": "../cpp-asr-20261111/models/qwen3-0.6b-q8_0.gguf",
+      "bytes": 804753280,
+      "sha256": "819f385dc0e035dccc3d9e7edaf6b7b044b8ba7ace63cbcbf84c7e397eecbf27"
+    }
+  ],
+  "shaderCompiler": {
+    "name": "glslang",
+    "version": "16.6.0",
+    "zipSha256": "82bf434e69b9bb4829de7e2b4bc2c5e7a7861e53d66cf75e5cc70f5f694a8d9b"
+  }
+}

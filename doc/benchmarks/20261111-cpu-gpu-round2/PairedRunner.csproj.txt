@@ -1,0 +1,1 @@
+<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><OutputType>Exe</OutputType><GenerateDocumentationFile>false</GenerateDocumentationFile></PropertyGroup><ItemGroup><Reference Include="FunAsrNet"><HintPath>../final/FunAsrNet.dll</HintPath></Reference><Reference Include="FunAsrNet.Vulkan"><HintPath>../final/FunAsrNet.Vulkan.dll</HintPath></Reference></ItemGroup></Project>

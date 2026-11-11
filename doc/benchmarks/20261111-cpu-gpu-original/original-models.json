@@ -1,0 +1,16 @@
+[
+  {
+    "path": "E:\\temp\\FunAsrNet\\artifacts\\cpu-gpu-20261111\\original\\models\\funasr-encoder-original-f32.gguf",
+    "sha256": "a19cce265483f3894772c2693f42a120458ed0299acec7bca205443ce8c590b9",
+    "bytes": 935046208,
+    "tensors": 950,
+    "source": "official BF16/FP32 checkpoint losslessly expanded to FP32"
+  },
+  {
+    "path": "E:\\temp\\FunAsrNet\\artifacts\\cpu-gpu-20261111\\original\\models\\qwen3-original-f32.gguf",
+    "sha256": "e4645110a9e860eb3d0e340cf57ad20274e434feb37ae5a8f9d560c2a109f9e5",
+    "bytes": 3012480896,
+    "tensors": 311,
+    "source": "official BF16/FP32 checkpoint losslessly expanded to FP32"
+  }
+]

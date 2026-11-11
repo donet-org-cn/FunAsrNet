@@ -1,6 +1,6 @@
 namespace FunAsrNet.Vulkan;
 
-/// <summary>八条 GPU 通道协同读取一个原始 Q8_0 块，整数求和及浮点累加顺序保持不变。</summary>
+/// <summary>八条 GPU 通道分别计算连续 Q8_0 块，再按原块顺序累加，减少子组交换。</summary>
 internal static partial class CooperativeQuantizedShader
 {
     /// <summary>需要完整子组和 shuffle 支持；边界行仍参与交换，只有有效行写回。</summary>
@@ -26,20 +26,20 @@ internal static partial class CooperativeQuantizedShader
             bool valid=row<p.N && frame<p.M;
             precise float total=0.0;
             uint blocks=p.K/32;
-            for(uint block=0;block<blocks;block++) {
-                uint a=valid ? xq[frame*(p.K/4)+block*8+word] : 0;
-                uint b=valid ? wq[row*(p.K/4)+block*8+word] : 0;
-                #ifdef INTEGER_DOT
-                int sum=dotPacked4x8EXT(int(a),int(b));
-                #else
+            for(uint first=0;first<blocks;first+=8) {
+                uint block=first+word;
                 int sum=0;
-                for(uint item=0;item<4;item++) sum+=byteAt(a,item)*byteAt(b,item);
+                for(uint item=0;item<8;item++) {
+                uint a=valid && block<blocks ? xq[frame*(p.K/4)+block*8+item] : 0;
+                uint b=valid && block<blocks ? wq[row*(p.K/4)+block*8+item] : 0;
+                #ifdef INTEGER_DOT
+                sum+=dotPacked4x8EXT(int(a),int(b));
+                #else
+                for(uint byte=0;byte<4;byte++) sum+=byteAt(a,byte)*byteAt(b,byte);
                 #endif
-                sum+=subgroupShuffleXor(sum,1);
-                sum+=subgroupShuffleXor(sum,2);
-                sum+=subgroupShuffleXor(sum,4);
-                if(valid && word==0) {
-                    precise float product;
+                }
+                precise float product=0.0;
+                if(valid && block<blocks) {
                     if((p.hasBias&2)!=0) {
                         precise float scale=ws[row*blocks+block]*xs[frame*blocks+block];
                         product=float(sum)*scale;
@@ -47,7 +47,10 @@ internal static partial class CooperativeQuantizedShader
                         precise float scaled=float(sum)*ws[row*blocks+block];
                         product=scaled*xs[frame*blocks+block];
                     }
-                    total=total+product;
+                }
+                for(uint offset=0;offset<min(8,blocks-first);offset++) {
+                    float term=subgroupShuffle(product,(gl_SubgroupInvocationID&~7u)+offset);
+                    if(word==0) total=total+term;
                 }
             }
             if(valid && word==0) y[frame*p.N+row]=total+((p.hasBias&1)!=0 ? bias[row] : 0.0);

@@ -48,24 +48,45 @@ public sealed partial class TensorMath
             try
             {
                 Quantize(input, q.AsSpan(0, input.Length), scales.AsSpan(0, input.Length / 32));
-                bool rows4 = frames == 1 && Environment.GetEnvironmentVariable("FUNASRNET_Q8_ROWS4") != "0";
-                For(totalTasks, task =>
+                VnniInputBlock[]? packed = AvxVnni.IsSupported && frames >= 8 && totalRows >= 16
+                    ? ArrayPool<VnniInputBlock>.Shared.Rent(frames / 4 * blocks)
+                    : null;
+                try
                 {
-                    int which = 0;
-                    while (task >= tasks[which])
+                    if (packed is not null)
                     {
-                        task -= tasks[which++];
+                        PackVnniInput(q, scales, frames, blocks, packed);
                     }
-                    int row = task * 16, end = Math.Min(weights[which].Rows, row + 16);
-                    if (rows4)
+                    bool rows4 = frames == 1 && Environment.GetEnvironmentVariable("FUNASRNET_Q8_ROWS4") != "0";
+                    For(totalTasks, task =>
                     {
-                        QuantizedGroupedRows4Avx(q, scales, weights[which], outputs[which], row, end);
-                    }
-                    else
+                        int which = 0;
+                        while (task >= tasks[which])
+                        {
+                            task -= tasks[which++];
+                        }
+                        int row = task * 16, end = Math.Min(weights[which].Rows, row + 16);
+                        if (packed is not null)
+                        {
+                            QuantizedVnniRows(q, scales, packed, frames, weights[which], null, outputs[which], row, end);
+                        }
+                        else if (rows4)
+                        {
+                            QuantizedGroupedRows4Avx(q, scales, weights[which], outputs[which], row, end);
+                        }
+                        else
+                        {
+                            QuantizedGroupedFrames4Avx(q, scales, frames, weights[which], outputs[which], row, end);
+                        }
+                    });
+                }
+                finally
+                {
+                    if (packed is not null)
                     {
-                        QuantizedGroupedFrames4Avx(q, scales, frames, weights[which], outputs[which], row, end);
+                        ArrayPool<VnniInputBlock>.Shared.Return(packed);
                     }
-                });
+                }
             }
             finally
             {
@@ -105,9 +126,7 @@ public sealed partial class TensorMath
                 var b = QuantizedPartialAvx(Vector256.LoadUnsafe(ref weights, (nuint)(at + n)), x);
                 var c = QuantizedPartialAvx(Vector256.LoadUnsafe(ref weights, (nuint)(at + n * 2)), x);
                 var d = QuantizedPartialAvx(Vector256.LoadUnsafe(ref weights, (nuint)(at + n * 3)), x);
-                var ab = Ssse3.HorizontalAdd(a.GetLower() + a.GetUpper(), b.GetLower() + b.GetUpper());
-                var cd = Ssse3.HorizontalAdd(c.GetLower() + c.GetUpper(), d.GetLower() + d.GetUpper());
-                var dot = Vector128.ConvertToSingle(Ssse3.HorizontalAdd(ab, cd));
+                var dot = QuantizedReduce4Avx(a, b, c, d);
                 var scale = Vector128.Create(Unsafe.Add(ref ws, scaleAt), Unsafe.Add(ref ws, scaleAt + blocks), Unsafe.Add(ref ws, scaleAt + blocks * 2), Unsafe.Add(ref ws, scaleAt + blocks * 3));
                 sum += dot * scale * Vector128.Create(Unsafe.Add(ref xs, block));
             }
@@ -155,9 +174,7 @@ public sealed partial class TensorMath
                     var b = QuantizedPartialAvx(weight, Vector256.LoadUnsafe(ref input, (nuint)((time + 1) * n + at)));
                     var c = QuantizedPartialAvx(weight, Vector256.LoadUnsafe(ref input, (nuint)((time + 2) * n + at)));
                     var d = QuantizedPartialAvx(weight, Vector256.LoadUnsafe(ref input, (nuint)((time + 3) * n + at)));
-                    var ab = Ssse3.HorizontalAdd(a.GetLower() + a.GetUpper(), b.GetLower() + b.GetUpper());
-                    var cd = Ssse3.HorizontalAdd(c.GetLower() + c.GetUpper(), d.GetLower() + d.GetUpper());
-                    var dot = Vector128.ConvertToSingle(Ssse3.HorizontalAdd(ab, cd));
+                    var dot = QuantizedReduce4Avx(a, b, c, d);
                     var scale = Vector128.Create(Unsafe.Add(ref xs, time * blocks + block), Unsafe.Add(ref xs, (time + 1) * blocks + block), Unsafe.Add(ref xs, (time + 2) * blocks + block), Unsafe.Add(ref xs, (time + 3) * blocks + block));
                     sum += dot * Vector128.Create(Unsafe.Add(ref ws, row * blocks + block)) * scale;
                 }

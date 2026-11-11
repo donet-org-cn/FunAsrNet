@@ -1,0 +1,92 @@
+{
+  "date": "2026-11-11",
+  "baseline": "Current-turn start, including all prior CPU/GPU optimizations; uncommitted source archived in baseline-source.zip.",
+  "runtime": "10.0.15",
+  "sdk": "10.0.204",
+  "cpu": "Intel Core i7-12700",
+  "gpu": "NVIDIA GeForce RTX 3060 12 GiB",
+  "threads": 4,
+  "affinity": "0x55",
+  "promptCache": false,
+  "maxTokens": 128,
+  "cacheBytes": 4294967296,
+  "formal": {
+    "initial": 96,
+    "finalGpu": 48,
+    "pairedGpu": 48,
+    "controlGpu": 128,
+    "total": 320
+  },
+  "warmups": {
+    "initial": 32,
+    "finalGpu": 16,
+    "pairedGpu": 8,
+    "controlGpu": 16,
+    "total": 72
+  },
+  "gpuControl": "Same process/model, two GPU backends, feature switches off/on, AboveNormal priority only for benchmark process, ABBA x8, 16 formal calls per backend per input.",
+  "modelProvenance": "../20261111-cpu-gpu-original/provenance.json",
+  "originalModelHashes": "../20261111-cpu-gpu-original/original-models.json",
+  "precision": "Original BF16/FP32 weights expanded losslessly to FP32; existing F16 KV cache unchanged. New GPU FP32 reduction order differs; no extra quantization.",
+  "files": [
+    {
+      "path": "before/FunAsrNet.dll",
+      "bytes": 229888,
+      "sha256": "3b299b865ecb89af0eeb59dbfc082e4f07ea6cb295ada776d8564b8a56299f9b"
+    },
+    {
+      "path": "before/FunAsrNet.Vulkan.dll",
+      "bytes": 226304,
+      "sha256": "bc92e54791c282ccb47d356f0e15a8756bd597e68b012563c52d275eb3c48df2"
+    },
+    {
+      "path": "before/AsrRunner.dll",
+      "bytes": 18432,
+      "sha256": "466e6d374d25aab0f680a8d5f786136c2116ffd95e2efef8ee4944c1df760f14"
+    },
+    {
+      "path": "after/FunAsrNet.dll",
+      "bytes": 232960,
+      "sha256": "fcd83ee1c133b695b278f82634adbed381c56a73a52aace552a41316516f737b"
+    },
+    {
+      "path": "after/FunAsrNet.Vulkan.dll",
+      "bytes": 311808,
+      "sha256": "5127128130fa6c8a5dfd0f860b5abd35212b50f68b7b0203945cead0385ebb48"
+    },
+    {
+      "path": "after/AsrRunner.dll",
+      "bytes": 18432,
+      "sha256": "466e6d374d25aab0f680a8d5f786136c2116ffd95e2efef8ee4944c1df760f14"
+    },
+    {
+      "path": "final/FunAsrNet.dll",
+      "bytes": 232960,
+      "sha256": "fcd83ee1c133b695b278f82634adbed381c56a73a52aace552a41316516f737b"
+    },
+    {
+      "path": "final/FunAsrNet.Vulkan.dll",
+      "bytes": 328192,
+      "sha256": "9eb7369c5279012caa528069de2ddbc833e6dcfa64002e60e8ca8f406eb763a8"
+    },
+    {
+      "path": "final/AsrRunner.dll",
+      "bytes": 18432,
+      "sha256": "466e6d374d25aab0f680a8d5f786136c2116ffd95e2efef8ee4944c1df760f14"
+    }
+  ],
+  "sourceArchives": [
+    {
+      "path": "baseline-source.zip",
+      "bytes": 257257,
+      "sha256": "58f1f95e395c87ba39a59943b26706cce16c1432107d79f75ce9f896925d8084"
+    },
+    {
+      "path": "final-source.zip",
+      "bytes": 283159,
+      "sha256": "1b41e3feca91e5a46c4b0a281059a3de229f55b44740a6bba7aefcc592955f7c"
+    }
+  ],
+  "finalSourceVerifiedFiles": 112,
+  "outputConsistency": "output-consistency.json"
+}

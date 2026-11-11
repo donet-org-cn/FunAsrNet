@@ -1,0 +1,6 @@
+Release solution build: 0 warnings, 0 errors.
+Changed C# files: dotnet format whitespace --folder --include ... --verify-no-changes passed.
+Chinese documentation/style: 137 files, 464 methods, 0 errors.
+git diff --check: passed.
+Model export: both FP32 GGUF files byte-identical to formal benchmark inputs.
+Shader source verification: all six variants byte-identical to embedded SPIR-V.

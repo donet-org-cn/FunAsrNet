@@ -1,0 +1,112 @@
+{
+  "date": "2026-11-11",
+  "baselineCommit": "96a2ec9902efda3326e5bc44ffb085f6b21a228e",
+  "cpu": "Intel Core i7-12700",
+  "sdk": "10.0.204",
+  "configuration": {
+    "kind": "configuration",
+    "runtime": "10.0.15",
+    "architecture": "X64",
+    "affinity": 1,
+    "vector256": true,
+    "vector128": true,
+    "rounds": 15,
+    "warmupRounds": 3,
+    "scope": "synthetic kernels; excludes model inference"
+  },
+  "blocks": 3,
+  "formalMeasurements": 450,
+  "warmupMeasurements": 90,
+  "inputs": "Deterministic synthetic random samples, seed 11112026; no model weights",
+  "timing": "Fbank is one Compute80 call; RoPE is 64 repetitions of 512 heads x 128 channels; Greedy is 64 scans of 151936 logits.",
+  "statistics": "Median and nearest-rank P95 over 45 samples per implementation per kernel; excludes only marked warmups, retains all slow samples.",
+  "results": [
+    {
+      "name": "fbank-1s",
+      "reference": {
+        "samples": 45,
+        "medianMs": 2.0477999999999996,
+        "p95Ms": 2.5669999999999997,
+        "allocatedBytes": 37152
+      },
+      "optimized": {
+        "samples": 45,
+        "medianMs": 0.38939999999999997,
+        "p95Ms": 0.4478,
+        "allocatedBytes": 31384
+      },
+      "speedup": 5.258859784283513
+    },
+    {
+      "name": "fbank-6s",
+      "reference": {
+        "samples": 45,
+        "medianMs": 13.367199999999999,
+        "p95Ms": 24.7504,
+        "allocatedBytes": 197152
+      },
+      "optimized": {
+        "samples": 45,
+        "medianMs": 2.3849,
+        "p95Ms": 5.814500000000001,
+        "allocatedBytes": 191384
+      },
+      "speedup": 5.6049310243616075
+    },
+    {
+      "name": "fbank-28s",
+      "reference": {
+        "samples": 45,
+        "medianMs": 59.3814,
+        "p95Ms": 99.8458,
+        "allocatedBytes": 901152
+      },
+      "optimized": {
+        "samples": 45,
+        "medianMs": 10.6352,
+        "p95Ms": 17.8521,
+        "allocatedBytes": 895384
+      },
+      "speedup": 5.583477508650519
+    },
+    {
+      "name": "rope-512heads-x128",
+      "reference": {
+        "samples": 45,
+        "medianMs": 1.6899,
+        "p95Ms": 1.7792000000000001,
+        "allocatedBytes": 0
+      },
+      "optimized": {
+        "samples": 45,
+        "medianMs": 0.2832,
+        "p95Ms": 0.3523,
+        "allocatedBytes": 0
+      },
+      "speedup": 5.967161016949152
+    },
+    {
+      "name": "greedy-151936",
+      "reference": {
+        "samples": 45,
+        "medianMs": 4.3739,
+        "p95Ms": 5.2414000000000005,
+        "allocatedBytes": 0
+      },
+      "optimized": {
+        "samples": 45,
+        "medianMs": 0.5791999999999999,
+        "p95Ms": 0.6478,
+        "allocatedBytes": 0
+      },
+      "speedup": 7.551622928176796
+    }
+  ],
+  "validation": {
+    "defaultChecks": 9373901,
+    "noAvxChecks": 9179220,
+    "scalarChecks": 9179220,
+    "frontend": "Bitwise parity against independently retained pre-optimization algorithm",
+    "models": "Not present in repository; full ASR/TTS inference and ARM64 hardware not evaluated"
+  }
+}

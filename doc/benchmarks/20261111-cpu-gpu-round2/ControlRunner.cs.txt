@@ -1,0 +1,42 @@
+using System.Diagnostics;
+using System.Runtime.InteropServices;
+using System.Text.Encodings.Web;
+using System.Text.Json;
+using FunAsrNet;
+using FunAsrNet.Vulkan;
+
+if (OperatingSystem.IsWindows()) Process.GetCurrentProcess().ProcessorAffinity = (nint)0x55;
+Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.AboveNormal;
+var options = new JsonSerializerOptions { Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping };
+void Emit(object x) => Console.WriteLine(JsonSerializer.Serialize(x, options));
+Emit(new { kind = "conditions", priority = Process.GetCurrentProcess().PriorityClass.ToString(), affinity = "0x55", threads = 4, runtime = Environment.Version.ToString(), warmupsPerBackend = 2, cycles = 8 });
+var samples = MemoryMarshal.Cast<byte, float>(File.ReadAllBytes(args[2])).ToArray();
+var engine = new FunAsr(args[0], args[1], 4) { CachePrompt = false };
+Environment.SetEnvironmentVariable("FUNASRNET_VULKAN_ATTENTION", "0");
+Environment.SetEnvironmentVariable("FUNASRNET_VULKAN_WIDE", "0");
+using var prior = new VulkanFloatBackend(4096L * 1024 * 1024);
+Environment.SetEnvironmentVariable("FUNASRNET_VULKAN_ATTENTION", null);
+Environment.SetEnvironmentVariable("FUNASRNET_VULKAN_WIDE", null);
+using var current = new VulkanFloatBackend(4096L * 1024 * 1024);
+var backends = new[] { prior, current };
+void Run(int which, bool warmup, int iteration)
+{
+    engine.FloatBackend = backends[which];
+    long allocation = GC.GetTotalAllocatedBytes(true);
+    var watch = Stopwatch.StartNew();
+    var result = engine.Transcribe(samples, 128);
+    double seconds = watch.Elapsed.TotalSeconds;
+    Emit(new { kind = "asr", variant = which == 0 ? "before" : "after", warmup, iteration, seconds,
+        result.Text, result.GeneratedTokens, result.EncoderSeconds, result.PrefillSeconds, result.GenerationSeconds,
+        result.DecoderSeconds, allocatedBytes = GC.GetTotalAllocatedBytes(true) - allocation });
+}
+Run(0, true, -1);
+Run(1, true, -1);
+Run(0, true, -2);
+Run(1, true, -2);
+for (int cycle = 0; cycle < 8; cycle++)
+{
+    foreach (int which in new[] { 0, 1, 1, 0 }) Run(which, false, cycle);
+}
+Emit(new { kind = "gpu", variant = "before", statistics = prior.Statistics() });
+Emit(new { kind = "gpu", variant = "after", statistics = current.Statistics() });

@@ -3,11 +3,12 @@ namespace FunAsrNet;
 /// <summary>
 /// 兼容 Fun-ASR 的 16 kHz、80 维对数滤波器组与 7/6 LFR 特征提取。
 /// </summary>
-public sealed class FilterBank
+public sealed partial class FilterBank
 {
     private const int Window = 400, Shift = 160, FftSize = 512, Bins = 80;
     private readonly float[] _window = new float[Window];
     private readonly float[][] _filters = new float[Bins][];
+    private readonly int[] _filterStarts = new int[Bins], _filterEnds = new int[Bins];
     /// <summary>
     /// 兼容 Fun-ASR 的 16 kHz、80 维对数滤波器组与 7/6 LFR 特征提取。
     /// </summary>
@@ -23,12 +24,15 @@ public sealed class FilterBank
         {
             float left = low + m * delta, center = low + (m + 1) * delta, right = low + (m + 2) * delta;
             _filters[m] = new float[FftSize / 2 + 1];
+            _filterStarts[m] = FftSize / 2 + 1;
             for (int k = 0; k <= FftSize / 2; ++k)
             {
                 float f = Mel(16000f / FftSize * k);
                 if (f > left && f < right)
                 {
                     _filters[m][k] = f <= center ? (f - left) / (center - left) : (right - f) / (right - center);
+                    _filterStarts[m] = Math.Min(_filterStarts[m], k);
+                    _filterEnds[m] = k + 1;
                 }
             }
         }
@@ -55,9 +59,11 @@ public sealed class FilterBank
 
         int count = (pcm.Length - Window) / Shift + 1;
         float[] features = new float[count * Bins];
-        var re = new float[FftSize];
-        var im = new float[FftSize];
-        var frame = new float[Window];
+        // 固定大小的约 6.6 KiB 工作区只属于本次调用，不产生堆分配。
+        Span<float> re = stackalloc float[FftSize];
+        Span<float> im = stackalloc float[FftSize];
+        Span<float> frame = stackalloc float[Window];
+        Span<float> power = stackalloc float[FftSize / 2 + 1];
         for (int t = 0; t < count; ++t)
         {
             double mean = 0;
@@ -78,23 +84,22 @@ public sealed class FilterBank
             }
 
             frame[0] -= 0.97f * frame[0];
-            Array.Clear(re);
-            Array.Clear(im);
+            re.Slice(Window).Clear();
+            im.Clear();
             for (int i = 0; i < Window; ++i)
             {
                 re[i] = frame[i] * _window[i];
             }
 
             Fft(re, im);
+            PowerSpectrum(re, im, power);
             for (int m = 0; m < Bins; ++m)
             {
                 float energy = 0;
-                for (int k = 0; k <= FftSize / 2; ++k)
+                // 非零系数连续；仍按原频点次序累加，避免改变特征舍入。
+                for (int k = _filterStarts[m]; k < _filterEnds[m]; ++k)
                 {
-                    if (_filters[m][k] > 0)
-                    {
-                        energy += _filters[m][k] * (re[k] * re[k] + im[k] * im[k]);
-                    }
+                    energy += _filters[m][k] * power[k];
                 }
 
                 features[t * Bins + m] = MathF.Log(Math.Max(energy, 1.1920929e-7f));
@@ -125,51 +130,5 @@ public sealed class FilterBank
         }
 
         return output;
-    }
-
-    /// <summary>
-    /// 原位计算窗内数据的复数快速傅里叶变换。
-    /// </summary>
-    /// <param name="re">FFT 实部数组，结果原位写回。</param>
-    /// <param name="im">FFT 虚部数组，结果原位写回。</param>
-    private static void Fft(float[] re, float[] im)
-    {
-        int n = re.Length;
-        for (int i = 1, j = 0; i < n; ++i)
-        {
-            int bit = n >> 1;
-            for (; (j & bit) != 0; bit >>= 1)
-            {
-                j ^= bit;
-            }
-
-            j ^= bit;
-            if (i < j)
-            {
-                (re[i], re[j]) = (re[j], re[i]);
-                (im[i], im[j]) = (im[j], im[i]);
-            }
-        }
-
-        for (int length = 2; length <= n; length <<= 1)
-        {
-            float angle = (float)(-2 * Math.PI / length), wr = MathF.Cos(angle), wi = MathF.Sin(angle);
-            for (int i = 0; i < n; i += length)
-            {
-                float cr = 1, ci = 0;
-                for (int k = 0; k < length / 2; ++k)
-                {
-                    int a = i + k, b = a + length / 2;
-                    float ur = re[a], ui = im[a], vr = re[b] * cr - im[b] * ci, vi = re[b] * ci + im[b] * cr;
-                    re[a] = ur + vr;
-                    im[a] = ui + vi;
-                    re[b] = ur - vr;
-                    im[b] = ui - vi;
-                    float next = cr * wr - ci * wi;
-                    ci = cr * wi + ci * wr;
-                    cr = next;
-                }
-            }
-        }
     }
 }

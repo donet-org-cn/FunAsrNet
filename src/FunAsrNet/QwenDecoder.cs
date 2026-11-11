@@ -1,3 +1,4 @@
+using System.Runtime.Intrinsics;
 using System.Runtime.Intrinsics.Arm;
 
 namespace FunAsrNet;
@@ -77,13 +78,19 @@ public sealed class QwenDecoder
         _ropeBase = model.Float("qwen3.rope.freq_base", 1000000);
         _ropeCos = new float[capacity * _headSize / 2];
         _ropeSin = new float[_ropeCos.Length];
+        int half = _headSize / 2;
+        var frequencies = new float[half];
+        for (int i = 0; i < half; ++i)
+        {
+            frequencies[i] = MathF.Pow(_ropeBase, -2f * i / _headSize);
+        }
         for (int t = 0; t < capacity; ++t)
         {
-            for (int i = 0; i < _headSize / 2; ++i)
+            for (int i = 0; i < half; ++i)
             {
-                float angle = t * MathF.Pow(_ropeBase, -2f * i / _headSize);
-                _ropeCos[t * (_headSize / 2) + i] = MathF.Cos(angle);
-                _ropeSin[t * (_headSize / 2) + i] = MathF.Sin(angle);
+                float angle = t * frequencies[i];
+                _ropeCos[t * half + i] = MathF.Cos(angle);
+                _ropeSin[t * half + i] = MathF.Sin(angle);
             }
         }
 
@@ -196,21 +203,25 @@ public sealed class QwenDecoder
             TensorWorkspace.Release(v);
             var attn = TensorWorkspace.Allocate(frames * qWidth, clear: true);
             long attentionStart = StartMeasure();
-            _math.For(
-                frames * _heads,
-                index =>
-                {
-                    int t = index / _heads, head = index % _heads, kh = head / (_heads / _kvHeads), end = _position + t + 1;
-                    Span<float> scores = stackalloc float[end];
-                    int qo = t * qWidth + head * _headSize;
-                    for (int s = 0; s < end; ++s)
+            if (frames != 1 || _heads != _kvHeads * 2
+                || !_math.TryDecoderAttentionPair(q, kc, vc, _position + 1, _kvHeads, _headSize, attn))
+            {
+                _math.For(
+                    frames * _heads,
+                    index =>
                     {
-                        scores[s] = AudioKernels.Dot(q.AsSpan(qo, _headSize), kc.AsSpan(s * kvWidth + kh * _headSize, _headSize), _math.Simd) / MathF.Sqrt(_headSize);
-                    }
+                        int t = index / _heads, head = index % _heads, kh = head / (_heads / _kvHeads), end = _position + t + 1;
+                        Span<float> scores = stackalloc float[end];
+                        int qo = t * qWidth + head * _headSize;
+                        for (int s = 0; s < end; ++s)
+                        {
+                            scores[s] = AudioKernels.Dot(q.AsSpan(qo, _headSize), kc.AsSpan(s * kvWidth + kh * _headSize, _headSize), _math.Simd) / MathF.Sqrt(_headSize);
+                        }
 
-                    TensorMath.Softmax(scores);
-                    TensorMath.AttentionValues(scores, vc, kh * _headSize, kvWidth, attn.AsSpan(qo, _headSize), _math.Simd);
-                });
+                        TensorMath.Softmax(scores);
+                        TensorMath.AttentionValues(scores, vc, kh * _headSize, kvWidth, attn.AsSpan(qo, _headSize), _math.Simd);
+                    });
+            }
             EndMeasure($"DecAttention {frames}", attentionStart);
             TensorWorkspace.Release(q);
             var a = Linear(attn, frames, p + "attn_output.weight");
@@ -266,8 +277,44 @@ public sealed class QwenDecoder
     /// <returns>计算得到的整数结果。</returns>
     public static int Greedy(float[] logits)
     {
-        int best = 0;
-        for (int i = 1; i < logits.Length; ++i)
+        int best = 0, i = 1;
+        // 首项为 NaN 时，旧算法的所有比较均为 false，必须仍返回零。
+        if (logits.Length > 0 && !float.IsNaN(logits[0]))
+        {
+            if (Vector256.IsHardwareAccelerated)
+            {
+                for (; i <= logits.Length - 8; i += 8)
+                {
+                    if (Vector256.GreaterThanAny(Vector256.LoadUnsafe(ref logits[i]), Vector256.Create(logits[best])))
+                    {
+                        for (int j = i; j < i + 8; ++j)
+                        {
+                            if (logits[j] > logits[best])
+                            {
+                                best = j;
+                            }
+                        }
+                    }
+                }
+            }
+            if (Vector128.IsHardwareAccelerated)
+            {
+                for (; i <= logits.Length - 4; i += 4)
+                {
+                    if (Vector128.GreaterThanAny(Vector128.LoadUnsafe(ref logits[i]), Vector128.Create(logits[best])))
+                    {
+                        for (int j = i; j < i + 4; ++j)
+                        {
+                            if (logits[j] > logits[best])
+                            {
+                                best = j;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        for (; i < logits.Length; ++i)
         {
             if (logits[i] > logits[best])
             {
@@ -324,17 +371,12 @@ public sealed class QwenDecoder
         int half = _headSize / 2;
         for (int t = 0; t < frames; ++t)
         {
+            int position = (_position + t) * half;
+            var cosine = _ropeCos.AsSpan(position, half);
+            var sine = _ropeSin.AsSpan(position, half);
             for (int h = 0; h < heads; ++h)
             {
-                for (int i = 0; i < half; ++i)
-                {
-                    int position = (_position + t) * half + i;
-                    float c = _ropeCos[position], s = _ropeSin[position];
-                    int at = (t * heads + h) * _headSize + i;
-                    float a = x[at], b = x[at + half];
-                    x[at] = a * c - b * s;
-                    x[at + half] = a * s + b * c;
-                }
+                TensorMath.RotateHalf(x.AsSpan((t * heads + h) * _headSize, half * 2), cosine, sine, _math.Simd);
             }
         }
 

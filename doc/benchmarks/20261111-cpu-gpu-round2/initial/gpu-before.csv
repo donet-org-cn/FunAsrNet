@@ -1,0 +1,2 @@
+name, memory.total [MiB], memory.used [MiB], driver_version, temperature.gpu
+NVIDIA GeForce RTX 3060, 12288 MiB, 2826 MiB, 610.88, 53

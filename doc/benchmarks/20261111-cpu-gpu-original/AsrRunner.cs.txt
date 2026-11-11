@@ -1,0 +1,29 @@
+using System.Diagnostics;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Text.Encodings.Web;
+using System.Text.Json;
+using FunAsrNet;
+using FunAsrNet.Vulkan;
+Console.OutputEncoding=Encoding.UTF8;
+if(OperatingSystem.IsWindows())Process.GetCurrentProcess().ProcessorAffinity=(nint)0x55;
+var options=new JsonSerializerOptions {Encoder=JavaScriptEncoder.UnsafeRelaxedJsonEscaping};
+void Emit(object record)=>Console.WriteLine(JsonSerializer.Serialize(record,options));
+var audio=MemoryMarshal.Cast<byte,float>(File.ReadAllBytes(args[2])).ToArray();
+var watch=Stopwatch.StartNew();
+var engine=new FunAsr(args[0],args[1],4) {CachePrompt=false};
+using var gpu=args.Contains("--gpu")?new VulkanFloatBackend(4096L*1024*1024):null;
+engine.FloatBackend=gpu;
+Dictionary<string,double> profile=[];
+if(args.Contains("--profile"))engine.LinearMeasured=(name,ms)=>profile[name]=profile.GetValueOrDefault(name)+ms;
+int traceIndex=Array.IndexOf(args,"--trace");
+if(traceIndex>=0) {Directory.CreateDirectory(args[traceIndex+1]);engine.Trace=(name,values)=>File.WriteAllBytes(Path.Combine(args[traceIndex+1],name+".f32"),MemoryMarshal.AsBytes(values.AsSpan()).ToArray());}
+GC.Collect(2,GCCollectionMode.Forced,true);
+Emit(new{kind="load",seconds=watch.Elapsed.TotalSeconds,runtime=Environment.Version.ToString(),gpu=gpu is not null,cacheBytes=4096L*1024*1024,encoder=Path.GetFileName(args[0]),decoder=Path.GetFileName(args[1])});
+int repeats=int.Parse(args[3]);
+for(int iteration=-1;iteration<repeats;iteration++) {
+    profile.Clear();long allocation=GC.GetTotalAllocatedBytes(true);watch.Restart();var result=engine.Transcribe(audio,128);double elapsed=watch.Elapsed.TotalSeconds;
+    Emit(new{kind="asr",iteration,warmup=iteration<0,seconds=elapsed,result.Text,result.GeneratedTokens,result.EncoderSeconds,result.DecoderSeconds,result.PrefillSeconds,result.GenerationSeconds,allocatedBytes=GC.GetTotalAllocatedBytes(true)-allocation,peakRssBytes=Process.GetCurrentProcess().PeakWorkingSet64});
+    if(args.Contains("--profile"))Emit(new{kind="profile",iteration,groups=profile.GroupBy(x=>string.Join(' ',x.Key.Split(' ').Take(2))).ToDictionary(g=>g.Key,g=>g.Sum(x=>x.Value)),slowest=profile.OrderByDescending(x=>x.Value).Take(20).ToDictionary()});
+    if(gpu is not null)Emit(new{kind="gpu",iteration,statistics=gpu.Statistics()});
+}

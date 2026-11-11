@@ -35,9 +35,7 @@ public sealed partial class TensorMath
                     var b = QuantizedPartialAvx(Vector256.LoadUnsafe(ref weights, (nuint)(at + n)), x);
                     var c = QuantizedPartialAvx(Vector256.LoadUnsafe(ref weights, (nuint)(at + n * 2)), x);
                     var d = QuantizedPartialAvx(Vector256.LoadUnsafe(ref weights, (nuint)(at + n * 3)), x);
-                    var ab = Ssse3.HorizontalAdd(a.GetLower() + a.GetUpper(), b.GetLower() + b.GetUpper());
-                    var cd = Ssse3.HorizontalAdd(c.GetLower() + c.GetUpper(), d.GetLower() + d.GetUpper());
-                    var dot = Vector128.ConvertToSingle(Ssse3.HorizontalAdd(ab, cd));
+                    var dot = QuantizedReduce4Avx(a, b, c, d);
                     var scale = Vector128.Create(Unsafe.Add(ref ws, scaleAt), Unsafe.Add(ref ws, scaleAt + blocks), Unsafe.Add(ref ws, scaleAt + blocks * 2), Unsafe.Add(ref ws, scaleAt + blocks * 3));
                     sum += dot * scale * Vector128.Create(Unsafe.Add(ref xs, block));
                 }
@@ -59,6 +57,19 @@ public sealed partial class TensorMath
                 output[row] = (bias?.Values?[row] ?? 0) + sum;
             }
         });
+    }
+
+    /// <summary>先在两个一百二十八位半区各自归约四行，再合并半区，减少提取及加法指令。</summary>
+    /// <param name="a">第一行的八组精确整数部分和。</param>
+    /// <param name="b">第二行的八组精确整数部分和。</param>
+    /// <param name="c">第三行的八组精确整数部分和。</param>
+    /// <param name="d">第四行的八组精确整数部分和。</param>
+    /// <returns>四行完整整数和转换的单精度向量，转换前不作浮点运算。</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static Vector128<float> QuantizedReduce4Avx(Vector256<int> a, Vector256<int> b, Vector256<int> c, Vector256<int> d)
+    {
+        var paired = Avx2.HorizontalAdd(Avx2.HorizontalAdd(a, b), Avx2.HorizontalAdd(c, d));
+        return Vector128.ConvertToSingle(paired.GetLower() + paired.GetUpper());
     }
 
     /// <summary>计算八组四项整数点积，推迟归约以便多个输出行共享后续 SIMD 运算。</summary>

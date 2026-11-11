@@ -1,3 +1,5 @@
+using System.Runtime.Intrinsics;
+using System.Runtime.Intrinsics.X86;
 using FunAsrNet;
 
 namespace FunAsrNet.Checks;
@@ -9,6 +11,11 @@ internal static class ActivationChecks
     /// <param name="check">断言和检查名称的回调。</param>
     internal static void Run(Action<bool, string> check)
     {
+        if (Avx2.IsSupported && Fma.IsSupported)
+        {
+            CheckAvxExp(check);
+        }
+
         float[] values = Enumerable.Range(-10000, 20001).Select(index => index / 100f).Concat(new[] { float.NegativeInfinity, float.PositiveInfinity, float.NaN, -0f, 0f }).ToArray();
         var actual = TensorOps.Sigmoid(new Tensor(values, [values.Length]));
         for (int i = 0; i < values.Length; i++)
@@ -33,5 +40,34 @@ internal static class ActivationChecks
         check(float.IsNaN(exceptional.Data[0]) && float.IsNaN(exceptional.Data[7]), "Vector erf propagates NaN");
         check(exceptional.Data[1] == 1 && exceptional.Data[2] == -1, "Vector erf infinite limits");
         check(BitConverter.SingleToInt32Bits(exceptional.Data[3]) >= 0 && BitConverter.SingleToInt32Bits(exceptional.Data[4]) < 0, "Vector erf preserves zero input sign");
+    }
+
+    /// <summary>对常用范围、单精度边界与非有限值逐通道验证本地指数。</summary>
+    /// <param name="check">记录数值误差和特殊值断言的回调。</param>
+    private static void CheckAvxExp(Action<bool, string> check)
+    {
+        var random = new Random(1100256);
+        Span<float> values = stackalloc float[8];
+        float[] edges = [float.NegativeInfinity, -105f, -104f, -103.97208f, -87.33655f, -0f, 0f, 88.72283f, 88.72285f, 104f, float.PositiveInfinity, float.NaN];
+        for (int group = 0; group < 8192; ++group)
+        {
+            for (int lane = 0; lane < values.Length; ++lane)
+            {
+                values[lane] = (float)(random.NextDouble() * 208 - 104);
+            }
+            if (group < edges.Length)
+            {
+                values[group % 8] = edges[group];
+            }
+            var actual = TensorMath.ExpAvx(Vector256.LoadUnsafe(ref values[0]));
+            for (int lane = 0; lane < values.Length; ++lane)
+            {
+                float expected = (float)Math.Exp(values[lane]), observed = actual.GetElement(lane);
+                bool same = !float.IsFinite(expected) || !float.IsFinite(observed)
+                    ? expected.Equals(observed)
+                    : Math.Abs(BitConverter.SingleToInt32Bits(expected) - (long)BitConverter.SingleToInt32Bits(observed)) <= 1;
+                check(same, same ? "AVX exp matches double reference within one single-precision ULP" : $"AVX exp({values[lane]:R}): {observed:R} vs {expected:R}");
+            }
+        }
     }
 }

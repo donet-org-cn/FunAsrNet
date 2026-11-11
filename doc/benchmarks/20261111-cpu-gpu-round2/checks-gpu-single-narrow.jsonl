@@ -1,0 +1,12 @@
+{"kind":"attention-check","frames":1,"width":7,"heads":1,"maxError":0,"gpuSeconds":0.0029228}
+{"kind":"attention-check","frames":2,"width":7,"heads":1,"maxError":7.707256270638427E-08,"gpuSeconds":0.0010099}
+{"kind":"attention-check","frames":3,"width":256,"heads":1,"maxError":3.188949491139681E-07,"gpuSeconds":0.0005811}
+{"kind":"attention-check","frames":17,"width":96,"heads":3,"maxError":5.60586606824243E-06,"gpuSeconds":0.0008568}
+{"kind":"attention-check","frames":100,"width":512,"heads":4,"maxError":4.321457282019381E-07,"gpuSeconds":0.0014049}
+{"kind":"attention-check","frames":129,"width":1024,"heads":8,"maxError":4.424807642511297E-07,"gpuSeconds":0.0022184}
+{"kind":"attention-check","frames":400,"width":512,"heads":4,"maxError":5.19625545758462E-07,"gpuSeconds":0.0039027}
+{"kind":"attention-check","frames":257,"width":256,"heads":1,"maxError":4.347891991440811E-07,"gpuSeconds":0.0005367}
+{"kind":"attention-check","frames":1024,"width":16,"heads":2,"maxError":3.9199561563396657E-07,"gpuSeconds":0.0010962}
+{"kind":"attention-check","frames":1025,"width":16,"heads":2,"maxError":3.452427063954655E-07,"gpuSeconds":0.0012652}
+{"kind":"attention-check","frames":4096,"width":8,"heads":1,"maxError":2.8297536276700175E-07,"gpuSeconds":0.0075832}
+{"kind":"gpu-check","checks":1453760,"passed":true,"statistics":{"device":"NVIDIA GeForce RTX 3060","loader":"vulkan-1.dll","precision":"FP32 + original Q8_0","linearCalls":202,"floatGroupCalls":48,"attentionCalls":22,"floatLinearDispatches":45,"floatVectorDispatches":117,"floatWideVectorDispatches":0,"convolutionCalls":16,"reluProjectionCalls":10,"computeSubmissions":262,"quantizedCalls":32,"quantizedKernel":"subgroup-eight-block-integer-dot","subgroupSize":32,"fenceSpinMicroseconds":100,"cacheBytes":2470696,"cacheHits":258,"uploadedBytes":170346728,"downloadedBytes":5685008,"endToEndSeconds":0.44770140000000014,"maxStorageRange":4294967295}}

@@ -8,4 +8,4 @@ doc/benchmarks/20261010-vulkan-local/*.jsonl -text whitespace=cr-at-eol
 *.pcmu binary
 doc/benchmarks/**/*.jsonl -text whitespace=cr-at-eol
 doc/benchmarks/**/*.json -text whitespace=cr-at-eol
-doc/benchmarks/**/*.txt -text whitespace=cr-at-eol
+doc/benchmarks/**/*.txt -text whitespace=cr-at-eol,-blank-at-eof

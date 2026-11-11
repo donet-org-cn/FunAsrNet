@@ -16,7 +16,7 @@ internal static class QuantizedGroupAvxChecks
         }
         var random = new Random(512031);
         var math = new TensorMath(4);
-        foreach (int frames in new[] { 0, 1, 2, 3, 4, 5, 17, 33 })
+        foreach (int frames in new[] { 0, 1, 2, 3, 4, 5, 8, 9, 10, 11, 17, 33 })
         {
             foreach (int width in new[] { 32, 96, 1024 })
             {

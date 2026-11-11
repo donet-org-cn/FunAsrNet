@@ -1,1 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk" />
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="../../eng/Package.props" />
+  <PropertyGroup>
+    <PackageId>FunAsrNet</PackageId>
+    <Description>Independent managed C# speech inference for fixed Fun-ASR and Chinese VITS models, with SIMD CPU kernels, VAD, and telephony audio utilities. Model weights are supplied separately. Not the official FunASR SDK.</Description>
+    <PackageTags>ASR;TTS;speech;FunASR;SIMD;VAD;audio;Chinese</PackageTags>
+  </PropertyGroup>
+</Project>

@@ -1,0 +1,360 @@
+{
+  "formal": 96,
+  "warmups": 32,
+  "cpuSource": "initial CPU subset; CPU assembly identical to final build",
+  "gpuSource": "gpu-final",
+  "summary": [
+    {
+      "key": "original-cpu-sample-6s",
+      "files": [
+        "original-cpu-sample-6s-after-0.jsonl",
+        "original-cpu-sample-6s-after-1.jsonl",
+        "original-cpu-sample-6s-before-0.jsonl",
+        "original-cpu-sample-6s-before-1.jsonl"
+      ],
+      "before": {
+        "n": 6,
+        "median": 1.76910395,
+        "min": 1.6915436,
+        "max": 1.88966,
+        "encoder": 0.18787885,
+        "prefill": 0.22625285,
+        "generation": 1.3490961,
+        "allocatedBytes": 1511488,
+        "peakRssBytes": 4051705856,
+        "texts": [
+          "我想问我在滨海新区有房"
+        ],
+        "tokens": [
+          7
+        ]
+      },
+      "after": {
+        "n": 6,
+        "median": 1.73189715,
+        "min": 1.7104168,
+        "max": 1.7627014,
+        "encoder": 0.16944705,
+        "prefill": 0.2146659,
+        "generation": 1.3446771000000002,
+        "allocatedBytes": 1511488,
+        "peakRssBytes": 4051529728,
+        "texts": [
+          "我想问我在滨海新区有房"
+        ],
+        "tokens": [
+          7
+        ]
+      },
+      "reductionPercent": 2.1031437977401035
+    },
+    {
+      "key": "original-cpu-sample-repeated-24s",
+      "files": [
+        "original-cpu-sample-repeated-24s-after-0.jsonl",
+        "original-cpu-sample-repeated-24s-after-1.jsonl",
+        "original-cpu-sample-repeated-24s-before-0.jsonl",
+        "original-cpu-sample-repeated-24s-before-1.jsonl"
+      ],
+      "before": {
+        "n": 6,
+        "median": 7.0561748,
+        "min": 6.4754495,
+        "max": 7.9489591,
+        "encoder": 0.92435115,
+        "prefill": 0.28864965,
+        "generation": 5.80668555,
+        "allocatedBytes": 4668984,
+        "peakRssBytes": 4097624064,
+        "texts": [
+          "我想问我在滨海新区有房我想问我在滨海新区有房我想问我在滨海新区有房我想问我在滨海新区有房"
+        ],
+        "tokens": [
+          28
+        ]
+      },
+      "after": {
+        "n": 6,
+        "median": 6.460459,
+        "min": 6.1264242,
+        "max": 6.8363481,
+        "encoder": 0.80990325,
+        "prefill": 0.26220055000000003,
+        "generation": 5.3967662,
+        "allocatedBytes": 4668984,
+        "peakRssBytes": 4098555904,
+        "texts": [
+          "我想问我在滨海新区有房我想问我在滨海新区有房我想问我在滨海新区有房我想问我在滨海新区有房"
+        ],
+        "tokens": [
+          28
+        ]
+      },
+      "reductionPercent": 8.442475092878931
+    },
+    {
+      "key": "q8-cpu-sample-6s",
+      "files": [
+        "q8-cpu-sample-6s-after-0.jsonl",
+        "q8-cpu-sample-6s-after-1.jsonl",
+        "q8-cpu-sample-6s-before-0.jsonl",
+        "q8-cpu-sample-6s-before-1.jsonl"
+      ],
+      "before": {
+        "n": 6,
+        "median": 0.6425037,
+        "min": 0.5765041,
+        "max": 0.7191601,
+        "encoder": 0.1796626,
+        "prefill": 0.08618545000000001,
+        "generation": 0.37362304999999996,
+        "allocatedBytes": 1317248,
+        "peakRssBytes": 1892419584,
+        "texts": [
+          "我想问我在滨海新区有房"
+        ],
+        "tokens": [
+          7
+        ]
+      },
+      "after": {
+        "n": 6,
+        "median": 0.6446124,
+        "min": 0.5708076,
+        "max": 0.7549826,
+        "encoder": 0.1616176,
+        "prefill": 0.09198450000000001,
+        "generation": 0.36927380000000004,
+        "allocatedBytes": 1317248,
+        "peakRssBytes": 1891471360,
+        "texts": [
+          "我想问我在滨海新区有房"
+        ],
+        "tokens": [
+          7
+        ]
+      },
+      "reductionPercent": -0.32820044460444286
+    },
+    {
+      "key": "q8-cpu-sample-repeated-24s",
+      "files": [
+        "q8-cpu-sample-repeated-24s-after-0.jsonl",
+        "q8-cpu-sample-repeated-24s-after-1.jsonl",
+        "q8-cpu-sample-repeated-24s-before-0.jsonl",
+        "q8-cpu-sample-repeated-24s-before-1.jsonl"
+      ],
+      "before": {
+        "n": 6,
+        "median": 2.5053400999999997,
+        "min": 2.4749014,
+        "max": 2.5783764,
+        "encoder": 0.83435495,
+        "prefill": 0.17518195000000003,
+        "generation": 1.5088949999999999,
+        "allocatedBytes": 4053064,
+        "peakRssBytes": 1940688896,
+        "texts": [
+          "我想问我在滨海新区有房我想问我在滨海新区有房我想问我在滨海新区有房我想问我在滨海新区有房"
+        ],
+        "tokens": [
+          28
+        ]
+      },
+      "after": {
+        "n": 6,
+        "median": 2.4062002,
+        "min": 2.3414236,
+        "max": 2.5502265,
+        "encoder": 0.76882195,
+        "prefill": 0.1713195,
+        "generation": 1.4753727499999998,
+        "allocatedBytes": 4053064,
+        "peakRssBytes": 1940625408,
+        "texts": [
+          "我想问我在滨海新区有房我想问我在滨海新区有房我想问我在滨海新区有房我想问我在滨海新区有房"
+        ],
+        "tokens": [
+          28
+        ]
+      },
+      "reductionPercent": 3.9571433834472147
+    },
+    {
+      "key": "original-gpu-sample-6s",
+      "files": [
+        "original-gpu-sample-6s-after-0.jsonl",
+        "original-gpu-sample-6s-after-1.jsonl",
+        "original-gpu-sample-6s-before-0.jsonl",
+        "original-gpu-sample-6s-before-1.jsonl"
+      ],
+      "before": {
+        "n": 6,
+        "median": 0.32804849999999997,
+        "min": 0.3162456,
+        "max": 0.3497823,
+        "encoder": 0.13137120000000002,
+        "prefill": 0.08060814999999999,
+        "generation": 0.1165698,
+        "allocatedBytes": 1313248,
+        "peakRssBytes": 4839888896,
+        "texts": [
+          "我想问我在滨海新区有房"
+        ],
+        "tokens": [
+          7
+        ]
+      },
+      "after": {
+        "n": 6,
+        "median": 0.32166735,
+        "min": 0.2919168,
+        "max": 0.3671981,
+        "encoder": 0.12133630000000001,
+        "prefill": 0.07878395000000002,
+        "generation": 0.10853819999999999,
+        "allocatedBytes": 1313248,
+        "peakRssBytes": 4843976704,
+        "texts": [
+          "我想问我在滨海新区有房"
+        ],
+        "tokens": [
+          7
+        ]
+      },
+      "reductionPercent": 1.9451849345447192
+    },
+    {
+      "key": "original-gpu-sample-repeated-24s",
+      "files": [
+        "original-gpu-sample-repeated-24s-after-0.jsonl",
+        "original-gpu-sample-repeated-24s-after-1.jsonl",
+        "original-gpu-sample-repeated-24s-before-0.jsonl",
+        "original-gpu-sample-repeated-24s-before-1.jsonl"
+      ],
+      "before": {
+        "n": 6,
+        "median": 1.0278188,
+        "min": 1.0058551,
+        "max": 1.0712674,
+        "encoder": 0.4508794,
+        "prefill": 0.12317485000000003,
+        "generation": 0.4636869,
+        "allocatedBytes": 4136088,
+        "peakRssBytes": 4866668544,
+        "texts": [
+          "我想问我在滨海新区有房我想问我在滨海新区有房我想问我在滨海新区有房我想问我在滨海新区有房"
+        ],
+        "tokens": [
+          28
+        ]
+      },
+      "after": {
+        "n": 6,
+        "median": 1.05430255,
+        "min": 1.0199798,
+        "max": 1.3234136,
+        "encoder": 0.42051905,
+        "prefill": 0.15233199999999997,
+        "generation": 0.48237150000000006,
+        "allocatedBytes": 4126960,
+        "peakRssBytes": 4859750400,
+        "texts": [
+          "我想问我在滨海新区有房我想问我在滨海新区有房我想问我在滨海新区有房我想问我在滨海新区有房"
+        ],
+        "tokens": [
+          28
+        ]
+      },
+      "reductionPercent": -2.5766944523684554
+    },
+    {
+      "key": "q8-gpu-sample-6s",
+      "files": [
+        "q8-gpu-sample-6s-after-0.jsonl",
+        "q8-gpu-sample-6s-after-1.jsonl",
+        "q8-gpu-sample-6s-before-0.jsonl",
+        "q8-gpu-sample-6s-before-1.jsonl"
+      ],
+      "before": {
+        "n": 6,
+        "median": 0.2814195,
+        "min": 0.2584,
+        "max": 0.2993662,
+        "encoder": 0.12298319999999999,
+        "prefill": 0.07895760000000002,
+        "generation": 0.06954680000000002,
+        "allocatedBytes": 1381920,
+        "peakRssBytes": 2503307264,
+        "texts": [
+          "我想问我在滨海新区有房"
+        ],
+        "tokens": [
+          7
+        ]
+      },
+      "after": {
+        "n": 6,
+        "median": 0.28374435,
+        "min": 0.2626081,
+        "max": 0.3016653,
+        "encoder": 0.12237895,
+        "prefill": 0.07472810000000002,
+        "generation": 0.07144534999999999,
+        "allocatedBytes": 1381920,
+        "peakRssBytes": 2494199808,
+        "texts": [
+          "我想问我在滨海新区有房"
+        ],
+        "tokens": [
+          7
+        ]
+      },
+      "reductionPercent": -0.8261154610821109
+    },
+    {
+      "key": "q8-gpu-sample-repeated-24s",
+      "files": [
+        "q8-gpu-sample-repeated-24s-after-0.jsonl",
+        "q8-gpu-sample-repeated-24s-after-1.jsonl",
+        "q8-gpu-sample-repeated-24s-before-0.jsonl",
+        "q8-gpu-sample-repeated-24s-before-1.jsonl"
+      ],
+      "before": {
+        "n": 6,
+        "median": 0.91498355,
+        "min": 0.8699037,
+        "max": 0.9750115,
+        "encoder": 0.4289079,
+        "prefill": 0.17420239999999998,
+        "generation": 0.30484944999999997,
+        "allocatedBytes": 4385024,
+        "peakRssBytes": 2548903936,
+        "texts": [
+          "我想问我在滨海新区有房我想问我在滨海新区有房我想问我在滨海新区有房我想问我在滨海新区有房"
+        ],
+        "tokens": [
+          28
+        ]
+      },
+      "after": {
+        "n": 6,
+        "median": 0.8515682,
+        "min": 0.8140557,
+        "max": 0.9513754,
+        "encoder": 0.3800636,
+        "prefill": 0.17996445,
+        "generation": 0.3004319,
+        "allocatedBytes": 4375896,
+        "peakRssBytes": 2535548928,
+        "texts": [
+          "我想问我在滨海新区有房我想问我在滨海新区有房我想问我在滨海新区有房我想问我在滨海新区有房"
+        ],
+        "tokens": [
+          28
+        ]
+      },
+      "reductionPercent": 6.930763946521223
+    }
+  ]
+}

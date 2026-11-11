@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="FunAsrNet" Version="[$(Version)]" />
+    <PackageReference Include="FunAsrNet.Vulkan" Version="[$(Version)]" />
+  </ItemGroup>
+</Project>

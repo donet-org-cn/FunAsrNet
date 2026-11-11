@@ -1,0 +1,42 @@
+{
+  "batches": [
+    {
+      "directory": "initial",
+      "formal": 96,
+      "warmup": 32
+    },
+    {
+      "directory": "gpu-final",
+      "formal": 48,
+      "warmup": 16
+    },
+    {
+      "directory": "gpu-paired",
+      "formal": 48,
+      "warmup": 8
+    },
+    {
+      "directory": "gpu-control",
+      "formal": 128,
+      "warmup": 16
+    }
+  ],
+  "formal": 320,
+  "warmup": 72,
+  "inputs": [
+    {
+      "input": "6s",
+      "formal": 160,
+      "warmup": 36,
+      "text": "我想问我在滨海新区有房",
+      "tokens": 7
+    },
+    {
+      "input": "24s",
+      "formal": 160,
+      "warmup": 36,
+      "text": "我想问我在滨海新区有房我想问我在滨海新区有房我想问我在滨海新区有房我想问我在滨海新区有房",
+      "tokens": 28
+    }
+  ]
+}

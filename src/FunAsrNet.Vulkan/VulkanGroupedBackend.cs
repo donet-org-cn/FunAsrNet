@@ -2,13 +2,13 @@ using System.Runtime.CompilerServices;
 
 namespace FunAsrNet.Vulkan;
 
-/// <summary>将 Q/K/V 或门控投影的只读 Q8 行合并，一次量化和同步完成一组结果。</summary>
+/// <summary>将 Q/K/V 或门控投影的只读原精度行合并，减少输入准备和设备同步。</summary>
 public sealed unsafe partial class VulkanFloatBackend
 {
     private readonly ConditionalWeakTable<Weight[], Weight> _groups = new();
     private readonly ConditionalWeakTable<Weight, object> _combinedScaleFirst = new();
 
-    /// <summary>合并兼容的 Q8_0 投影，其他类型返回原 CPU 路径。</summary>
+    /// <summary>合并兼容的 Q8_0 或 FP32 投影，不支持的布局交由通用路径处理。</summary>
     /// <param name="input">共享的连续 FP32 输入数组。</param>
     /// <param name="frames">连续输入行数。</param>
     /// <param name="weights">稳定且只读的列数一致权重数组。</param>
@@ -17,6 +17,12 @@ public sealed unsafe partial class VulkanFloatBackend
     public bool TryLinearMany(float[] input, int frames, Weight[] weights, out float[][]? outputs)
     {
         outputs = null;
+        if (weights.Length >= 2 && frames > 0 && weights.All(weight => weight.Values is not null && weight.Quantized is null
+            && !weight.FloatInterleaved && !weight.QuantizedInterleaved && !weight.IsTransient
+            && weight.Columns == weights[0].Columns && weight.Columns > 0 && weight.Rows > 0))
+        {
+            return TryFloatLinearMany(input, frames, weights, out outputs);
+        }
         if (weights.Length < 2 || frames <= 0 || weights.Any(weight => weight.Quantized is null || weight.Scales is null
             || weight.Columns != weights[0].Columns || weight.Columns % 32 != 0
             || weight.QuantizedInterleaved != weights[0].QuantizedInterleaved))
@@ -33,9 +39,10 @@ public sealed unsafe partial class VulkanFloatBackend
         {
             ObjectDisposedException.ThrowIf(_disposed, this);
             var grouped = _groups.GetValue(weights, Combine);
-            var result = new float[checked(frames * grouped.Rows)];
+            var result = TensorWorkspace.Allocate(checked(frames * grouped.Rows));
             if (!TryQuantizedLinear(input, frames, grouped, null, result))
             {
+                TensorWorkspace.Release(result);
                 return false;
             }
 
@@ -44,7 +51,7 @@ public sealed unsafe partial class VulkanFloatBackend
             for (int index = 0; index < weights.Length; index++)
             {
                 int rows = weights[index].Rows;
-                split[index] = new float[checked(frames * rows)];
+                split[index] = TensorWorkspace.Allocate(checked(frames * rows));
                 for (int time = 0; time < frames; time++)
                 {
                     result.AsSpan(time * grouped.Rows + offset, rows).CopyTo(split[index].AsSpan(time * rows));
@@ -53,6 +60,7 @@ public sealed unsafe partial class VulkanFloatBackend
                 offset += rows;
             }
 
+            TensorWorkspace.Release(result);
             outputs = split;
             return true;
         }

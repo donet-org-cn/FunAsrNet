@@ -197,6 +197,14 @@ public sealed class Gguf
             throw new InvalidDataException("Oversized GGUF string");
         }
 
+        if (n <= 256)
+        {
+            // 词表和合并规则主要是短字符串，避免每项再分配一个临时字节数组。
+            Span<byte> buffer = stackalloc byte[n];
+            reader.BaseStream.ReadExactly(buffer);
+            return Encoding.UTF8.GetString(buffer);
+        }
+
         byte[] bytes = reader.ReadBytes(n);
         if (bytes.Length != n)
         {
@@ -260,7 +268,10 @@ public sealed partial class Weight(string name, int[] shape)
     /// </summary>
     public string Name { get; } = name;
     /// <summary>是否仅供本次投影使用；GPU 应复用临时上传缓冲，而非把动态矩阵保留在权重缓存。</summary>
-    public bool IsTransient { get; internal set; }
+    public bool IsTransient
+    {
+        get; internal set;
+    }
     /// <summary>
     /// 张量维度数组；视图共享时不得通过修改维度破坏其他使用者。
     /// </summary>

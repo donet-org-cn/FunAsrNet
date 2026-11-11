@@ -1,0 +1,9 @@
+{
+  "src/FunAsrNet/FilterBank.cs": "c2a9207d3d0e684dc1a7913adfe188966f62112a49642827f243bd6ec6cd723d",
+  "src/FunAsrNet/FilterBank.Fft.cs": "819572d88d23273f06efd627b8eaa77f85de8a970923930cfc44f4f3e1f94658",
+  "src/FunAsrNet/QwenDecoder.cs": "89d7e57782050144038791939247e027ac22a4834d0ed4d3a3390c5841725bd0",
+  "src/FunAsrNet/TensorMath.Rope.cs": "ca05f73549433ccdc516abe7b8708424ec17c81169ef938a650de57defc2ae2c",
+  "tests/FunAsrNet.Checks/Program.cs": "4e203c8c545bf9255cf5bc217c44d7cdb4a4ca084f10ad10f93848795aa0fe27",
+  "tests/FunAsrNet.Checks/FrontendKernelChecks.cs": "bfea7fb5cd8766f5488becd0b6b5d50fc7fb1e68a1ceae199005965c9f96e52c",
+  "tests/FunAsrNet.Checks/ScalarFilterBank.cs": "70679319d5c692d74e3b7af3222967eb5b093d6dfce4b059a080b736ba662b64"
+}

@@ -122,6 +122,11 @@ public sealed partial class TensorMath(int threads = 4, bool simd = true)
         {
             QuantizedLinearAvx(input, frames, w, bias, output);
         }
+        else if (Optimized && Simd && System.Runtime.Intrinsics.X86.Avx2.IsSupported && w.Values is not null
+            && frames < 4 && n >= 16 && m >= 4 && Environment.GetEnvironmentVariable("FUNASRNET_FLOAT_ROWS4") != "0")
+        {
+            FloatRows4Avx(input, frames, w, bias, output);
+        }
         else if (w.Values is not null)
         {
             int rowsPerBlock = m < 128 ? 4 : 16;
@@ -611,6 +616,15 @@ public sealed partial class TensorMath(int threads = 4, bool simd = true)
     /// <returns>按计算顺序排列的浮点结果数组。</returns>
     public float[] Attention(float[] q, float[] k, float[] v, int frames, int width, int heads)
     {
+        if (FloatBackend is IAttentionComputeBackend attentionBackend)
+        {
+            var output = TensorWorkspace.Allocate(q.Length);
+            if (attentionBackend.TryAttention(q, k, v, frames, width, heads, output))
+            {
+                return output;
+            }
+            TensorWorkspace.Release(output);
+        }
         if (Simd && (AdvSimd.IsSupported || System.Runtime.Intrinsics.X86.Avx2.IsSupported) && frames >= 16 && Environment.GetEnvironmentVariable("FUNASRNET_BLOCK_ATTENTION") != "0")
         {
             return BlockAttention(q, k, v, frames, width, heads);

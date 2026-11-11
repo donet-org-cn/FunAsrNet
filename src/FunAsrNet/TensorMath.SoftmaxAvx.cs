@@ -32,7 +32,7 @@ public sealed partial class TensorMath
         index = 0;
         for (; index <= x.Length - 8; index += 8)
         {
-            var value = Vector256.Exp(Vector256.LoadUnsafe(ref data, (nuint)index) - shift);
+            var value = InferenceExp(Vector256.LoadUnsafe(ref data, (nuint)index) - shift);
             value.StoreUnsafe(ref data, (nuint)index);
             var (left, right) = Vector256.Widen(value);
             low += left;

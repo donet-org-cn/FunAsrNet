@@ -1,0 +1,2 @@
+PASS 9500865 checks; ARM NEON=False, SDOT=False; runtime=11.0.0
+100000 PCMA 20ms frames + float conversion: 29.355 ms

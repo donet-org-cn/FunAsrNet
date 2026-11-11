@@ -177,7 +177,7 @@ public sealed partial class TensorMath
             for (; i <= gate.Length - 8; i += 8)
             {
                 var g = Vector256.LoadUnsafe(ref gate[i]);
-                (g / (Vector256.Create(1f) + Vector256.Exp(-g)) * Vector256.LoadUnsafe(ref up[i])).StoreUnsafe(ref gate[i]);
+                (g / (Vector256.Create(1f) + InferenceExp(-g)) * Vector256.LoadUnsafe(ref up[i])).StoreUnsafe(ref gate[i]);
             }
         }
         if (Vector128.IsHardwareAccelerated && VectorTranscendentals)

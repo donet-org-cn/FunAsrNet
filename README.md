@@ -2,7 +2,7 @@
 
 **用 .NET 10 和纯 C# 推理实现普通话识别、语音合成与电话音频处理。** 核心命名空间 `FunAsrNet`，支持 CPU SIMD 和显式启用的 Vulkan GPU 混合后端。
 
-基于 [QwenAudio/Fun-ASR](https://github.com/QwenAudio/Fun-ASR) 固定版本架构的独立社区实现，**不是官方 .NET SDK，也不是整个 FunASR 工具箱的移植**。围绕固定 F16 编码器、Qwen3 Q8_0 解码器、FSMN VAD 与两种中文 VITS 模型验证，不承诺兼容上游所有模型及语言。
+基于 [QwenAudio/Fun-ASR](https://github.com/QwenAudio/Fun-ASR) 固定版本架构的独立社区实现，**不是官方 .NET SDK，也不是整个 FunASR 工具箱的移植**。围绕固定 F16/FP32 编码器、Qwen3 Q8_0/FP32 解码器、FSMN VAD 与两种中文 VITS 模型验证，不承诺兼容上游所有模型及语言。
 
 ## 纯 .NET 的实现范围
 
@@ -18,13 +18,13 @@
 
 | 功能 | 当前实现 |
 |---|---|
-| ASR | WAV 转写；固定 F16 编码器、Q8_0 解码器 |
+| ASR | WAV 转写；固定 F16/FP32 编码器、Q8_0/FP32 解码器，已验证原始 BF16 权重无损展开 |
 | 实时转写 | WebSocket、VAD 切句、可修订预览；不是逐帧增量编码 |
 | 中文 TTS | Huayan 1 位、AISHELL3 174 位发音人，安装两模型后共 175 位 |
 | 浏览器 Demo | 麦克风实时转写、上传 WAV、TTS 播放/下载，发音人搜索列表 |
 | 电话音频 | PCM16、G.711 PCMA/PCMU、重采样，可接自研 SIP/PJSIP 媒体层 |
 | 并发 | 独立会话状态、只读权重共享、队列/配额/取消和缓冲所有权管理 |
-| 可选 GPU | Vulkan FP32 矩阵/卷积、原 Q8_0 投影；剩余算子在 CPU |
+| 可选 GPU | Vulkan FP32 矩阵/卷积、长序列注意力、原 Q8_0 投影；剩余算子在 CPU |
 
 TTS 可设置语速、音量、采样率、格式、发音人、种子和随机度；尚无独立音高/情绪控制。服务不实现 SIP 信令、RTP 抖动缓冲或 AEC。
 
@@ -38,7 +38,7 @@ dotnet run --project tests/FunAsrNet.Checks -c Release --no-build
 dotnet run --project tools/FunAsrNet.CodeStyle -c Release --no-build -- .
 ```
 
-**权重不在仓库内。** 按 [模型清单](doc/models.md) 准备 `models/` 并校验 SHA-256。ASR/VAD 需要兼容 GGUF，暂未提供一键下载的公开 GGUF 镜像或转换工具。克隆代码可运行无模型数值检查，不能直接启动完整服务。
+**权重不在仓库内。** 按 [模型清单](doc/models.md) 准备 `models/` 并校验 SHA-256。ASR/VAD 需要兼容 GGUF。固定 ASR 原始权重可用 [离线导出工具](tools/ExportOriginalAsr.py) 生成 FP32 GGUF，需要匹配的官方 checkpoint 和 GGUF 元数据模板；详见 [原始权重说明](doc/cpu-gpu-original-20261111.md)。暂未提供覆盖全部模型的一键下载与转换。克隆代码可运行无模型数值检查，不能直接启动完整服务。
 
 ```shell
 dotnet publish src/FunAsrNet.Server -c Release -o artifacts/server
@@ -54,7 +54,13 @@ dotnet run --project src/FunAsrNet.Cli -c Release -- tts --model models/aishell3
 
 ## C# 调用
 
-引用 `src/FunAsrNet/FunAsrNet.csproj`，尚未发布 NuGet 包。同一推理实例须串行使用。
+通过 NuGet 安装核心库；同一推理实例须串行使用。
+
+```shell
+dotnet add package FunAsrNet --version 1.0.0
+```
+
+也可直接引用 `src/FunAsrNet/FunAsrNet.csproj`。正式包与 Release 流程见 [发布说明](doc/releases.md)。
 
 ```csharp
 using FunAsrNet;
@@ -69,7 +75,11 @@ var speech = tts.Synthesize("您好，欢迎致电。", speed: 1, seed: 1);
 AudioFile.WriteWave("speech.wav", speech, tts.NativeSampleRate);
 ```
 
-GPU 另外引用 `src/FunAsrNet.Vulkan/FunAsrNet.Vulkan.csproj`，首次推理前设置：
+GPU 另外安装 `FunAsrNet.Vulkan`（或引用同名源码项目），首次推理前设置：
+
+```shell
+dotnet add package FunAsrNet.Vulkan --version 1.0.0
+```
 
 ```csharp
 using FunAsrNet.Vulkan;
@@ -87,6 +97,18 @@ var gpuTts = new MandarinTts("models/zh_CN-huayan-medium.onnx", "assets/mandarin
 ```
 
 ## 与原版的真实速度对比
+
+### Windows：CPU/GPU 后续优化（2026-11-11，第二轮）
+
+继续优化 CPU FP32 六行分块、Q8 整数归约，以及 GPU 长序列 FP32 注意力和宽子组矩阵向量。24 秒样本中，CPU Q8/原始权重耗时分别从 **2.505/7.056 秒降到 2.406/6.460 秒**；Q8 短句基本持平。GPU 每格 16 次交替复核中，Q8 长句减少 **7.3%**，原始权重短句/长句减少 **7.9%/10.8%**。该 GPU 复核仅提高基准进程优先级；普通桌面批次有反向波动，全部结果和条件均保留。
+
+未降低权重精度，沿用 F16 KV 缓存。四批共 320 次正式调用，转写一致；.NET 10/11、CPU SIMD 回退及 GPU 内核检查通过。实现、原始记录和回退开关见 [第二轮报告](doc/cpu-gpu-round2-20261111.md)。以下为历史轮次，不能跨批次拼接速度比。
+
+### Windows：GPU 与原始权重优化（2026-11-11）
+
+在前序 SIMD 优化之上，RTX 3060 的完整 ASR 热态调用中，Q8 路径耗时再减少 **15.4%–21.4%**；官方 BF16/FP32 原始权重无损展开后，GPU 耗时减少 **59.8%–66.3%**，6 秒/24 秒输入分别为 **0.331/1.046 秒**。使用 4 GiB GPU 权重缓存，现有 F16 KV 缓存舍入保持不变。Q8 长句 GPU 每次托管分配从约 236 MB 降到 4.4 MB。
+
+同批 C++ CPU 复核为 C# 0.749/2.920 秒、C++ 0.857/3.022 秒，CPU 波动明显；本轮未重测原生 GPU。共 120 次正式调用，文本一致。完整条件、原始权重定义、回退检查和复现命令见 [本轮报告](doc/cpu-gpu-original-20261111.md)；以下保留历史结果。
 
 ### Windows：第七轮 GPU 优化与 CPU/GPU 完整对比（2026-10-12）
 

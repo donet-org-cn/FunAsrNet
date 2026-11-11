@@ -13,7 +13,7 @@ Console.OutputEncoding = Encoding.UTF8;
 var jsonOptions = new JsonSerializerOptions { Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping };
 if (args.Length < 1)
 {
-    throw new ArgumentException("用法：prepare 模型目录 词典 样例目录 输出目录 | prepare-tts 模型目录 词典 huayan或aishell3 文本 ID文件 | asr 模型目录 PCM文件 次数 [--profile] [--vulkan] | http-asr 服务地址 WAV文件 次数 | tts 模型目录 ID文件 huayan或aishell3 次数 输出文件 [--threads 4] [--profile] [--vulkan] | compare 参考波形 实际波形 | gpu-info | gpu-check | vulkan | npu；Windows 可添加 --affinity 0x55。");
+    throw new ArgumentException("用法：prepare 模型目录 词典 样例目录 输出目录 | prepare-tts 模型目录 词典 huayan或aishell3 文本 ID文件 | asr 模型目录 PCM文件 次数 [--profile] [--vulkan] | http-asr 服务地址 WAV文件 次数 | tts 模型目录 ID文件 huayan或aishell3 次数 输出文件 [--threads 4] [--profile] [--vulkan] | compare 参考波形 实际波形 | gpu-info | gpu-check | kernels [--vulkan] | vulkan | npu；Windows 可添加 --affinity 0x55。");
 }
 
 if (OperatingSystem.IsWindows() && Array.IndexOf(args, "--affinity") is int affinityIndex and >= 0)
@@ -66,6 +66,12 @@ int[] Frequencies() => new[] { 4, 6 }
     .Where(File.Exists)
     .Select(path => int.Parse(File.ReadAllText(path), CultureInfo.InvariantCulture)).ToArray();
 
+if (args[0] == "kernels")
+{
+    ProjectionBenchmarks.Run(args.Contains("--vulkan"), Emit);
+    return;
+}
+
 if (args[0] == "gpu-check")
 {
     using var gpu = new VulkanFloatBackend(4L * 1024 * 1024) { MinimumOperations = 0 };
@@ -83,7 +89,7 @@ if (args[0] == "gpu-check")
     using var scalarLifetime = scalarGpu;
     var random = new Random(6103060);
     int checks = 0;
-    foreach (int width in new[] { 32, 96, 1024 })
+    foreach (int width in new[] { 32, 96, 1024, 1056, 3072 })
     {
         foreach (int frames in new[] { 1, 3, 17 })
         {
@@ -287,6 +293,8 @@ if (args[0] == "gpu-check")
         checks++;
     }
 
+    checks += FloatGpuChecks.Run(gpu);
+    checks += AttentionGpuChecks.Run(gpu, Emit);
     Emit(new
     {
         kind = "gpu-check",
@@ -443,13 +451,18 @@ if (args[0] == "asr")
     float[] audio = MemoryMarshal.Cast<byte, float>(File.ReadAllBytes(args[2])).ToArray();
     int repeats = int.Parse(args[3], CultureInfo.InvariantCulture);
     var watch = Stopwatch.StartNew();
-    var engine = new FunAsr(Path.Combine(args[1], "funasr-encoder-f16.gguf"), Path.Combine(args[1], "qwen3-0.6b-q8_0.gguf"), 4);
+    int encoderIndex = Array.IndexOf(args, "--encoder"), decoderIndex = Array.IndexOf(args, "--decoder");
+    int cacheIndex = Array.IndexOf(args, "--gpu-cache-mib");
+    string encoderPath = encoderIndex < 0 ? Path.Combine(args[1], "funasr-encoder-f16.gguf") : args[encoderIndex + 1];
+    string decoderPath = decoderIndex < 0 ? Path.Combine(args[1], "qwen3-0.6b-q8_0.gguf") : args[decoderIndex + 1];
+    long cacheBytes = cacheIndex < 0 ? 2048L * 1024 * 1024 : checked(long.Parse(args[cacheIndex + 1], CultureInfo.InvariantCulture) * 1024 * 1024);
+    var engine = new FunAsr(encoderPath, decoderPath, 4);
     Dictionary<string, double> profile = [];
     if (args.Contains("--profile"))
     {
         engine.LinearMeasured = (name, milliseconds) => profile[name] = profile.GetValueOrDefault(name) + milliseconds;
     }
-    using var gpu = args.Contains("--vulkan") ? new VulkanFloatBackend() : null;
+    using var gpu = args.Contains("--vulkan") ? new VulkanFloatBackend(cacheBytes) : null;
     engine.FloatBackend = gpu;
     GC.Collect(2, GCCollectionMode.Forced, true);
     Emit(new
@@ -458,6 +471,9 @@ if (args[0] == "asr")
         engine = gpu is null ? "csharp-cpu" : "csharp-vulkan",
         seconds = watch.Elapsed.TotalSeconds,
         runtime = Environment.Version.ToString(),
+        encoder = encoderPath,
+        decoder = decoderPath,
+        gpuCacheBytes = gpu is null ? 0 : cacheBytes,
         promptCache = engine.CachePrompt
     });
     for (int iteration = 0; iteration <= repeats; iteration++)
@@ -481,6 +497,8 @@ if (args[0] == "asr")
             result.GeneratedTokens,
             result.EncoderSeconds,
             result.DecoderSeconds,
+            result.PrefillSeconds,
+            result.GenerationSeconds,
             temperatureBefore = before,
             temperatureAfter = Temperature(),
             frequencyBefore,
@@ -492,7 +510,8 @@ if (args[0] == "asr")
         {
             Emit(new
             {
-                kind = "profile", iteration,
+                kind = "profile",
+                iteration,
                 groups = profile.GroupBy(item => string.Join(' ', item.Key.Split(' ').Take(2))).ToDictionary(group => group.Key, group => group.Sum(item => item.Value)),
                 slowest = profile.OrderByDescending(item => item.Value).Take(20).ToDictionary()
             });

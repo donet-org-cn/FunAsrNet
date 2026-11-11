@@ -8,7 +8,7 @@
 - 类型和方法提供中文说明，参数说明包含单位、范围或所有权；公开返回值说明结果与生命期。复杂内核注释解释布局、舍入顺序及边界条件。
 - 普通方法使用 XML `summary/param/returns`。局部函数的 XML 结构放在 `//` 注释内，因为 C# 编译器不将局部函数作为 XML 文档成员；检查工具同样验证这些说明。
 - `Directory.Build.props` 启用 XML 文档生成和警告视为错误；`.editorconfig` 定义格式。
-- 托管推理保持原 F16/Q8 精度，不通过改变权重量化级别取得速度提升。
+- 托管推理保留所选权重精度，支持固定 F16/Q8 与原始权重的 FP32 展开；同一性能对照组不改变权重量化级别。新增浮点归约顺序必须注明并验证误差，严格位一致的已有检查不得放宽来迁就优化。
 
 ## 本地检查
 
@@ -61,8 +61,30 @@ Node/Prettier 仅用于编辑时检查，不是构建 C# 服务或运行推理�
 
 ## 性能测量
 
+无需模型的特征、RoPE 和 Greedy 微基准：
+
+```text
+dotnet run --project tests/FunAsrNet.Checks -c Release --no-build -- --frontend-benchmark
+```
+
+该入口使用固定随机种子，交替输出参考与优化实现的 JSONL，含 3 轮预热、15 轮正式时间和分配量；它不执行全量检查，也不代表完整 ASR/TTS 的耗时。亲和性与多进程复现命令见 [2026-11-11 内核记录](frontend-kernels-20261111.md)。
+
 固定模型、输入采样率、线程、CPU 亲和性和量化精度。将冷启动、模型预热、单请求计算、排队与网络延迟分别报告。持续测试保留慢样本并记录温度；不要只挑最快一轮，也不要用协议功能测试替代真实 PJSIP 通话准确率和并发容量评估。
 
 `tools/FunAsrNet.Benchmarks` 提供相同输入准备、在线 ASR 内部计时、离线 TTS 算子计时和波形误差校验。历史原版对照条件见 [性能比较](performance.md)。原始 JSONL 显式标记预热，保留温度、频率和等待时间；统计时只排除预热，不删除慢样本。
+
+CPU/GPU 最新测量、全部批次及精度边界见 [2026-11-11 第二轮报告](cpu-gpu-round2-20261111.md)，原始权重来源见 [前轮报告](cpu-gpu-original-20261111.md)。基准入口可显式指定模型，避免用文件名推断精度：
+
+```text
+dotnet run --project tools/FunAsrNet.Benchmarks -c Release -- asr . input.f32 5 --encoder models/funasr-encoder-original-f32.gguf --decoder models/qwen3-original-f32.gguf --gpu-cache-mib 4096 --vulkan --affinity 0x55
+dotnet run --project tools/FunAsrNet.Benchmarks -c Release -- kernels --vulkan --affinity 0x55
+dotnet run --project tools/FunAsrNet.Benchmarks -c Release -- gpu-check
+```
+
+`input.f32` 为 16 kHz、单声道、little-endian float32。完整 ASR 默认沿用提示词缓存；对照时双方统一设置 `FUNASRNET_DISABLE_PROMPT_CACHE=1`。`kernels` 使用固定种子检查 FP32/Q8 投影并报告 3 轮预热、15 轮正式微基准，不代表模型总耗时。`gpu-check` 验证形状边界、分组结果及缓存逐出重传；用 `FUNASRNET_VULKAN_INTEGER_DOT=0` 验证整数点积回退，`FUNASRNET_VULKAN_SPECIALIZED_FLOAT=0` 可禁用浮点专用管线。
+
+`gpu-check` 还以独立双精度参考验证 FP32 注意力，覆盖 1–4,096 帧、尾通道、尾查询及高对比输入。新增诊断开关须在创建模型/后端之前设置：`FUNASRNET_AVX_ROWS6=0` 回到 CPU 四行矩阵；`FUNASRNET_VULKAN_ATTENTION=0` 关闭 GPU 注意力；`FUNASRNET_VULKAN_ATTENTION_TILE=0` 使用单查询内核；`FUNASRNET_VULKAN_WIDE=0` 关闭 FP32 宽子组。运行时回退检查使用 `DOTNET_EnableAVXVNNI=0`、`DOTNET_EnableAVX2=0` 或 `DOTNET_EnableHWIntrinsic=0`；每次分别在新进程设置。
+
+`tools/ExportOriginalAsr.py` 仅用于固定官方 checkpoint 的 BF16/FP32 张量无损导出，需要 Python 3.11+、PyTorch、NumPy 和匹配的 GGUF 模板，不是生产依赖。`tools/CompileVulkanShaders.ps1 -Compiler <glslang路径> -VerifyOnly` 使用 glslang 16.6.0 核对九种嵌入 SPIR-V；去掉 `-VerifyOnly` 才会重新生成源码中的二进制，运行推理不需要编译器。
 
 可选 Vulkan 源码位于 `src/FunAsrNet.Vulkan`。项目自有代码仍执行中文注释检查；`Vendor` 中保留来源与许可的第三方 Vulkan ABI 绑定不重写为本项目风格，临时 `artifacts` 不参与源码检查。来源和改动在 Vendor README 中明确列出。原生对照工具独立构建，核心服务不会传递引用其 ONNX Runtime 包。

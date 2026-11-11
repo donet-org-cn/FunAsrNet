@@ -87,8 +87,8 @@ public sealed class FunAsr
     /// <summary>
     /// 纯 C# 识别上下文；同一实例须串行使用，不同实例可共享只读模型权重。
     /// </summary>
-    /// <param name="encoderPath">F16 编码器 GGUF 文件路径。</param>
-    /// <param name="decoderPath">Q8 解码器 GGUF 文件路径。</param>
+    /// <param name="encoderPath">F16 或 F32 编码器 GGUF 文件路径。</param>
+    /// <param name="decoderPath">Q8_0 或原值展开为 FP32 的解码器 GGUF 文件路径。</param>
     /// <param name="threads">算子使用的最大计算线程数。</param>
     /// <param name="simd">是否启用当前硬件支持的向量化路径。</param>
     public FunAsr(string encoderPath, string decoderPath, int threads = 4, bool simd = true) : this(new Gguf(encoderPath), new Gguf(decoderPath), threads, simd)

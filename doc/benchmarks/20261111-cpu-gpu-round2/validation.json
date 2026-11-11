@@ -1,0 +1,13 @@
+{
+  "cpuDefault": 9552345,
+  "cpuNet11": 9552345,
+  "cpuWithoutVnni": 9552345,
+  "cpuWithoutAvx2": 9179904,
+  "cpuScalar": 9179904,
+  "gpuDefault": 1453760,
+  "gpuWithoutIntegerDot": 1453760,
+  "gpuSingleQueryAndNarrow": 1453760,
+  "gpuWithoutAttention": 410035,
+  "gpuNet11": 1453760,
+  "glslVariantsVerified": 9
+}

@@ -1,0 +1,135 @@
+{
+  "formal": 48,
+  "warmups": 8,
+  "description": "Same process, one shared model instance, two GPU backends with 4 GiB each; new GPU features off/on; ABBA x3 after one warmup each.",
+  "summary": [
+    {
+      "key": "original-sample-6s",
+      "before": {
+        "n": 6,
+        "median": 0.33246845,
+        "min": 0.2956442,
+        "max": 0.3571426,
+        "encoder": 0.125727,
+        "generation": 0.1103559,
+        "texts": [
+          "我想问我在滨海新区有房"
+        ],
+        "tokens": [
+          7
+        ]
+      },
+      "after": {
+        "n": 6,
+        "median": 0.3065789,
+        "min": 0.2938939,
+        "max": 0.3420187,
+        "encoder": 0.12216125,
+        "generation": 0.10512354999999998,
+        "texts": [
+          "我想问我在滨海新区有房"
+        ],
+        "tokens": [
+          7
+        ]
+      },
+      "reductionPercent": 7.787069720450179
+    },
+    {
+      "key": "original-sample-repeated-24s",
+      "before": {
+        "n": 6,
+        "median": 1.0889503,
+        "min": 1.05698,
+        "max": 1.171658,
+        "encoder": 0.4725262,
+        "generation": 0.47785155,
+        "texts": [
+          "我想问我在滨海新区有房我想问我在滨海新区有房我想问我在滨海新区有房我想问我在滨海新区有房"
+        ],
+        "tokens": [
+          28
+        ]
+      },
+      "after": {
+        "n": 6,
+        "median": 1.0163848500000001,
+        "min": 0.9130384,
+        "max": 1.200707,
+        "encoder": 0.3880207,
+        "generation": 0.48651439999999996,
+        "texts": [
+          "我想问我在滨海新区有房我想问我在滨海新区有房我想问我在滨海新区有房我想问我在滨海新区有房"
+        ],
+        "tokens": [
+          28
+        ]
+      },
+      "reductionPercent": 6.663798154975476
+    },
+    {
+      "key": "q8-sample-6s",
+      "before": {
+        "n": 6,
+        "median": 0.275882,
+        "min": 0.2635488,
+        "max": 0.296614,
+        "encoder": 0.1197716,
+        "generation": 0.07298124999999997,
+        "texts": [
+          "我想问我在滨海新区有房"
+        ],
+        "tokens": [
+          7
+        ]
+      },
+      "after": {
+        "n": 6,
+        "median": 0.2885717,
+        "min": 0.2812488,
+        "max": 0.2989376,
+        "encoder": 0.12743095,
+        "generation": 0.07383384999999998,
+        "texts": [
+          "我想问我在滨海新区有房"
+        ],
+        "tokens": [
+          7
+        ]
+      },
+      "reductionPercent": -4.599683922836562
+    },
+    {
+      "key": "q8-sample-repeated-24s",
+      "before": {
+        "n": 6,
+        "median": 0.97199315,
+        "min": 0.8890079,
+        "max": 1.031719,
+        "encoder": 0.45840925,
+        "generation": 0.31351429999999997,
+        "texts": [
+          "我想问我在滨海新区有房我想问我在滨海新区有房我想问我在滨海新区有房我想问我在滨海新区有房"
+        ],
+        "tokens": [
+          28
+        ]
+      },
+      "after": {
+        "n": 6,
+        "median": 1.00943845,
+        "min": 0.8115579,
+        "max": 1.2730326,
+        "encoder": 0.46575465,
+        "generation": 0.3612858,
+        "texts": [
+          "我想问我在滨海新区有房我想问我在滨海新区有房我想问我在滨海新区有房我想问我在滨海新区有房"
+        ],
+        "tokens": [
+          28
+        ]
+      },
+      "reductionPercent": -3.8524242686278187
+    }
+  ]
+}

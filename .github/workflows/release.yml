@@ -1,0 +1,196 @@
+name: NuGet release
+
+on:
+  push:
+    tags: ['v[0-9]*']
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Stable version from Directory.Build.props'
+        required: true
+        default: '1.0.0'
+      publish:
+        description: 'Publish the verified tag to NuGet.org and GitHub Releases'
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: nuget-release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 25
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - name: Validate stable version and source tag
+        id: version
+        shell: pwsh
+        env:
+          REQUESTED_VERSION: ${{ inputs.version }}
+          PUBLISH_REQUESTED: ${{ github.event_name == 'push' || inputs.publish }}
+        run: |
+          . ./tools/ReleaseCommon.ps1
+          $requested = if ($env:GITHUB_REF_TYPE -eq 'tag') { $env:GITHUB_REF_NAME.Substring(1) } else { $env:REQUESTED_VERSION }
+          $version = Get-ReleaseVersion $requested
+          if (!(Test-Path -LiteralPath "doc/releases/$version.md")) { throw 'Missing release notes.' }
+          if ($env:PUBLISH_REQUESTED -eq 'true') {
+            $commit = git rev-parse "refs/tags/v$version^{commit}"
+            if ($LASTEXITCODE -ne 0 -or $commit -ne $env:GITHUB_SHA) { throw 'Publishing requires an existing tag on this exact commit.' }
+            git merge-base --is-ancestor $env:GITHUB_SHA origin/main
+            if ($LASTEXITCODE -ne 0) { throw 'The release commit must be on main.' }
+          }
+          "version=$version" >> $env:GITHUB_OUTPUT
+      - name: Build managed solution
+        run: dotnet build FunAsrNet.sln -c Release -p:ContinuousIntegrationBuild=true
+      - name: Verify numerical regressions
+        run: dotnet run --project tests/FunAsrNet.Checks -c Release --no-build
+      - name: Verify scalar fallback
+        env:
+          DOTNET_EnableHWIntrinsic: '0'
+        run: dotnet run --project tests/FunAsrNet.Checks -c Release --no-build
+      - name: Verify source conventions
+        run: dotnet run --project tools/FunAsrNet.CodeStyle -c Release --no-build -- .
+      - name: Verify formatting
+        run: dotnet format whitespace FunAsrNet.sln --verify-no-changes --no-restore
+      - name: Pack and inspect release packages
+        if: runner.os == 'Windows'
+        shell: pwsh
+        env:
+          RELEASE_VERSION: ${{ steps.version.outputs.version }}
+        run: ./tools/PackRelease.ps1 -Version $env:RELEASE_VERSION -Output artifacts/release-packages
+      - uses: actions/upload-artifact@v4
+        if: runner.os == 'Windows'
+        with:
+          name: nuget-${{ steps.version.outputs.version }}
+          path: |
+            artifacts/release-packages/*.nupkg
+            artifacts/release-packages/*.snupkg
+            artifacts/release-packages/manifest.json
+            artifacts/release-packages/SHA256SUMS.txt
+          if-no-files-found: error
+
+  consume:
+    needs: build
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - uses: actions/download-artifact@v4
+        with:
+          name: nuget-${{ needs.build.outputs.version }}
+          path: artifacts/frozen-packages
+      - name: Install and run the actual frozen NuGet packages
+        shell: pwsh
+        env:
+          RELEASE_VERSION: ${{ needs.build.outputs.version }}
+        run: ./tools/TestPackages.ps1 -Version $env:RELEASE_VERSION -Packages artifacts/frozen-packages
+
+  publish:
+    needs: [build, consume]
+    if: github.event_name == 'push' || inputs.publish
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    environment: nuget
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - uses: actions/download-artifact@v4
+        with:
+          name: nuget-${{ needs.build.outputs.version }}
+          path: artifacts/frozen-packages
+      - name: Verify package handoff and NuGet profile
+        shell: pwsh
+        env:
+          RELEASE_VERSION: ${{ needs.build.outputs.version }}
+          NUGET_USER: ${{ vars.NUGET_USER }}
+        run: |
+          . ./tools/ReleaseCommon.ps1
+          if (!$env:NUGET_USER) { throw 'Configure the NUGET_USER repository variable and NuGet trusted publishing policy.' }
+          Test-ReleaseManifest (Resolve-Path artifacts/frozen-packages).Path $env:RELEASE_VERSION | Out-Null
+      - name: Exchange GitHub OIDC for a short-lived NuGet key
+        id: login
+        uses: NuGet/login@v1
+        with:
+          user: ${{ vars.NUGET_USER }}
+      - name: Publish the verified packages and symbols
+        shell: pwsh
+        env:
+          NUGET_API_KEY: ${{ steps.login.outputs.NUGET_API_KEY }}
+          RELEASE_VERSION: ${{ needs.build.outputs.version }}
+        run: |
+          foreach ($id in @('FunAsrNet', 'FunAsrNet.Vulkan')) {
+            dotnet nuget push "artifacts/frozen-packages/$id.$env:RELEASE_VERSION.nupkg" --source https://api.nuget.org/v3/index.json --api-key $env:NUGET_API_KEY --skip-duplicate
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          }
+      - name: Verify public NuGet payloads against the frozen packages
+        shell: pwsh
+        env:
+          RELEASE_VERSION: ${{ needs.build.outputs.version }}
+        run: ./tools/VerifyPublishedPackages.ps1 -Version $env:RELEASE_VERSION -Packages artifacts/frozen-packages
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: nuget-public-verification-${{ needs.build.outputs.version }}
+          path: artifacts/frozen-packages/published-verification.json
+          if-no-files-found: ignore
+
+  release:
+    needs: [build, publish]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: nuget-${{ needs.build.outputs.version }}
+          path: artifacts/frozen-packages
+      - uses: actions/download-artifact@v4
+        with:
+          name: nuget-public-verification-${{ needs.build.outputs.version }}
+          path: artifacts/frozen-packages
+      - name: Publish the stable GitHub Release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_VERSION: ${{ needs.build.outputs.version }}
+        run: |
+          set -euo pipefail
+          gh release create "v$RELEASE_VERSION" \
+            --verify-tag --latest --title "FunAsrNet $RELEASE_VERSION" \
+            --notes-file "doc/releases/$RELEASE_VERSION.md" \
+            artifacts/frozen-packages/*.nupkg \
+            artifacts/frozen-packages/*.snupkg \
+            artifacts/frozen-packages/manifest.json \
+            artifacts/frozen-packages/SHA256SUMS.txt \
+            artifacts/frozen-packages/published-verification.json

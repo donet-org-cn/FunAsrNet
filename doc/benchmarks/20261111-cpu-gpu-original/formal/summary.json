@@ -1,0 +1,515 @@
+{
+  "formal": 96,
+  "warmups": 32,
+  "conditions": "NET 10.0.15, 4 threads, affinity 0x55, CachePrompt=false, maxTokens=128, Vulkan cache 4 GiB, ABBA two processes per variant each with 1 warmup + 3 formal calls",
+  "summary": [
+    {
+      "key": "original-cpu-sample-6s",
+      "before": {
+        "n": 6,
+        "median": 1.98772085,
+        "min": 1.7783493,
+        "max": 2.0492437,
+        "p95": 2.0492437,
+        "encoder": 0.1937377,
+        "prefill": 0.22362674999999999,
+        "generation": 1.5282088,
+        "allocatedBytes": 1454784,
+        "peakRssBytes": 4050855936,
+        "loadMedian": 2.0780843,
+        "firstMedian": 2.0810313000000003,
+        "texts": [
+          "我想问我在滨海新区有房"
+        ],
+        "tokens": [
+          7
+        ]
+      },
+      "after": {
+        "n": 6,
+        "median": 1.99423875,
+        "min": 1.8203277,
+        "max": 2.1002574,
+        "p95": 2.1002574,
+        "encoder": 0.18786685,
+        "prefill": 0.24557584999999998,
+        "generation": 1.5759093499999999,
+        "allocatedBytes": 1511488,
+        "peakRssBytes": 4051030016,
+        "loadMedian": 2.35553745,
+        "firstMedian": 1.9434205,
+        "texts": [
+          "我想问我在滨海新区有房"
+        ],
+        "tokens": [
+          7
+        ]
+      }
+    },
+    {
+      "key": "original-cpu-sample-repeated-24s",
+      "before": {
+        "n": 6,
+        "median": 7.23845205,
+        "min": 6.8186944,
+        "max": 7.7226087,
+        "p95": 7.7226087,
+        "encoder": 0.8961931000000001,
+        "prefill": 0.3014332999999999,
+        "generation": 5.9848585,
+        "allocatedBytes": 4442264,
+        "peakRssBytes": 4096929792,
+        "loadMedian": 2.129445,
+        "firstMedian": 7.31429455,
+        "texts": [
+          "我想问我在滨海新区有房我想问我在滨海新区有房我想问我在滨海新区有房我想问我在滨海新区有房"
+        ],
+        "tokens": [
+          28
+        ]
+      },
+      "after": {
+        "n": 6,
+        "median": 7.0643756,
+        "min": 6.8314548,
+        "max": 7.4995036,
+        "p95": 7.4995036,
+        "encoder": 0.8668042,
+        "prefill": 0.2958985,
+        "generation": 5.89756335,
+        "allocatedBytes": 4668984,
+        "peakRssBytes": 4097703936,
+        "loadMedian": 2.01688965,
+        "firstMedian": 7.14918935,
+        "texts": [
+          "我想问我在滨海新区有房我想问我在滨海新区有房我想问我在滨海新区有房我想问我在滨海新区有房"
+        ],
+        "tokens": [
+          28
+        ]
+      }
+    },
+    {
+      "key": "original-gpu-sample-6s",
+      "before": {
+        "n": 6,
+        "median": 0.82417125,
+        "min": 0.7910555,
+        "max": 0.8319365,
+        "p95": 0.8319365,
+        "encoder": 0.13387945,
+        "prefill": 0.1136211,
+        "generation": 0.57457735,
+        "allocatedBytes": 1417184,
+        "peakRssBytes": 4802027520,
+        "loadMedian": 8.2119608,
+        "firstMedian": 3.71223605,
+        "texts": [
+          "我想问我在滨海新区有房"
+        ],
+        "tokens": [
+          7
+        ],
+        "gpuFinal": {
+          "device": "NVIDIA GeForce RTX 3060",
+          "loader": "vulkan-1.dll",
+          "precision": "FP32 + original Q8_0",
+          "linearCalls": 7480,
+          "convolutionCalls": 0,
+          "reluProjectionCalls": 292,
+          "computeSubmissions": 7188,
+          "quantizedCalls": 0,
+          "quantizedKernel": "subgroup-eight-lane-integer-dot",
+          "subgroupSize": 32,
+          "fenceSpinMicroseconds": 100,
+          "cacheBytes": 3316713476,
+          "cacheHits": 14174,
+          "uploadedBytes": 3703419908,
+          "downloadedBytes": 560906240,
+          "endToEndSeconds": 5.712306300000019,
+          "maxStorageRange": 4294967295
+        }
+      },
+      "after": {
+        "n": 6,
+        "median": 0.33104455,
+        "min": 0.307,
+        "max": 0.5133705,
+        "p95": 0.5133705,
+        "encoder": 0.1314311,
+        "prefill": 0.08666960000000001,
+        "generation": 0.12221784999999998,
+        "allocatedBytes": 1313248,
+        "peakRssBytes": 4840761344,
+        "loadMedian": 2.1577914,
+        "firstMedian": 3.6046238500000003,
+        "texts": [
+          "我想问我在滨海新区有房"
+        ],
+        "tokens": [
+          7
+        ],
+        "gpuFinal": {
+          "device": "NVIDIA GeForce RTX 3060",
+          "loader": "vulkan-1.dll",
+          "precision": "FP32 + original Q8_0",
+          "linearCalls": 4792,
+          "floatGroupCalls": 1792,
+          "floatLinearDispatches": 1624,
+          "floatVectorDispatches": 3168,
+          "convolutionCalls": 0,
+          "reluProjectionCalls": 292,
+          "computeSubmissions": 4500,
+          "quantizedCalls": 0,
+          "quantizedKernel": "subgroup-eight-block-integer-dot",
+          "subgroupSize": 32,
+          "fenceSpinMicroseconds": 100,
+          "cacheBytes": 3316713476,
+          "cacheHits": 8882,
+          "uploadedBytes": 3644240900,
+          "downloadedBytes": 560906240,
+          "endToEndSeconds": 4.235505300000002,
+          "maxStorageRange": 4294967295
+        }
+      }
+    },
+    {
+      "key": "original-gpu-sample-repeated-24s",
+      "before": {
+        "n": 6,
+        "median": 3.1075071999999997,
+        "min": 2.9492197,
+        "max": 3.1940418,
+        "p95": 3.1940418,
+        "encoder": 0.4828712,
+        "prefill": 0.16480715,
+        "generation": 2.4459551500000005,
+        "allocatedBytes": 4508152,
+        "peakRssBytes": 4817801216,
+        "loadMedian": 2.37443595,
+        "firstMedian": 6.4540084,
+        "texts": [
+          "我想问我在滨海新区有房我想问我在滨海新区有房我想问我在滨海新区有房我想问我在滨海新区有房"
+        ],
+        "tokens": [
+          28
+        ],
+        "gpuFinal": {
+          "device": "NVIDIA GeForce RTX 3060",
+          "loader": "vulkan-1.dll",
+          "precision": "FP32 + original Q8_0",
+          "linearCalls": 24028,
+          "convolutionCalls": 0,
+          "reluProjectionCalls": 292,
+          "computeSubmissions": 23736,
+          "quantizedCalls": 0,
+          "quantizedKernel": "subgroup-eight-lane-integer-dot",
+          "subgroupSize": 32,
+          "fenceSpinMicroseconds": 100,
+          "cacheBytes": 3316713476,
+          "cacheHits": 47270,
+          "uploadedBytes": 4537776132,
+          "downloadedBytes": 1845475328,
+          "endToEndSeconds": 13.990354999999925,
+          "maxStorageRange": 4294967295
+        }
+      },
+      "after": {
+        "n": 6,
+        "median": 1.0457409,
+        "min": 1.0110943,
+        "max": 1.1347951,
+        "p95": 1.1347951,
+        "encoder": 0.44514235,
+        "prefill": 0.1280929,
+        "generation": 0.4611219,
+        "allocatedBytes": 4136088,
+        "peakRssBytes": 4883505152,
+        "loadMedian": 2.17187355,
+        "firstMedian": 4.17839595,
+        "texts": [
+          "我想问我在滨海新区有房我想问我在滨海新区有房我想问我在滨海新区有房我想问我在滨海新区有房"
+        ],
+        "tokens": [
+          28
+        ],
+        "gpuFinal": {
+          "device": "NVIDIA GeForce RTX 3060",
+          "loader": "vulkan-1.dll",
+          "precision": "FP32 + original Q8_0",
+          "linearCalls": 14284,
+          "floatGroupCalls": 6496,
+          "floatLinearDispatches": 1624,
+          "floatVectorDispatches": 12660,
+          "convolutionCalls": 0,
+          "reluProjectionCalls": 292,
+          "computeSubmissions": 13992,
+          "quantizedCalls": 0,
+          "quantizedKernel": "subgroup-eight-block-integer-dot",
+          "subgroupSize": 32,
+          "fenceSpinMicroseconds": 100,
+          "cacheBytes": 3316713476,
+          "cacheHits": 27866,
+          "uploadedBytes": 4398774276,
+          "downloadedBytes": 1845475328,
+          "endToEndSeconds": 5.724906400000016,
+          "maxStorageRange": 4294967295
+        }
+      }
+    },
+    {
+      "key": "q8-cpu-sample-6s",
+      "before": {
+        "n": 6,
+        "median": 0.7118281,
+        "min": 0.6709382,
+        "max": 0.7286252,
+        "p95": 0.7286252,
+        "encoder": 0.1767076,
+        "prefill": 0.09158240000000002,
+        "generation": 0.4390884,
+        "allocatedBytes": 8270848,
+        "peakRssBytes": 1911078912,
+        "loadMedian": 0.8816473,
+        "firstMedian": 0.8726948999999999,
+        "texts": [
+          "我想问我在滨海新区有房"
+        ],
+        "tokens": [
+          7
+        ]
+      },
+      "after": {
+        "n": 6,
+        "median": 0.7150507,
+        "min": 0.6889843,
+        "max": 0.7448712,
+        "p95": 0.7448712,
+        "encoder": 0.17986275000000002,
+        "prefill": 0.08610820000000002,
+        "generation": 0.44747345,
+        "allocatedBytes": 1317248,
+        "peakRssBytes": 1892270080,
+        "loadMedian": 0.8229954500000001,
+        "firstMedian": 0.8534577000000001,
+        "texts": [
+          "我想问我在滨海新区有房"
+        ],
+        "tokens": [
+          7
+        ]
+      }
+    },
+    {
+      "key": "q8-cpu-sample-repeated-24s",
+      "before": {
+        "n": 6,
+        "median": 2.83229045,
+        "min": 2.6923486,
+        "max": 3.0098218,
+        "p95": 3.0098218,
+        "encoder": 0.8787432,
+        "prefill": 0.18057470000000003,
+        "generation": 1.7781956,
+        "allocatedBytes": 20406664,
+        "peakRssBytes": 1976078336,
+        "loadMedian": 0.9141220999999999,
+        "firstMedian": 2.8145474,
+        "texts": [
+          "我想问我在滨海新区有房我想问我在滨海新区有房我想问我在滨海新区有房我想问我在滨海新区有房"
+        ],
+        "tokens": [
+          28
+        ]
+      },
+      "after": {
+        "n": 6,
+        "median": 2.6343526,
+        "min": 2.5822642,
+        "max": 3.1409623,
+        "p95": 3.1409623,
+        "encoder": 0.8308795,
+        "prefill": 0.17343575000000006,
+        "generation": 1.6386126,
+        "allocatedBytes": 4053064,
+        "peakRssBytes": 1938780160,
+        "loadMedian": 0.80250165,
+        "firstMedian": 2.9209728,
+        "texts": [
+          "我想问我在滨海新区有房我想问我在滨海新区有房我想问我在滨海新区有房我想问我在滨海新区有房"
+        ],
+        "tokens": [
+          28
+        ]
+      }
+    },
+    {
+      "key": "q8-gpu-sample-6s",
+      "before": {
+        "n": 6,
+        "median": 0.34235744999999995,
+        "min": 0.3279473,
+        "max": 0.4197637,
+        "p95": 0.4197637,
+        "encoder": 0.13458385,
+        "prefill": 0.12417544999999999,
+        "generation": 0.08926375,
+        "allocatedBytes": 99946216,
+        "peakRssBytes": 2600534016,
+        "loadMedian": 4.80704765,
+        "firstMedian": 2.9365015,
+        "texts": [
+          "我想问我在滨海新区有房"
+        ],
+        "tokens": [
+          7
+        ],
+        "gpuFinal": {
+          "device": "NVIDIA GeForce RTX 3060",
+          "loader": "vulkan-1.dll",
+          "precision": "FP32 + original Q8_0",
+          "linearCalls": 1176,
+          "convolutionCalls": 0,
+          "reluProjectionCalls": 292,
+          "computeSubmissions": 4500,
+          "quantizedCalls": 3616,
+          "quantizedKernel": "subgroup-eight-lane-integer-dot",
+          "subgroupSize": 32,
+          "fenceSpinMicroseconds": 100,
+          "cacheBytes": 1603258372,
+          "cacheHits": 12385,
+          "uploadedBytes": 1831443460,
+          "downloadedBytes": 560906240,
+          "endToEndSeconds": 3.0129301000000117,
+          "maxStorageRange": 4294967295
+        }
+      },
+      "after": {
+        "n": 6,
+        "median": 0.28966075,
+        "min": 0.264549,
+        "max": 0.3599578,
+        "p95": 0.3599578,
+        "encoder": 0.12435045,
+        "prefill": 0.09468995000000002,
+        "generation": 0.07453274999999998,
+        "allocatedBytes": 1381920,
+        "peakRssBytes": 2512181248,
+        "loadMedian": 0.9926736999999999,
+        "firstMedian": 2.75932915,
+        "texts": [
+          "我想问我在滨海新区有房"
+        ],
+        "tokens": [
+          7
+        ],
+        "gpuFinal": {
+          "device": "NVIDIA GeForce RTX 3060",
+          "loader": "vulkan-1.dll",
+          "precision": "FP32 + original Q8_0",
+          "linearCalls": 1176,
+          "floatGroupCalls": 0,
+          "floatLinearDispatches": 1176,
+          "floatVectorDispatches": 0,
+          "convolutionCalls": 0,
+          "reluProjectionCalls": 292,
+          "computeSubmissions": 4500,
+          "quantizedCalls": 3616,
+          "quantizedKernel": "subgroup-eight-block-integer-dot",
+          "subgroupSize": 32,
+          "fenceSpinMicroseconds": 100,
+          "cacheBytes": 1603258372,
+          "cacheHits": 12385,
+          "uploadedBytes": 1831443460,
+          "downloadedBytes": 560906240,
+          "endToEndSeconds": 2.791438499999989,
+          "maxStorageRange": 4294967295
+        }
+      }
+    },
+    {
+      "key": "q8-gpu-sample-repeated-24s",
+      "before": {
+        "n": 6,
+        "median": 1.1756214,
+        "min": 1.0418354,
+        "max": 1.2378671,
+        "p95": 1.2378671,
+        "encoder": 0.5009277999999999,
+        "prefill": 0.25410655000000004,
+        "generation": 0.4219783999999999,
+        "allocatedBytes": 235766312,
+        "peakRssBytes": 2893840384,
+        "loadMedian": 0.98037905,
+        "firstMedian": 3.37790505,
+        "texts": [
+          "我想问我在滨海新区有房我想问我在滨海新区有房我想问我在滨海新区有房我想问我在滨海新区有房"
+        ],
+        "tokens": [
+          28
+        ],
+        "gpuFinal": {
+          "device": "NVIDIA GeForce RTX 3060",
+          "loader": "vulkan-1.dll",
+          "precision": "FP32 + original Q8_0",
+          "linearCalls": 1176,
+          "convolutionCalls": 0,
+          "reluProjectionCalls": 292,
+          "computeSubmissions": 13992,
+          "quantizedCalls": 13108,
+          "quantizedKernel": "subgroup-eight-lane-integer-dot",
+          "subgroupSize": 32,
+          "fenceSpinMicroseconds": 100,
+          "cacheBytes": 1603258372,
+          "cacheHits": 40861,
+          "uploadedBytes": 2451859972,
+          "downloadedBytes": 1845475328,
+          "endToEndSeconds": 4.595554700000039,
+          "maxStorageRange": 4294967295
+        }
+      },
+      "after": {
+        "n": 6,
+        "median": 0.92428165,
+        "min": 0.8417499,
+        "max": 1.0617818,
+        "p95": 1.0617818,
+        "encoder": 0.4467049,
+        "prefill": 0.1680123,
+        "generation": 0.3114771500000001,
+        "allocatedBytes": 4385024,
+        "peakRssBytes": 2535196672,
+        "loadMedian": 1.1198551,
+        "firstMedian": 3.0438565,
+        "texts": [
+          "我想问我在滨海新区有房我想问我在滨海新区有房我想问我在滨海新区有房我想问我在滨海新区有房"
+        ],
+        "tokens": [
+          28
+        ],
+        "gpuFinal": {
+          "device": "NVIDIA GeForce RTX 3060",
+          "loader": "vulkan-1.dll",
+          "precision": "FP32 + original Q8_0",
+          "linearCalls": 1176,
+          "floatGroupCalls": 0,
+          "floatLinearDispatches": 1176,
+          "floatVectorDispatches": 0,
+          "convolutionCalls": 0,
+          "reluProjectionCalls": 292,
+          "computeSubmissions": 13992,
+          "quantizedCalls": 13108,
+          "quantizedKernel": "subgroup-eight-block-integer-dot",
+          "subgroupSize": 32,
+          "fenceSpinMicroseconds": 100,
+          "cacheBytes": 1603258372,
+          "cacheHits": 40861,
+          "uploadedBytes": 2451859972,
+          "downloadedBytes": 1845475328,
+          "endToEndSeconds": 4.091601299999976,
+          "maxStorageRange": 4294967295
+        }
+      }
+    }
+  ]
+}

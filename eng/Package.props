@@ -1,0 +1,22 @@
+<Project>
+  <PropertyGroup>
+    <IsPackable>true</IsPackable>
+    <Authors>donet-org-cn</Authors>
+    <Company>donet-org-cn</Company>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/donet-org-cn/FunAsrNet</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/donet-org-cn/FunAsrNet</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <DebugType>portable</DebugType>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)../doc/nuget/README.md" Pack="true" PackagePath="README.md" />
+    <None Include="$(MSBuildThisFileDirectory)../LICENSE" Pack="true" PackagePath="/" />
+    <None Include="$(MSBuildThisFileDirectory)../THIRD_PARTY_NOTICES.md" Pack="true" PackagePath="THIRD_PARTY_NOTICES.md" />
+  </ItemGroup>
+</Project>
